@@ -100,6 +100,13 @@ dialog#lb{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-he
 .cform{position:sticky;bottom:96px;display:flex;gap:8px;background:var(--bg);padding:8px 0}.cform input{flex:1;border-radius:99px;padding:11px 16px}
 .slider>div{aspect-ratio:1/1;background:var(--thumb)}
 .slider img{width:100%;height:100%;max-height:none;object-fit:cover;cursor:zoom-in}
+body{overflow-x:hidden}
+.ph{position:relative}
+.slider{max-width:100%}
+.slider>div{flex:0 0 100%;min-width:0;height:min(80vw,400px);aspect-ratio:auto;display:block;overflow:hidden}
+.slider img{display:block;width:100%;height:100%;max-height:none;object-fit:cover}
+.zoomBtn{position:absolute;right:10px;top:10px;width:42px;height:42px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:1.25rem;cursor:pointer}
+#lbBody>div{min-width:0}
 </style>
 </head>
 <body>
@@ -280,7 +287,7 @@ $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
 
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
- $('viewBody').innerHTML=(im.length?`<div class="slider" id="sl">${im.map(s=>`<div><img src="${s}" alt=""></div>`).join('')}</div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
+ $('viewBody').innerHTML=(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${s}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b> ›</button>
  <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
@@ -290,6 +297,7 @@ function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  $('view').showModal();$('vClose').onclick=()=>$('view').close();
  const sl=$('sl'),dots=$('dots');if(sl&&dots)sl.onscroll=()=>{const k=Math.round(sl.scrollLeft/sl.clientWidth);[...dots.children].forEach((d,x)=>d.classList.toggle('on',x===k))};
  if(sl)sl.onclick=e=>{const m=e.target.closest('img');if(m)openLB(im,[...sl.querySelectorAll('img')].indexOf(m))};
+ if($('zoomBtn'))$('zoomBtn').onclick=()=>openLB(im,Math.round(sl.scrollLeft/sl.clientWidth));
  db.collection('shops').doc(i.uid).get().then(d=>{if(d.exists&&d.data().avatar&&$('sAvt'))$('sAvt').innerHTML=av(d.data().avatar,i.shop,36)}).catch(()=>{});
  $('goShop').onclick=()=>{$('view').close();go('shop',i.uid)};
  if(own){$('vSold').onclick=async()=>{await db.collection('listings').doc(i.id).update({sold:!i.sold});$('view').close()};
