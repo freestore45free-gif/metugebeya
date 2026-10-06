@@ -98,6 +98,8 @@ dialog#lb{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-he
 .bub.me{align-self:flex-end;background:var(--green);color:#fff;border-radius:16px 16px 4px 16px;border-color:transparent}
 .bub small{display:block;font-size:.65rem;opacity:.7;margin-top:2px}
 .cform{position:sticky;bottom:96px;display:flex;gap:8px;background:var(--bg);padding:8px 0}.cform input{flex:1;border-radius:99px;padding:11px 16px}
+.slider>div{aspect-ratio:1/1;background:var(--thumb)}
+.slider img{width:100%;height:100%;max-height:none;object-fit:cover;cursor:zoom-in}
 </style>
 </head>
 <body>
@@ -188,10 +190,34 @@ theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],lis
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
 postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller']
 };
+const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
+const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
+const OM={app:"Gabaa Mattuu",home:"Mana",msgs:"Ergaa",post:"Maxxansi",acct:"Akaawuntii",sets:"Qindaa’ina",
+search:"Barbaadi...",heroT:"Gabaan Mattuu harka kee irra",heroP:"Bitadhu, gurgurtu, gurgurtichaa kallattiin argadhu.",
+noItems:"Beeksisni tokko iyyuu hin argamne.",sold:"Gurguramee",call:"Bilbili",birr:"Birrii",
+msgSeller:"Ergaa gurgurtichaaf",msgPh:"Akkam, meeshaan kun amma jira?",yourPhone:"Bilbila kee (gurgurtichi akka sii bilbilu)",
+send:"Ergaa ergi",report:"Gabaasi",close:"Cufi",markSold:"Gurguramee jedhi",unsold:"Deebi’ee agarsiisi",del:"Haqi",confirmDel:"Haqamu?",
+postT:"Beeksisa maxxansi",title:"Mata duree",price:"Gatii (Birrii)",cat:"Gita",city:"Magaalaa",phone:"Lakkoofsa bilbilaa",tg:"Telegiraam (filannoo)",
+desc:"Ibsa meeshaa",descPh:"Haala, hamma, moodela, gatiin haasa’amaa?",photos:"Suuraalee (hanga 3: fuula, duuba, cinaa)",
+back:"Deebi’i",submit:"Maxxansi",picNote:"Har’a suuraa {a} / {b}",
+pay:"Maxxansuuf dura kaffalaa",payInfo:"Galmaa’uun bilisaa dha. Beeksisa maxxansuuf kiraa suuqii kaffalaa.",
+m1:"Ji tokkoof",y1:"Waggaa tokkoof",txn:"Lakkoofsa daldala kaffaltii (Transaction)",
+payNote:"Erga ergitanii booda bulchaan ni mirkaneessa; yeroo raggaasifamu battalumatti maxxansuu dandeessu.",paySend:"Kaffaltii ergi",
+payOk:"Kaffaltiin ergameera; bulchaan yeroo raggaasu maxxansuu dandeessu",txnErr:"Lakkoofsa daldala galchi",
+login:"Seeni",register:"Galmaa’i",newAcc:"Akaawuntii haaraa",haveAcc:"Akaawuntii qaba",email:"Imeelii",pass:"Jecha darbii",logout:"Ba’i",
+authErr:"Imeelii yookaan jecha darbii dogoggora",dupe:"Imeeliin kun duraan galmaa’eera",weak:"Jechi darbii yoo xiqqaate arfii 6 haa ta’u",
+shopName:"Maqaa suuqii",bio:"Waa’ee suuqii",avatar:"Suuraa piroofayilii",save:"Olkaa’i",saved:"Olkaa’ameera",myShop:"Suuqa koo ilaali",
+paidUntil:"Kaffaltiin hanga",notPaid:"Ammallee hin kaffalle",payBtn:"Kaffali / Haaromsi",admin:"Bulchiinsa (kaffaltiiwwan)",pending:"Kaffaltiiwwan eegaa jiran",
+approve:"Fudhadhu",reject:"Didi",noPending:"Kaffaltiin eegaa jiru hin jiru.",approved:"Fudhatameera",
+inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"Itti fufuuf seeni",
+theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
+msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
+postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu"};
 let lang='am',theme='green',qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
-const t=k=>(L[k]||[k,k])[lang==='en'?1:0];
-const cn=c=>lang==='en'?(CE[c]||c):c,yn=c=>lang==='en'?(CY[c]||c):c;
+const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
+const cn=c=>lang==='en'?(CE[c]||c):lang==='om'?(CO[c]||c):c,yn=c=>lang==='en'?(CY[c]||c):lang==='om'?(CYO[c]||c):c;
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const fmt=n=>Number(n).toLocaleString('en-US')+' '+t('birr');
 const today=()=>new Date().toISOString().slice(0,10);
@@ -321,7 +347,7 @@ $('preview').onclick=e=>{const m=e.target.closest('img');if(m)openLB(pics,[...$(
 
 /* ----- ቅንብር ----- */
 function renderSet(){$('v-set').innerHTML=`<h2>${t('sets')}</h2><h3>${t('theme')}</h3><div class="sw">${TH.map(([k,c])=>`<button class="${k===theme?'on':''}" data-th="${k}" style="background:${c}" aria-label="${k}"></button>`).join('')}</div>
- <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button></div>`}
+ <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button><button class="btn ${lang==='om'?'alt':'line'}" data-lg="om">Afaan Oromoo</button></div>`}
 $('v-set').onclick=e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.th){theme=b.dataset.th;setStore('theme',theme);applyTheme();renderSet()}
  if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}};
