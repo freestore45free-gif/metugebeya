@@ -66,6 +66,38 @@ nav button{flex:1;border:0;background:none;padding:8px 2px 6px;font-size:.7rem;c
 nav button span{font-size:1.35rem;line-height:1}nav button.on{color:var(--green);font-weight:700}
 nav .plus span{background:var(--gold);color:#2a2100;border-radius:50%;width:46px;height:46px;display:grid;place-items:center;margin-top:-20px;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;display:none;z-index:9;max-width:90vw}
+
+main{padding-bottom:120px}.toast{bottom:100px}
+nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:520px;margin:auto;border:1px solid var(--line);border-radius:28px;padding:6px;gap:2px;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+nav button{border-radius:22px;padding:8px 2px;font-size:.66rem;transition:background .15s}
+nav button svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{background:var(--tint);color:var(--green)}
+nav .plus{flex:0 0 74px;background:none!important}
+nav .plus span{width:52px;height:52px;margin-top:-24px;background:var(--gold);color:#2a2100;border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+nav .plus svg{width:26px;height:26px;stroke-width:2.6}
+.pick{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;cursor:pointer;text-align:left;font-weight:400}
+#cityP{width:auto;border-radius:99px;margin-bottom:10px;padding:7px 14px}
+dialog#sheet{width:100vw;max-width:none;margin:auto 0 0 0;border-radius:24px 24px 0 0;padding:6px 0 18px;max-height:78vh}
+.sh-h{padding:14px 22px 8px;font-weight:800;font-size:1.1rem}
+.opt{display:flex;justify-content:space-between;align-items:center;width:100%;padding:15px 22px;border:0;background:none;font-size:1rem;cursor:pointer;text-align:left}
+.opt i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none}
+.opt.on{background:var(--tint);font-weight:700}.opt.on i{border-color:var(--green);background:radial-gradient(var(--green) 0 45%,transparent 50%)}
+dialog#lb{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border-radius:0;background:#000;overflow:hidden}
+#lbBody{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;height:100%}
+#lbBody>div{flex:0 0 100vw;height:100%;scroll-snap-align:center;display:grid;place-items:center}
+#lbBody img{width:100vw;height:100dvh;object-fit:contain;touch-action:pan-x pinch-zoom}
+#lbX{position:absolute;top:14px;right:14px;z-index:2;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:1.4rem;cursor:pointer}
+#lbN{position:absolute;top:22px;left:18px;z-index:2;color:#fff;font-weight:600}
+.slider img{max-height:68vh;cursor:zoom-in}.pics img{width:96px;height:96px;cursor:zoom-in}
+.avedit{position:relative;cursor:pointer;display:inline-block;flex:none}
+.cam{position:absolute;right:-2px;bottom:-2px;background:var(--gold);border-radius:50%;width:28px;height:28px;display:grid;place-items:center;font-size:.85rem;border:2px solid var(--bg)}
+.conv{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px;margin-bottom:8px;cursor:pointer}
+.chatbar{display:flex;gap:10px;align-items:center;position:sticky;top:58px;z-index:3;background:var(--bg);padding:8px 0}
+.chat{display:flex;flex-direction:column;gap:6px;padding:8px 0}
+.bub{max-width:80%;padding:8px 12px;border-radius:16px 16px 16px 4px;background:var(--card);border:1px solid var(--line);align-self:flex-start;white-space:pre-wrap;word-break:break-word}
+.bub.me{align-self:flex-end;background:var(--green);color:#fff;border-radius:16px 16px 4px 16px;border-color:transparent}
+.bub small{display:block;font-size:.65rem;opacity:.7;margin-top:2px}
+.cform{position:sticky;bottom:96px;display:flex;gap:8px;background:var(--bg);padding:8px 0}.cform input{flex:1;border-radius:99px;padding:11px 16px}
 </style>
 </head>
 <body>
@@ -83,11 +115,11 @@ nav .plus span{background:var(--gold);color:#2a2100;border-radius:50%;width:46px
  <section id="v-shop" hidden></section>
 </main>
 <nav id="nav">
- <button data-v="home"><span>🏠</span><em data-i="home" style="font-style:normal"></em></button>
- <button data-v="msg"><span>✉️</span><em data-i="msgs" style="font-style:normal"></em></button>
- <button class="plus" data-v="post"><span>＋</span><em data-i="post" style="font-style:normal"></em></button>
- <button data-v="acc"><span>👤</span><em data-i="acct" style="font-style:normal"></em></button>
- <button data-v="set"><span>⚙️</span><em data-i="sets" style="font-style:normal"></em></button>
+ <button data-v="home"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></span><em data-i="home" style="font-style:normal"></em></button>
+ <button data-v="msg"><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg></span><em data-i="msgs" style="font-style:normal"></em></button>
+ <button class="plus" data-v="post"><span><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><em data-i="post" style="font-style:normal"></em></button>
+ <button data-v="acc"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><em data-i="acct" style="font-style:normal"></em></button>
+ <button data-v="set"><span><svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><em data-i="sets" style="font-style:normal"></em></button>
 </nav>
 
 <dialog id="view"><div class="in" id="viewBody"></div></dialog>
@@ -114,6 +146,8 @@ nav .plus span{background:var(--gold);color:#2a2100;border-radius:50%;width:46px
 </div></dialog>
 
 <dialog id="admin"><div class="in"><h2 data-i="pending"></h2><div id="adList" class="in" style="padding:0"></div><button class="btn line" id="adClose" data-i="close"></button></div></dialog>
+<dialog id="sheet"><div class="sh-h" id="shT"></div><div id="shO"></div></dialog>
+<dialog id="lb"><button id="lbX" aria-label="close">✕</button><div id="lbN"></div><div id="lbBody"></div></dialog>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -152,9 +186,9 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller']
 };
-let lang='am',theme='green',me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
+let lang='am',theme='green',qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>(L[k]||[k,k])[lang==='en'?1:0];
 const cn=c=>lang==='en'?(CE[c]||c):c,yn=c=>lang==='en'?(CY[c]||c):c;
@@ -173,7 +207,7 @@ function fill(){const cv=$('city').value,pc=$('pCat').value,pt=$('pCity').value;
  $('cats').innerHTML=CATS.map(c=>`<button class="chip ${c===cat?'on':''}" data-c="${c}">${cn(c)}</button>`).join('');
  const o=(a,f)=>a.map(c=>`<option value="${c}">${f(c)}</option>`).join('');
  $('city').innerHTML=o(CITIES,yn);$('pCat').innerHTML=o(CATS.slice(1),cn);$('pCity').innerHTML=o(CITIES.slice(1),yn);
- if(cv)$('city').value=cv;if(pc)$('pCat').value=pc;if(pt)$('pCity').value=pt}
+ if(cv)$('city').value=cv;if(pc)$('pCat').value=pc;if(pt)$('pCity').value=pt;refreshPicks()}
 
 /* ----- ገጾች መቀያየር ----- */
 let shopArg=null;
@@ -186,11 +220,11 @@ $('nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.dataset.v
 
 /* ----- መግቢያ እና ፕሮፋይል ----- */
 auth.onAuthStateChanged(async u=>{
- me=u;unsubs.forEach(f=>f());unsubs=[];prof=null;shop=null;
+ me=u;unsubs.forEach(f=>f());unsubs=[];prof=null;shop=null;qm=[{},{},{}];openT=null;
  if(u){const r=db.collection('users').doc(u.uid);
   if(!(await r.get()).exists)await r.set({email:u.email,paidUntil:0,photosDay:today(),photosCount:0});
   unsubs.push(r.onSnapshot(d=>{prof=d.data();if(view==='acc')renderAcc()}));
-  unsubs.push(db.collection('shops').doc(u.uid).onSnapshot(d=>{shop=d.exists?d.data():null;if(view==='acc')renderAcc()}));}
+  unsubs.push(db.collection('shops').doc(u.uid).onSnapshot(d=>{shop=d.exists?d.data():null;if(view==='acc')renderAcc()}));listenMsgs();}
  if(view==='acc'||view==='msg')go(view)});
 async function doAuth(){const e=$('aEmail').value.trim(),p=$('aPass').value;
  try{reg?await auth.createUserWithEmailAndPassword(e,p):await auth.signInWithEmailAndPassword(e,p)}
@@ -199,13 +233,12 @@ function renderAcc(){const el=$('v-acc');
  if(!me){el.innerHTML=`<h2>${t(reg?'register':'login')}</h2><div class="in" style="padding:0"><label>${t('email')}<input id="aEmail" type="email" autocomplete="email"></label><label>${t('pass')}<input id="aPass" type="password"></label><button class="btn alt" id="authGo">${t(reg?'register':'login')}</button><button class="btn line" id="authToggle">${t(reg?'haveAcc':'newAcc')}</button></div>`;
   $('authGo').onclick=doAuth;$('authToggle').onclick=()=>{reg=!reg;renderAcc()};return}
  const nm=(shop&&shop.name)||me.email.split('@')[0];newAv=null;
- el.innerHTML=`<div class="prof">${av(shop&&shop.avatar,nm,72)}<div><b style="font-size:1.1rem">${esc(nm)}</b><div class="meta">${esc(me.email)}</div><div class="meta">${paid()?t('paidUntil')+' '+new Date(prof.paidUntil).toLocaleDateString():t('notPaid')}</div></div></div>
+ el.innerHTML=`<div class="prof"><label class="avedit">${av(shop&&shop.avatar,nm,76)}<span class="cam">📷</span><input id="sAv" type="file" accept="image/*" hidden></label><div><b style="font-size:1.1rem">${esc(nm)}</b><div class="meta">${esc(me.email)}</div><div class="meta">${paid()?t('paidUntil')+' '+new Date(prof.paidUntil).toLocaleDateString():t('notPaid')}</div></div></div>
  <div class="in" style="padding:0"><label>${t('shopName')}<input id="sName" maxlength="40" value="${esc((shop&&shop.name)||'')}"></label>
  <label>${t('bio')}<textarea id="sBio" maxlength="200">${esc((shop&&shop.bio)||'')}</textarea></label>
- <label>${t('avatar')}<input id="sAv" type="file" accept="image/*"></label>
  <div class="row"><button class="btn alt" id="sSave">${t('save')}</button><button class="btn line" id="sView">${t('myShop')}</button></div>
  <button class="btn" id="aPay">${t('payBtn')}</button>${isAdmin()?`<button class="btn line" id="aAdm">${t('admin')}</button>`:''}<button class="btn line" id="aOut">${t('logout')}</button></div>`;
- $('sAv').onchange=async e=>{if(e.target.files[0])newAv=await shrink(e.target.files[0],240,.7)};
+ $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;const a=await shrink(f,240,.7);await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a});toast(t('saved'))};
  $('sSave').onclick=async()=>{await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:newAv!==null?newAv:((shop&&shop.avatar)||'')});toast(t('saved'))};
  $('sView').onclick=()=>go('shop',me.uid);$('aPay').onclick=()=>$('pay').showModal();
  if(isAdmin())$('aAdm').onclick=()=>{loadPay();$('admin').showModal()};
@@ -230,12 +263,13 @@ function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  `<button class="btn line" id="vClose">${t('close')}</button>`;
  $('view').showModal();$('vClose').onclick=()=>$('view').close();
  const sl=$('sl'),dots=$('dots');if(sl&&dots)sl.onscroll=()=>{const k=Math.round(sl.scrollLeft/sl.clientWidth);[...dots.children].forEach((d,x)=>d.classList.toggle('on',x===k))};
+ if(sl)sl.onclick=e=>{const m=e.target.closest('img');if(m)openLB(im,[...sl.querySelectorAll('img')].indexOf(m))};
  db.collection('shops').doc(i.uid).get().then(d=>{if(d.exists&&d.data().avatar&&$('sAvt'))$('sAvt').innerHTML=av(d.data().avatar,i.shop,36)}).catch(()=>{});
  $('goShop').onclick=()=>{$('view').close();go('shop',i.uid)};
  if(own){$('vSold').onclick=async()=>{await db.collection('listings').doc(i.id).update({sold:!i.sold});$('view').close()};
   $('vDel').onclick=async()=>{if(confirm(t('confirmDel'))){await db.collection('listings').doc(i.id).delete();$('view').close();if(view==='shop')loadShop(i.uid)}}}
  else{$('vSend').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}const x=$('msg').value.trim();if(!x)return;
-   await db.collection('messages').add({listingId:i.id,listingTitle:i.t,sellerId:i.uid,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,created:Date.now()});toast(t('msgSent'));$('view').close()};
+   await db.collection('messages').add({threadId:i.id+'_'+me.uid,listingId:i.id,listingTitle:i.t,sellerId:i.uid,buyerId:me.uid,sellerName:i.shop||'',buyerName:me.email,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,created:Date.now()});toast(t('msgSent'));$('view').close();go('msg');openT=i.id+'_'+me.uid;renderMsgs()};
   $('vRep').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}await db.collection('reports').add({listingId:i.id,by:me.uid,created:Date.now()});toast(t('repSent'));$('view').close()}}}
 
 /* ----- ሱቅ ገጽ ----- */
@@ -245,13 +279,45 @@ async function loadShop(uid){const el=$('v-shop');el.innerHTML='…';
  el.innerHTML=`<button class="btn line" id="shBack">← ${t('back')}</button><div class="prof" style="margin-top:12px">${av(sh.avatar,nm,76)}<div><b style="font-size:1.2rem">${esc(nm)}</b><p>${esc(sh.bio||'')}</p><div class="meta">${list.length} ${t('listings')}</div></div></div><div class="grid">${cards(list)}</div>`;
  $('shBack').onclick=()=>go('home')}
 
-/* ----- መልእክቶች ----- */
-async function loadMsgs(){const el=$('v-msg'),h=`<h2>${t('msgs')}</h2>`;
- if(!me){el.innerHTML=h+`<p class="note">${t('loginNeed')}</p><button class="btn alt" id="mLog" style="margin-top:8px">${t('login')}</button>`;$('mLog').onclick=()=>go('acc');return}
- el.innerHTML=h+'…';
- const [a,b]=await Promise.all([db.collection('messages').where('sellerId','==',me.uid).get(),db.collection('messages').where('fromId','==',me.uid).get()]);
- const l=[...a.docs.map(d=>({...d.data(),k:'in'})),...b.docs.map(d=>({...d.data(),k:'out'}))].sort((x,y)=>y.created-x.created);
- el.innerHTML=h+(l.length?l.map(m=>`<div class="mrow"><span class="tag">${t(m.k==='in'?'inbox':'sentL')}</span><b>${esc(m.listingTitle)}</b><p>${esc(m.text)}</p>${m.k==='in'?`<div class="meta">${esc(m.fromName)}${m.phone?' · '+esc(m.phone):''}</div>`:''}</div>`).join(''):`<p class="note">${t('noMsg')}</p>`)}
+/* ----- መልእክቶች (ውይይት) ----- */
+function listenMsgs(){['sellerId','buyerId','fromId'].forEach((f,k)=>unsubs.push(db.collection('messages').where(f,'==',me.uid).onSnapshot(s=>{qm[k]={};s.docs.forEach(d=>qm[k][d.id]={id:d.id,...d.data()});if(view==='msg')renderMsgs(true)},()=>{})))}
+function threads(){const all={};qm.forEach(o=>Object.assign(all,o));const T={};
+ Object.values(all).forEach(m=>{const b=m.buyerId||m.fromId,tid=m.threadId||(m.listingId+'_'+b);
+  const th=T[tid]||(T[tid]={tid,lid:m.listingId,title:m.listingTitle,seller:m.sellerId,buyer:b,msgs:[],sName:'',bName:'',phone:''});
+  th.msgs.push(m);if(m.sellerName)th.sName=m.sellerName;
+  if(m.fromId===b){th.bName=m.buyerName||m.fromName||th.bName;if(m.phone)th.phone=m.phone}});
+ const l=Object.values(T);l.forEach(x=>x.msgs.sort((a,b)=>a.created-b.created));
+ return l.sort((a,b)=>b.msgs[b.msgs.length-1].created-a.msgs[a.msgs.length-1].created)}
+const tm=c=>new Date(c).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+const other=th=>me.uid===th.seller?(th.bName||'').split('@')[0]:(th.sName||t('seller'));
+function loadMsgs(){openT=null;renderMsgs()}
+function renderMsgs(live){const el=$('v-msg');
+ if(!me){el.innerHTML=`<h2>${t('msgs')}</h2><p class="note">${t('loginNeed')}</p><button class="btn alt" id="mLog" style="margin-top:8px">${t('login')}</button>`;$('mLog').onclick=()=>go('acc');return}
+ const th=openT&&threads().find(x=>x.tid===openT);
+ if(!th){openT=null;const l=threads();
+  el.innerHTML=`<h2>${t('msgs')}</h2>`+(l.length?l.map(x=>{const m=x.msgs[x.msgs.length-1];return `<button class="conv" data-t="${esc(x.tid)}">${av('',other(x),44)}<div style="min-width:0;flex:1"><b>${esc(x.title)}</b> <span class="meta">· ${esc(other(x))}</span><p class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.fromId===me.uid?'↩ ':''}${esc(m.text)}</p></div></button>`}).join(''):`<p class="note">${t('noMsg')}</p>`);return}
+ const bubs=th.msgs.map(m=>`<div class="bub ${m.fromId===me.uid?'me':''}">${esc(m.text)}<small>${tm(m.created)}</small></div>`).join('');
+ if(live&&$('chat')){$('chat').innerHTML=bubs;scrollTo(0,document.body.scrollHeight);return}
+ el.innerHTML=`<div class="chatbar"><button class="btn line" id="cBack">←</button><div style="flex:1;min-width:0"><b>${esc(th.title)}</b><div class="meta">${esc(other(th))}</div></div>${th.phone&&me.uid===th.seller?`<a class="btn alt" href="tel:${esc(th.phone)}">${t('call')}</a>`:''}</div><div class="chat" id="chat">${bubs}</div><form class="cform" id="cForm"><input id="cIn" autocomplete="off" placeholder="${t('typeMsg')}"><button class="btn alt">${t('send')}</button></form>`;
+ $('cBack').onclick=()=>{openT=null;renderMsgs()};
+ $('cForm').onsubmit=async e=>{e.preventDefault();const x=$('cIn').value.trim();if(!x)return;$('cIn').value='';
+  await db.collection('messages').add({threadId:th.tid,listingId:th.lid,listingTitle:th.title,sellerId:th.seller,buyerId:th.buyer,sellerName:me.uid===th.seller?((shop&&shop.name)||me.email.split('@')[0]):th.sName,buyerName:th.bName,fromId:me.uid,fromName:me.email,text:x,created:Date.now()})};
+ scrollTo(0,document.body.scrollHeight)}
+$('v-msg').onclick=e=>{const c=e.target.closest('.conv');if(c){openT=c.dataset.t;renderMsgs()}};
+
+/* ----- ዘመናዊ ምርጫ (bottom sheet) እና ሙሉ ማያ ፎቶ ----- */
+const CH='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+function refreshPicks(){[['city','city'],['pCat','cat'],['pCity','city']].forEach(([id,k])=>{const s=$(id);let b=$(id+'P');
+ if(!b){b=document.createElement('button');b.type='button';b.id=id+'P';b.className='pick';s.after(b);s.style.display='none';b.onclick=()=>openSheet(s,k)}
+ b.innerHTML=`<span>${esc(s.options[s.selectedIndex]?s.options[s.selectedIndex].text:'')}</span>${CH}`})}
+function openSheet(s,k){const sh=$('sheet');$('shT').textContent=t(k);
+ $('shO').innerHTML=[...s.options].map(o=>`<button type="button" class="opt ${o.value===s.value?'on':''}" data-v="${esc(o.value)}"><span>${esc(o.text)}</span><i></i></button>`).join('');
+ $('shO').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;s.value=b.dataset.v;s.dispatchEvent(new Event('change'));refreshPicks();sh.close()};sh.showModal()}
+$('sheet').onclick=e=>{if(e.target===$('sheet'))$('sheet').close()};
+function openLB(arr,k){$('lbBody').innerHTML=arr.map(s=>`<div><img src="${s}" alt=""></div>`).join('');$('lbN').textContent=arr.length>1?(k+1)+' / '+arr.length:'';$('lb').showModal();requestAnimationFrame(()=>{$('lbBody').scrollLeft=k*$('lbBody').clientWidth})}
+$('lbBody').onscroll=()=>{const b=$('lbBody'),n=b.children.length;if(n>1)$('lbN').textContent=(Math.round(b.scrollLeft/b.clientWidth)+1)+' / '+n};
+$('lbX').onclick=()=>$('lb').close();
+$('preview').onclick=e=>{const m=e.target.closest('img');if(m)openLB(pics,[...$('preview').children].indexOf(m))};
 
 /* ----- ቅንብር ----- */
 function renderSet(){$('v-set').innerHTML=`<h2>${t('sets')}</h2><h3>${t('theme')}</h3><div class="sw">${TH.map(([k,c])=>`<button class="${k===theme?'on':''}" data-th="${k}" style="background:${c}" aria-label="${k}"></button>`).join('')}</div>
@@ -262,7 +328,7 @@ $('v-set').onclick=e=>{const b=e.target.closest('button');if(!b)return;
 
 /* ----- ለጥፍ እና ክፍያ ----- */
 function postClick(){if(!me){go('acc');return toast(t('loginNeed'))}if(!paid())return $('pay').showModal();
- pics=[];$('preview').innerHTML='';$('postForm').reset();note();$('post').showModal()}
+ pics=[];$('preview').innerHTML='';$('postForm').reset();refreshPicks();note();$('post').showModal()}
 $('cancelPost').onclick=()=>$('post').close();
 const note=()=>$('picNote').textContent=t('picNote').replace('{a}',used()+pics.length).replace('{b}',10);
 Q('.plan').forEach(p=>p.onclick=()=>{Q('.plan').forEach(x=>x.classList.remove('on'));p.classList.add('on');plan=+p.dataset.p});
