@@ -138,6 +138,11 @@ nav button{position:relative}
 dialog#admin{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;border-radius:0}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{background:var(--tint);border-radius:10px;padding:8px;text-align:center;font-size:.75rem}.stat b{display:block;font-size:1.3rem;color:var(--green)}
+[hidden]{display:none!important}
+.frow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.frow #cityP{margin-bottom:0}
+#fBtn{width:auto;border-radius:99px;padding:7px 14px;gap:6px;justify-content:flex-start}
+#fBtn svg,#cityP svg{flex:none}
+dialog#info{max-height:92vh}
 </style>
 </head>
 <body>
@@ -146,8 +151,9 @@ dialog#admin{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;b
  <section id="v-home">
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
   <div class="filters" id="cats"></div>
-  <select class="city" id="city"></select>
+  <div class="frow"><select class="city" id="city"></select><button type="button" id="fBtn" class="pick"></button></div>
   <div class="grid" id="grid"></div>
+  <div class="row" style="margin-top:14px"><button class="btn line" id="moreBtn" hidden></button></div>
  </section>
  <section id="v-msg" hidden></section>
  <section id="v-acc" hidden></section>
@@ -187,6 +193,12 @@ dialog#admin{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;b
 </div></dialog>
 
 <dialog id="admin"><div class="in"><h2 data-i="admin"></h2><div class="stats" id="adStats"></div><div class="row" id="adTabs"><button class="btn alt" data-k="pay" data-i="tPay"></button><button class="btn line" data-k="sel" data-i="tSel"></button><button class="btn line" data-k="rep" data-i="tRep"></button></div><div id="adList" class="in" style="padding:0"></div><button class="btn line" id="adClose" data-i="close"></button></div></dialog>
+<dialog id="fdlg"><div class="in"><h2 data-i="filter"></h2>
+ <div class="row"><label><span data-i="pmin"></span><input id="fMin" type="number" min="0" inputmode="numeric"></label><label><span data-i="pmax"></span><input id="fMax" type="number" min="0" inputmode="numeric"></label></div>
+ <div style="font-size:.85rem;font-weight:600" data-i="sortL"></div>
+ <div class="row"><button type="button" class="chip" data-s="new" data-i="sNew"></button><button type="button" class="chip" data-s="low" data-i="sLow"></button><button type="button" class="chip" data-s="high" data-i="sHigh"></button></div>
+ <div class="row"><button type="button" class="btn line" id="fReset" data-i="reset"></button><button type="button" class="btn alt" id="fApply" data-i="apply"></button></div></div></dialog>
+<dialog id="info"><div class="in" id="infoBody"></div></dialog>
 <dialog id="sheet"><div class="sh-h" id="shT"></div><div id="shO"></div></dialog>
 <dialog id="lb"><button id="lbX" aria-label="close">✕</button><div id="lbN"></div><div id="lbBody"></div></dialog>
 <div class="toast" id="toast" role="status"></div>
@@ -227,7 +239,7 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed'],forgot:['የይለፍ ቃል ረስቻለሁ','Forgot password'],resetSent:['የይለፍ ቃል ማስተካከያ ሊንክ ወደ ኢሜይልዎ ተልኳል (Spam ማህደርንም ይመልከቱ)','Reset link sent to your email (check Spam too)'],enterEmail:['መጀመሪያ ኢሜይልዎን ያስገቡ','Enter your email first'],expSoon:['ኪራይዎ በ{n} ቀን ውስጥ ያበቃል፤ ማስታወቂያዎችዎ እንዳይደበቁ ያድሱ።','Your rent ends in {n} day(s); renew so your listings stay visible.'],expNow:['ኪራይዎ አልቋል፤ ማስታወቂያዎችዎ ተደብቀዋል። ለማደስ "ክፍያ / ማደስ" ይጫኑ።','Your rent has expired and your listings are hidden. Tap "Pay / Renew".'],expiredB:['ጊዜው አልፏል','Expired'],blockedMsg:['አካውንትዎ ታግዷል። አስተዳዳሪውን ያነጋግሩ።','Your account is blocked. Contact the admin.'],tPay:['ክፍያዎች','Payments'],tSel:['ሻጮች','Sellers'],tRep:['ሪፖርቶች','Reports'],stSellers:['ሻጮች','Sellers'],stActive:['ንቁ','Active'],stIncome:['ገቢ (ብር)','Income (Birr)'],expiredS:['አልቋል','Expired'],never:['አልከፈለም','Never paid'],daysLeft:['{n} ቀን ቀርቷል','{n} days left'],ext30:['+30 ቀን','+30 days'],block:['አግድ','Block'],unblock:['ፍቀድ','Unblock'],blockedL:['ታግዷል','Blocked'],noReports:['ሪፖርት የለም።','No reports.'],reportsN:['{n} ሪፖርት','{n} report(s)'],view:['እይ','View'],delL:['ማስታወቂያ ሰርዝ','Delete listing'],dismiss:['ሪፖርት አጥፋ','Dismiss']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed'],forgot:['የይለፍ ቃል ረስቻለሁ','Forgot password'],resetSent:['የይለፍ ቃል ማስተካከያ ሊንክ ወደ ኢሜይልዎ ተልኳል (Spam ማህደርንም ይመልከቱ)','Reset link sent to your email (check Spam too)'],enterEmail:['መጀመሪያ ኢሜይልዎን ያስገቡ','Enter your email first'],expSoon:['ኪራይዎ በ{n} ቀን ውስጥ ያበቃል፤ ማስታወቂያዎችዎ እንዳይደበቁ ያድሱ።','Your rent ends in {n} day(s); renew so your listings stay visible.'],expNow:['ኪራይዎ አልቋል፤ ማስታወቂያዎችዎ ተደብቀዋል። ለማደስ "ክፍያ / ማደስ" ይጫኑ።','Your rent has expired and your listings are hidden. Tap "Pay / Renew".'],expiredB:['ጊዜው አልፏል','Expired'],blockedMsg:['አካውንትዎ ታግዷል። አስተዳዳሪውን ያነጋግሩ።','Your account is blocked. Contact the admin.'],tPay:['ክፍያዎች','Payments'],tSel:['ሻጮች','Sellers'],tRep:['ሪፖርቶች','Reports'],stSellers:['ሻጮች','Sellers'],stActive:['ንቁ','Active'],stIncome:['ገቢ (ብር)','Income (Birr)'],expiredS:['አልቋል','Expired'],never:['አልከፈለም','Never paid'],daysLeft:['{n} ቀን ቀርቷል','{n} days left'],ext30:['+30 ቀን','+30 days'],block:['አግድ','Block'],unblock:['ፍቀድ','Unblock'],blockedL:['ታግዷል','Blocked'],noReports:['ሪፖርት የለም።','No reports.'],reportsN:['{n} ሪፖርት','{n} report(s)'],view:['እይ','View'],delL:['ማስታወቂያ ሰርዝ','Delete listing'],dismiss:['ሪፖርት አጥፋ','Dismiss'],more:['ተጨማሪ አሳይ','Show more'],filter:['ማጣሪያ','Filter'],pmin:['ዝቅተኛ ዋጋ (ብር)','Min price (Birr)'],pmax:['ከፍተኛ ዋጋ (ብር)','Max price (Birr)'],sortL:['ቅደም ተከተል','Sort'],sNew:['አዲስ መጀመሪያ','Newest'],sLow:['ዋጋ ዝቅተኛ → ከፍተኛ','Price: low to high'],sHigh:['ዋጋ ከፍተኛ → ዝቅተኛ','Price: high to low'],apply:['ተግብር','Apply'],reset:['አጽዳ','Reset'],share:['አጋራ','Share'],copied:['ሊንክ ተቀድቷል','Link copied'],aboutBtn:['ስለ እኛ · ደንብ · ማነጋገሪያ','About · Terms · Contact'],aboutT:['ስለ መቱ ገበያ','About Metu Gebeya'],aboutP:['መቱ ገበያ በመቱና አካባቢዋ ሰዎች እንዲገዙና እንዲሸጡ የሚያገናኝ የኦንላይን ገበያ ነው። ሻጮች የሱቅ ኪራይ ከፍለው ዕቃቸውን በፎቶ ይለጥፋሉ፤ ገዢዎች በነጻ ተመልክተው ሻጩን በቀጥታ ያገኛሉ።','Metu Gebeya is an online market connecting buyers and sellers in Metu and nearby areas. Sellers pay a shop rent to post items with photos; buyers browse for free and contact the seller directly.'],termsT:['ደንብና ሁኔታዎች','Terms & conditions'],terms1:['ሻጮች እውነተኛ መረጃና የራሳቸውን ዕቃ ፎቶ ብቻ መለጠፍ አለባቸው።','Sellers must post truthful information and photos of their own items.'],terms2:['ሕገወጥ፣ ሐሰተኛ ወይም የተሰረቀ ዕቃ መለጠፍ ክልክል ነው፤ ጥሰት ሲገኝ ማስታወቂያው ይወገዳል፣ አካውንቱም ሊታገድ ይችላል።','Illegal, counterfeit or stolen items are forbidden; violations lead to removal and possible account blocking.'],terms3:['መቱ ገበያ ገዢና ሻጭን የሚያገናኝ መድረክ ነው፤ ግብይቱ በሁለቱ መካከል ነው። ከመክፈልዎ በፊት እቃውን በአካል ይመልከቱ፤ አስቀድሞ ገንዘብ ከመላክ ይጠንቀቁ።','Metu Gebeya only connects buyers and sellers; the deal is between them. Inspect items in person before paying and avoid sending money in advance.'],terms4:['የሱቅ ኪራይ ከተረጋገጠ በኋላ ለተከፈለበት ጊዜ ማስታወቂያ መለጠፍ ይቻላል፤ ኪራይ ሲያልቅ ማስታወቂያዎች ይደበቃሉ፣ ሲታደስ ይመለሳሉ።','After the shop rent is verified you can post for the paid period; when it expires listings are hidden and return once renewed.'],contactT:['አስተዳዳሪውን ያነጋግሩ','Contact the admin']
 };
 const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
 const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
@@ -252,8 +264,8 @@ inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"It
 theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
 msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
 postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
-typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne",forgot:"Jecha darbii dagatte",resetSent:"Hidhaan jecha darbii deebisanii qindeessuu imeelii keetti ergameera (Spam illee ilaali)",enterEmail:"Dura imeelii kee galchi",expSoon:"Kiraan kee guyyaa {n} keessatti xumurama; beeksisni kee akka hin dhokanne haaromsi.",expNow:"Kiraan kee xumurameera; beeksisni kee dhokateera. “Kaffali / Haaromsi” tuqi.",expiredB:"Yeroon darbeera",blockedMsg:"Akaawuntiin kee dhorkameera. Bulchaa quunnami."};
-let lang='am',theme='green',favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne",forgot:"Jecha darbii dagatte",resetSent:"Hidhaan jecha darbii deebisanii qindeessuu imeelii keetti ergameera (Spam illee ilaali)",enterEmail:"Dura imeelii kee galchi",expSoon:"Kiraan kee guyyaa {n} keessatti xumurama; beeksisni kee akka hin dhokanne haaromsi.",expNow:"Kiraan kee xumurameera; beeksisni kee dhokateera. “Kaffali / Haaromsi” tuqi.",expiredB:"Yeroon darbeera",blockedMsg:"Akaawuntiin kee dhorkameera. Bulchaa quunnami.",more:"Dabalataa agarsiisi",filter:"Calallii",pmin:"Gatii xiqqaa (Birrii)",pmax:"Gatii guddaa (Birrii)",sortL:"Tartiiba",sNew:"Haaraan duraa",sLow:"Gatii: gadi aanaa → ol aanaa",sHigh:"Gatii: ol aanaa → gadi aanaa",apply:"Hojiirra oolchi",reset:"Haqi",share:"Qoodi",copied:"Hidhaan koopii ta’eera"};
+let lang='am',theme='green',lim=24,fMin=0,fMax=0,fSort='new',unsubL=null,moreAvail=false,favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
 const cn=c=>lang==='en'?(CE[c]||c):lang==='om'?(CO[c]||c):c,yn=c=>lang==='en'?(CY[c]||c):lang==='om'?(CYO[c]||c):c;
@@ -316,10 +328,14 @@ function renderAcc(){const el=$('v-acc');
  $('aOut').onclick=()=>auth.signOut()}
 
 /* ----- ዋና ገጽ ----- */
-db.collection('listings').orderBy('created','desc').limit(80).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));if(view==='home')render()});
+function listenL(){if(unsubL)unsubL();unsubL=db.collection('listings').orderBy('created','desc').limit(lim).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));moreAvail=s.docs.length>=lim;if(view==='home')render()})}listenL();
 function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
-function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value;
- $('grid').innerHTML=cards(items.filter(i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))))}
+function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value,act=q||fMin||fMax||fSort!=='new';
+ if(act&&lim<100){lim=100;listenL()}
+ let l=items.filter(i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax));
+ if(fSort==='low')l=[...l].sort((x,y)=>x.p-y.p);if(fSort==='high')l=[...l].sort((x,y)=>y.p-x.p);
+ $('grid').innerHTML=cards(l);$('moreBtn').hidden=!moreAvail;$('moreBtn').textContent=t('more');
+ $('fBtn').innerHTML=FI+'<span>'+t('filter')+((fMin||fMax||fSort!=='new')?' •':'')+'</span>'}
 $('cats').onclick=e=>{const b=e.target.closest('.chip');if(b){cat=b.dataset.c;fill();render()}};
 $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
@@ -327,12 +343,12 @@ document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${cl(s,1000)}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b> ›</button>
- <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p>
+ <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p><div class="row">${shareBtns(i)}</div>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
  (own?`<div class="row"><button class="btn line" id="vSold">${t(i.sold?'unsold':'markSold')}</button><button class="btn red" id="vDel">${t('del')}</button></div>`:
  `<label>${t('msgSeller')}<textarea id="msg" placeholder="${t('msgPh')}"></textarea></label><label>${t('yourPhone')}<input id="msgPh" type="tel"></label><div class="row" style="align-items:center"><label class="btn line" for="msgImg" style="margin:0">📷 ${t('addPhoto')}</label><input id="msgImg" type="file" accept="image/*" hidden><span id="msgPrev"></span></div><div class="row"><button class="btn alt" id="vSend">${t('send')}</button><button class="btn red" id="vRep">${t('report')}</button></div>`)+
  `<button class="btn line" id="vClose">${t('close')}</button>`;
- $('view').showModal();$('vClose').onclick=$('vBack').onclick=()=>$('view').close();$('vFav').onclick=()=>toggleFav(i.id);
+ $('view').showModal();$('vClose').onclick=$('vBack').onclick=()=>$('view').close();$('vFav').onclick=()=>toggleFav(i.id);$('vCopy').onclick=()=>{const u=shareUrl(i);(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast(t('copied'))).catch(()=>prompt(t('share'),u))};
  const sl=$('sl'),dots=$('dots');if(sl&&dots)sl.onscroll=()=>{const k=Math.round(sl.scrollLeft/sl.clientWidth);[...dots.children].forEach((d,x)=>d.classList.toggle('on',x===k))};
  if(sl)sl.onclick=e=>{const m=e.target.closest('img');if(m)openLB(im,[...sl.querySelectorAll('img')].indexOf(m))};
  if($('zoomBtn'))$('zoomBtn').onclick=()=>openLB(im,Math.round(sl.scrollLeft/sl.clientWidth));
@@ -399,10 +415,10 @@ $('preview').onclick=e=>{const m=e.target.closest('img');if(m)openLB(pics,[...$(
 
 /* ----- ቅንብር ----- */
 function renderSet(){$('v-set').innerHTML=`<h2>${t('sets')}</h2><h3>${t('theme')}</h3><div class="sw">${TH.map(([k,c])=>`<button class="${k===theme?'on':''}" data-th="${k}" style="background:${c}" aria-label="${k}"></button>`).join('')}</div>
- <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button><button class="btn ${lang==='om'?'alt':'line'}" data-lg="om">Afaan Oromoo</button></div>`}
+ <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button><button class="btn ${lang==='om'?'alt':'line'}" data-lg="om">Afaan Oromoo</button></div><h3>${t('aboutT')}</h3><button class="btn line" id="aboutBtn">${t('aboutBtn')}</button>`}
 $('v-set').onclick=e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.th){theme=b.dataset.th;setStore('theme',theme);applyTheme();renderSet()}
- if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}};
+ if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}if(b.id==='aboutBtn')openInfo()};
 
 /* ----- ለጥፍ እና ክፍያ ----- */
 function postClick(){if(!me){go('acc');return toast(t('loginNeed'))}if(prof&&prof.blocked)return toast(t('blockedMsg'));if(!paid())return $('pay').showModal();
@@ -493,6 +509,23 @@ async function adReports(){const s=await db.collection('reports').get(),by={};
   if(x.vw)openItem(cache[x.vw]);
   if(x.dl&&confirm(t('delL')+'?')){await db.collection('listings').doc(x.dl).delete();await clear(x.dl);adReports()}
   if(x.ds){await clear(x.ds);adReports()}}}
+
+
+/* ----- ማጣሪያ፣ ተጨማሪ አሳይ፣ ማጋራት፣ ስለ እኛ ----- */
+const FI='<svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>';
+const CONTACT={tg:'Lij_Rafi',phone:'0945942851'}; // ቴሌግራም ተጠቃሚ ስምዎን እዚህ ይጻፉ፣ ለምሳሌ tg:'metugebeya' (ያለ @)
+$('moreBtn').onclick=()=>{lim+=24;listenL()};
+$('fBtn').onclick=()=>{$('fMin').value=fMin||'';$('fMax').value=fMax||'';Q('#fdlg [data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s===fSort));$('fdlg').showModal()};
+$('fdlg').onclick=e=>{const b=e.target.closest('[data-s]');if(b){fSort=b.dataset.s;Q('#fdlg [data-s]').forEach(x=>x.classList.toggle('on',x===b))}if(e.target===$('fdlg'))$('fdlg').close()};
+$('fApply').onclick=()=>{fMin=+$('fMin').value||0;fMax=+$('fMax').value||0;$('fdlg').close();render()};
+$('fReset').onclick=()=>{fMin=0;fMax=0;fSort='new';$('fdlg').close();render()};
+const shareUrl=i=>location.origin+location.pathname+'?l='+i.id;
+function shareBtns(i){const u=shareUrl(i),tx=i.t+' - '+fmt(i.p);
+ return `<a class="btn line" href="https://t.me/share/url?url=${encodeURIComponent(u)}&text=${encodeURIComponent(tx)}">${t('share')}: Telegram</a><a class="btn line" href="https://wa.me/?text=${encodeURIComponent(tx+' '+u)}">WhatsApp</a><button type="button" class="btn line" id="vCopy">🔗</button>`}
+function openInfo(){$('infoBody').innerHTML=`<h2>${t('aboutT')}</h2><p>${t('aboutP')}</p><h3>${t('termsT')}</h3><ul style="padding-left:18px;display:grid;gap:6px"><li>${t('terms1')}</li><li>${t('terms2')}</li><li>${t('terms3')}</li><li>${t('terms4')}</li></ul><h3>${t('contactT')}</h3><div class="row">${CONTACT.phone?`<a class="btn alt" href="tel:${CONTACT.phone}">${t('call')} ${CONTACT.phone}</a>`:''}${CONTACT.tg?`<a class="btn line" href="https://t.me/${CONTACT.tg}">Telegram</a>`:''}</div><button class="btn line" id="infoX">${t('close')}</button>`;
+ $('infoX').onclick=()=>$('info').close();$('info').showModal()}
+const dl=new URLSearchParams(location.search).get('l');
+if(dl)db.collection('listings').doc(dl).get().then(d=>{if(d.exists){cache[d.id]={id:d.id,...d.data()};openItem(cache[d.id])}}).catch(()=>{});
 
 applyTheme();applyLang();
 </script>
