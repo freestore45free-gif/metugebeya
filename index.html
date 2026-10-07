@@ -134,6 +134,10 @@ nav button{position:relative}
 .vtop{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;background:var(--card);padding-bottom:4px}
 .vback{position:static;box-shadow:none}
 .nb{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--red);color:#fff;font-size:.75rem;font-weight:700;display:grid;place-items:center}
+.warn{background:#fff3cd;color:#664d03;border:1px solid #ffe69c;border-radius:10px;padding:8px 10px;margin-top:6px;font-size:.85rem}
+dialog#admin{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;border-radius:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--tint);border-radius:10px;padding:8px;text-align:center;font-size:.75rem}.stat b{display:block;font-size:1.3rem;color:var(--green)}
 </style>
 </head>
 <body>
@@ -182,7 +186,7 @@ nav button{position:relative}
  <div class="row"><button class="btn line" id="payCancel" data-i="back"></button><button class="btn alt" id="paySend" data-i="paySend"></button></div>
 </div></dialog>
 
-<dialog id="admin"><div class="in"><h2 data-i="pending"></h2><div id="adList" class="in" style="padding:0"></div><button class="btn line" id="adClose" data-i="close"></button></div></dialog>
+<dialog id="admin"><div class="in"><h2 data-i="admin"></h2><div class="stats" id="adStats"></div><div class="row" id="adTabs"><button class="btn alt" data-k="pay" data-i="tPay"></button><button class="btn line" data-k="sel" data-i="tSel"></button><button class="btn line" data-k="rep" data-i="tRep"></button></div><div id="adList" class="in" style="padding:0"></div><button class="btn line" id="adClose" data-i="close"></button></div></dialog>
 <dialog id="sheet"><div class="sh-h" id="shT"></div><div id="shO"></div></dialog>
 <dialog id="lb"><button id="lbX" aria-label="close">✕</button><div id="lbN"></div><div id="lbBody"></div></dialog>
 <div class="toast" id="toast" role="status"></div>
@@ -223,7 +227,7 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed'],forgot:['የይለፍ ቃል ረስቻለሁ','Forgot password'],resetSent:['የይለፍ ቃል ማስተካከያ ሊንክ ወደ ኢሜይልዎ ተልኳል (Spam ማህደርንም ይመልከቱ)','Reset link sent to your email (check Spam too)'],enterEmail:['መጀመሪያ ኢሜይልዎን ያስገቡ','Enter your email first'],expSoon:['ኪራይዎ በ{n} ቀን ውስጥ ያበቃል፤ ማስታወቂያዎችዎ እንዳይደበቁ ያድሱ።','Your rent ends in {n} day(s); renew so your listings stay visible.'],expNow:['ኪራይዎ አልቋል፤ ማስታወቂያዎችዎ ተደብቀዋል። ለማደስ "ክፍያ / ማደስ" ይጫኑ።','Your rent has expired and your listings are hidden. Tap "Pay / Renew".'],expiredB:['ጊዜው አልፏል','Expired'],blockedMsg:['አካውንትዎ ታግዷል። አስተዳዳሪውን ያነጋግሩ።','Your account is blocked. Contact the admin.'],tPay:['ክፍያዎች','Payments'],tSel:['ሻጮች','Sellers'],tRep:['ሪፖርቶች','Reports'],stSellers:['ሻጮች','Sellers'],stActive:['ንቁ','Active'],stIncome:['ገቢ (ብር)','Income (Birr)'],expiredS:['አልቋል','Expired'],never:['አልከፈለም','Never paid'],daysLeft:['{n} ቀን ቀርቷል','{n} days left'],ext30:['+30 ቀን','+30 days'],block:['አግድ','Block'],unblock:['ፍቀድ','Unblock'],blockedL:['ታግዷል','Blocked'],noReports:['ሪፖርት የለም።','No reports.'],reportsN:['{n} ሪፖርት','{n} report(s)'],view:['እይ','View'],delL:['ማስታወቂያ ሰርዝ','Delete listing'],dismiss:['ሪፖርት አጥፋ','Dismiss']
 };
 const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
 const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
@@ -248,7 +252,7 @@ inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"It
 theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
 msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
 postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
-typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne"};
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne",forgot:"Jecha darbii dagatte",resetSent:"Hidhaan jecha darbii deebisanii qindeessuu imeelii keetti ergameera (Spam illee ilaali)",enterEmail:"Dura imeelii kee galchi",expSoon:"Kiraan kee guyyaa {n} keessatti xumurama; beeksisni kee akka hin dhokanne haaromsi.",expNow:"Kiraan kee xumurameera; beeksisni kee dhokateera. “Kaffali / Haaromsi” tuqi.",expiredB:"Yeroon darbeera",blockedMsg:"Akaawuntiin kee dhorkameera. Bulchaa quunnami."};
 let lang='am',theme='green',favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
@@ -290,17 +294,17 @@ auth.onAuthStateChanged(async u=>{
  me=u;unsubs.forEach(f=>f());unsubs=[];prof=null;shop=null;favs=new Set();rd={};qm=[{},{},{}];openT=null;
  if(u){const r=db.collection('users').doc(u.uid);
   if(!(await r.get()).exists)await r.set({email:u.email,paidUntil:0,photosDay:today(),photosCount:0});
-  unsubs.push(r.onSnapshot(d=>{prof=d.data();if(view==='acc')renderAcc()}));
+  unsubs.push(r.onSnapshot(d=>{prof=d.data();warnOnce();if(view==='acc')renderAcc()}));
   unsubs.push(db.collection('shops').doc(u.uid).onSnapshot(d=>{shop=d.exists?d.data():null;if(view==='acc')renderAcc()}));loadRd();listenMsgs();unsubs.push(db.collection('favs').doc(u.uid).onSnapshot(d=>{favs=new Set((d.exists&&d.data().ids)||[]);renderHearts();if(view==='fav')renderFav()},()=>{}));}
  renderHearts();updBadge();if(view==='acc'||view==='msg')go(view)});
 async function doAuth(){const e=$('aEmail').value.trim(),p=$('aPass').value;
  try{reg?await auth.createUserWithEmailAndPassword(e,p):await auth.signInWithEmailAndPassword(e,p)}
  catch(x){toast({'auth/email-already-in-use':t('dupe'),'auth/weak-password':t('weak')}[x.code]||t('authErr'))}}
 function renderAcc(){const el=$('v-acc');
- if(!me){el.innerHTML=`<h2>${t(reg?'register':'login')}</h2><div class="in" style="padding:0"><label>${t('email')}<input id="aEmail" type="email" autocomplete="email"></label><label>${t('pass')}<input id="aPass" type="password"></label><button class="btn alt" id="authGo">${t(reg?'register':'login')}</button><button class="btn line" id="authToggle">${t(reg?'haveAcc':'newAcc')}</button></div>`;
-  $('authGo').onclick=doAuth;$('authToggle').onclick=()=>{reg=!reg;renderAcc()};return}
+ if(!me){el.innerHTML=`<h2>${t(reg?'register':'login')}</h2><div class="in" style="padding:0"><label>${t('email')}<input id="aEmail" type="email" autocomplete="email"></label><label>${t('pass')}<input id="aPass" type="password"></label><button class="btn alt" id="authGo">${t(reg?'register':'login')}</button><button class="btn line" id="authToggle">${t(reg?'haveAcc':'newAcc')}</button>${reg?'':`<button type="button" class="btn line" id="forgot">${t('forgot')}</button>`}</div>`;
+  $('authGo').onclick=doAuth;$('authToggle').onclick=()=>{reg=!reg;renderAcc()};if($('forgot'))$('forgot').onclick=doReset;return}
  const nm=(shop&&shop.name)||me.email.split('@')[0];newAv=null;
- el.innerHTML=`<div class="prof"><label class="avedit">${av(shop&&shop.avatar,nm,76)}<span class="cam">📷</span><input id="sAv" type="file" accept="image/*" hidden></label><div><b style="font-size:1.1rem">${esc(nm)}</b><div class="meta">${esc(me.email)}</div><div class="meta">${paid()?t('paidUntil')+' '+new Date(prof.paidUntil).toLocaleDateString():t('notPaid')}</div></div></div>
+ el.innerHTML=`<div class="prof"><label class="avedit">${av(shop&&shop.avatar,nm,76)}<span class="cam">📷</span><input id="sAv" type="file" accept="image/*" hidden></label><div><b style="font-size:1.1rem">${esc(nm)}</b><div class="meta">${esc(me.email)}</div><div class="meta">${paid()?t('paidUntil')+' '+new Date(prof.paidUntil).toLocaleDateString():t('notPaid')}</div>${expBanner()}</div></div>
  <div class="in" style="padding:0"><label>${t('shopName')}<input id="sName" maxlength="40" value="${esc((shop&&shop.name)||'')}"></label>
  <label>${t('bio')}<textarea id="sBio" maxlength="200">${esc((shop&&shop.bio)||'')}</textarea></label>
  <div class="row"><button class="btn alt" id="sSave">${t('save')}</button><button class="btn line" id="sView">${t('myShop')}</button></div>
@@ -308,14 +312,14 @@ function renderAcc(){const el=$('v-acc');
  $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast(t('upl'));let a;try{a=await upImg(await shrink(f,240,.7))}catch(x){return toast(t('upErr')+': '+x.message)}await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a});toast(t('saved'))};
  $('sSave').onclick=async()=>{await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:newAv!==null?newAv:((shop&&shop.avatar)||'')});toast(t('saved'))};
  $('sView').onclick=()=>go('shop',me.uid);$('aPay').onclick=()=>$('pay').showModal();
- if(isAdmin())$('aAdm').onclick=()=>{loadPay();$('admin').showModal()};
+ if(isAdmin())$('aAdm').onclick=()=>{adTab('pay');$('admin').showModal()};
  $('aOut').onclick=()=>auth.signOut()}
 
 /* ----- ዋና ገጽ ----- */
 db.collection('listings').orderBy('created','desc').limit(80).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));if(view==='home')render()});
-function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
+function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value;
- $('grid').innerHTML=cards(items.filter(i=>(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))))}
+ $('grid').innerHTML=cards(items.filter(i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))))}
 $('cats').onclick=e=>{const b=e.target.closest('.chip');if(b){cat=b.dataset.c;fill();render()}};
 $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
@@ -343,7 +347,7 @@ function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
 /* ----- ሱቅ ገጽ ----- */
 async function loadShop(uid){const el=$('v-shop');el.innerHTML='…';
  const [s,l]=await Promise.all([db.collection('shops').doc(uid).get(),db.collection('listings').where('uid','==',uid).get()]);
- const sh=s.exists?s.data():{},list=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.created-a.created),nm=sh.name||(list[0]&&list[0].shop)||'—';
+ const sh=s.exists?s.data():{},list=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.created-a.created).filter(i=>alive(i)||(me&&me.uid===uid)),nm=sh.name||(list[0]&&list[0].shop)||'—';
  el.innerHTML=`<button class="btn line" id="shBack">← ${t('back')}</button><div class="prof" style="margin-top:12px">${av(sh.avatar,nm,76)}<div><b style="font-size:1.2rem">${esc(nm)}</b><p>${esc(sh.bio||'')}</p><div class="meta">${list.length} ${t('listings')}</div></div></div><div class="grid">${cards(list)}</div>`;
  $('shBack').onclick=()=>go('home')}
 
@@ -401,7 +405,7 @@ $('v-set').onclick=e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}};
 
 /* ----- ለጥፍ እና ክፍያ ----- */
-function postClick(){if(!me){go('acc');return toast(t('loginNeed'))}if(!paid())return $('pay').showModal();
+function postClick(){if(!me){go('acc');return toast(t('loginNeed'))}if(prof&&prof.blocked)return toast(t('blockedMsg'));if(!paid())return $('pay').showModal();
  pics=[];$('preview').innerHTML='';$('postForm').reset();refreshPicks();note();$('post').showModal()}
 $('cancelPost').onclick=()=>$('post').close();
 const note=()=>$('picNote').textContent=t('picNote').replace('{a}',used()+pics.length).replace('{b}',10);
@@ -418,7 +422,7 @@ $('pPics').onchange=async e=>{
 $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('payFirst'));
  const btn=e.submitter||$('postForm').querySelector('[type=submit]');btn.disabled=true;toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(upImg))}catch(x){btn.disabled=false;return toast(t('upErr')+': '+x.message)}
  const b=db.batch(),r=db.collection('listings').doc();
- b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,created:Date.now()});
+ b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,until:prof.paidUntil,created:Date.now()});
  b.update(db.collection('users').doc(me.uid),{photosDay:today(),photosCount:used()+pics.length});
  try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}btn.disabled=false};
 
@@ -431,8 +435,7 @@ async function loadPay(){const s=await db.collection('payments').get(),all=s.doc
  $('adList').onclick=async e=>{const id=e.target.dataset.ok||e.target.dataset.no;if(!id)return;const p=l.find(x=>x.id===id),pr=db.collection('payments').doc(id);
   if(e.target.dataset.no){await pr.update({status:'rejected'});return loadPay()}
   if(!confirm(t('confirmApprove').replace('{a}',p.plan)))return;
-  const ur=db.collection('users').doc(p.uid),u=(await ur.get()).data(),until=Math.max(Date.now(),u.paidUntil||0)+(p.plan==300?365:30)*864e5,b=db.batch();
-  b.update(pr,{status:'approved'});b.update(ur,{paidUntil:until});await b.commit();toast(t('approved'));loadPay()}}
+  const {b}=await grant(p.uid,p.plan==300?365:30);b.update(pr,{status:'approved'});await b.commit();toast(t('approved'));loadPay();adStats()}}
 
 /* ----- ያልተነበበ መልእክት ቁጥር ----- */
 function loadRd(){try{rd=JSON.parse(localStorage.getItem('rd:'+me.uid)||'{}')}catch(e){rd={}}}
@@ -452,9 +455,44 @@ async function renderFav(){const el=$('v-fav'),hd=`<h2>${t('favs')}</h2>`;
  if(!me){el.innerHTML=hd+`<p class="note">${t('loginNeed')}</p><button class="btn alt" id="fLog" style="margin-top:8px">${t('login')}</button>`;$('fLog').onclick=()=>go('acc');return}
  const ids=[...favs];if(!ids.length){el.innerHTML=hd+`<p class="note">${t('noFav')}</p>`;return}
  const list=[],miss=[];ids.forEach(id=>{const x=cache[id]||items.find(i=>i.id===id);x?list.push(x):miss.push(id)});
- const show=()=>{list.sort((a,b)=>b.created-a.created);el.innerHTML=hd+`<div class="grid">${cards(list)}</div>`};show();
+ const show=()=>{const l2=list.filter(alive).sort((a,b)=>b.created-a.created);el.innerHTML=hd+`<div class="grid">${cards(l2)}</div>`};show();
  if(miss.length){const ds=await Promise.all(miss.map(id=>db.collection('listings').doc(id).get().catch(()=>null)));
   ds.forEach(d=>{if(d&&d.exists)list.push({id:d.id,...d.data()})});if(view==='fav')show()}}
+
+
+/* ----- ኪራይ ማብቂያ፣ ይለፍ ቃል፣ አስተዳደር ----- */
+const alive=i=>!i.until||i.until>Date.now();
+let warned=false;
+function daysLeft(){return Math.ceil((prof.paidUntil-Date.now())/864e5)}
+function expBanner(){if(!prof||!prof.paidUntil)return '';const d=daysLeft();return d<=0?`<div class="warn">${t('expNow')}</div>`:d<=3?`<div class="warn">${t('expSoon').replace('{n}',d)}</div>`:''}
+function warnOnce(){if(warned||!prof||!prof.paidUntil)return;const d=daysLeft();if(d<=3){warned=true;toast(d<=0?t('expNow'):t('expSoon').replace('{n}',d))}}
+async function doReset(){const e=$('aEmail').value.trim();if(!e)return toast(t('enterEmail'));
+ try{await auth.sendPasswordResetEmail(e);toast(t('resetSent'))}catch(x){toast(t('authErr'))}}
+async function grant(uid,days){const ur=db.collection('users').doc(uid),u=(await ur.get()).data(),until=Math.max(Date.now(),u.paidUntil||0)+days*864e5,b=db.batch();
+ b.update(ur,{paidUntil:until});(await db.collection('listings').where('uid','==',uid).get()).forEach(d=>b.update(d.ref,{until}));return {b,until}}
+function adTab(k){Q('#adTabs button').forEach(b=>{const on=b.dataset.k===k;b.classList.toggle('alt',on);b.classList.toggle('line',!on)});({pay:loadPay,sel:adSellers,rep:adReports})[k]();adStats()}
+$('adTabs').onclick=e=>{const b=e.target.closest('button');if(b)adTab(b.dataset.k)};
+async function adStats(){const [u,p]=await Promise.all([db.collection('users').get(),db.collection('payments').get()]);
+ const now=Date.now(),us=u.docs.map(d=>d.data()),inc=p.docs.map(d=>d.data()).filter(x=>x.status==='approved').reduce((a,x)=>a+x.plan,0);
+ $('adStats').innerHTML=`<div class="stat"><b>${us.length}</b>${t('stSellers')}</div><div class="stat"><b>${us.filter(x=>x.paidUntil>now).length}</b>${t('stActive')}</div><div class="stat"><b>${inc}</b>${t('stIncome')}</div>`}
+async function adSellers(){const s=await db.collection('users').get(),now=Date.now(),l=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.paidUntil||0)-(a.paidUntil||0));
+ $('adList').innerHTML=l.map(u=>{const d=Math.ceil((u.paidUntil-now)/864e5),st=u.blocked?'🚫 '+t('blockedL'):u.paidUntil>now?'✅ '+t('daysLeft').replace('{n}',d):u.paidUntil?'⏰ '+t('expiredS'):t('never');
+  return `<div class="box"><b>${esc(u.email)}</b><div class="meta">${st}${u.paidUntil?' · '+new Date(u.paidUntil).toLocaleDateString():''}</div><div class="row" style="margin-top:6px"><button class="btn alt" data-ext="${u.id}">${t('ext30')}</button><button class="btn ${u.blocked?'line':'red'}" data-blk="${u.id}" data-v="${u.blocked?0:1}">${t(u.blocked?'unblock':'block')}</button></div></div>`}).join('');
+ $('adList').onclick=async e=>{const x=e.target.dataset;
+  if(x.ext){const {b}=await grant(x.ext,30);await b.commit();toast(t('approved'));adSellers();adStats()}
+  if(x.blk){const ur=db.collection('users').doc(x.blk);
+   if(x.v==='1'){if(!confirm(t('block')+'?'))return;const b=db.batch();b.update(ur,{blocked:true,paidUntil:0});(await db.collection('listings').where('uid','==',x.blk).get()).forEach(d=>b.update(d.ref,{until:1}));await b.commit()}
+   else await ur.update({blocked:false});adSellers();adStats()}}}
+async function adReports(){const s=await db.collection('reports').get(),by={};
+ s.docs.forEach(d=>{const r=d.data();(by[r.listingId]=by[r.listingId]||[]).push(d.id)});
+ const ids=Object.keys(by);if(!ids.length){$('adList').innerHTML=`<p class="note">${t('noReports')}</p>`;return}
+ const ds=await Promise.all(ids.map(id=>db.collection('listings').doc(id).get()));
+ $('adList').innerHTML=ds.map((d,k)=>{const i=d.exists?{id:d.id,...d.data()}:null;if(i)cache[i.id]=i;
+  return `<div class="box"><b>${i?esc(i.t):'(deleted)'}</b><div class="meta">${i?esc(i.shop||''):''} · ${t('reportsN').replace('{n}',by[ids[k]].length)}</div><div class="row" style="margin-top:6px">${i?`<button class="btn line" data-vw="${i.id}">${t('view')}</button><button class="btn red" data-dl="${i.id}">${t('delL')}</button>`:''}<button class="btn line" data-ds="${ids[k]}">${t('dismiss')}</button></div></div>`}).join('');
+ $('adList').onclick=async e=>{const x=e.target.dataset,clear=async lid=>{const b=db.batch();by[lid].forEach(r=>b.delete(db.collection('reports').doc(r)));await b.commit()};
+  if(x.vw)openItem(cache[x.vw]);
+  if(x.dl&&confirm(t('delL')+'?')){await db.collection('listings').doc(x.dl).delete();await clear(x.dl);adReports()}
+  if(x.ds){await clear(x.ds);adReports()}}}
 
 applyTheme();applyLang();
 </script>
