@@ -223,7 +223,7 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed']
 };
 const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
 const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
@@ -248,7 +248,7 @@ inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"It
 theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
 msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
 postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
-typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera"};
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne"};
 let lang='am',theme='green',favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
@@ -257,7 +257,13 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const fmt=n=>Number(n).toLocaleString('en-US')+' '+t('birr');
 const today=()=>new Date().toISOString().slice(0,10);
 const isAdmin=()=>me&&me.email===ADMIN_EMAIL,paid=()=>prof&&prof.paidUntil>Date.now(),used=()=>prof&&prof.photosDay===today()?prof.photosCount:0;
-const av=(s,n,z)=>s?`<img class="av" style="width:${z}px;height:${z}px" src="${s}" alt="">`:`<span class="av" style="width:${z}px;height:${z}px;font-size:${z/2}px">${esc((n||'?')[0].toUpperCase())}</span>`;
+const CLOUD='gismnj5k',PRESET='metu_unsigned';
+const cl=(u,w)=>u&&u.indexOf('res.cloudinary.com')>0?u.replace('/upload/','/upload/f_auto,q_auto,w_'+w+'/'):u;
+async function upImg(d){if(!d||d.indexOf('data:')!==0)return d||'';
+ const fd=new FormData();fd.append('file',d);fd.append('upload_preset',PRESET);
+ const r=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD+'/image/upload',{method:'POST',body:fd}),j=await r.json();
+ if(!j.secure_url)throw new Error((j.error&&j.error.message)||'upload failed');return j.secure_url}
+const av=(s,n,z)=>s?`<img class="av" style="width:${z}px;height:${z}px" src="${cl(s,160)}" alt="">`:`<span class="av" style="width:${z}px;height:${z}px;font-size:${z/2}px">${esc((n||'?')[0].toUpperCase())}</span>`;
 function toast(m){const e=$('toast');e.textContent=m;e.style.display='block';setTimeout(()=>e.style.display='none',3000)}
 try{localStorage.setItem('t','1')}catch(e){}
 function setStore(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -299,7 +305,7 @@ function renderAcc(){const el=$('v-acc');
  <label>${t('bio')}<textarea id="sBio" maxlength="200">${esc((shop&&shop.bio)||'')}</textarea></label>
  <div class="row"><button class="btn alt" id="sSave">${t('save')}</button><button class="btn line" id="sView">${t('myShop')}</button></div>
  <button class="btn" id="aPay">${t('payBtn')}</button>${isAdmin()?`<button class="btn line" id="aAdm">${t('admin')}</button>`:''}<button class="btn line" id="aOut">${t('logout')}</button></div>`;
- $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;const a=await shrink(f,240,.7);await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a});toast(t('saved'))};
+ $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast(t('upl'));let a;try{a=await upImg(await shrink(f,240,.7))}catch(x){return toast(t('upErr')+': '+x.message)}await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a});toast(t('saved'))};
  $('sSave').onclick=async()=>{await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:newAv!==null?newAv:((shop&&shop.avatar)||'')});toast(t('saved'))};
  $('sView').onclick=()=>go('shop',me.uid);$('aPay').onclick=()=>$('pay').showModal();
  if(isAdmin())$('aAdm').onclick=()=>{loadPay();$('admin').showModal()};
@@ -307,7 +313,7 @@ function renderAcc(){const el=$('v-acc');
 
 /* ----- ዋና ገጽ ----- */
 db.collection('listings').orderBy('created','desc').limit(80).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));if(view==='home')render()});
-function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${i.img[0]}" alt="">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
+function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value;
  $('grid').innerHTML=cards(items.filter(i=>(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))))}
 $('cats').onclick=e=>{const b=e.target.closest('.chip');if(b){cat=b.dataset.c;fill();render()}};
@@ -315,7 +321,7 @@ $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
 
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
- $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${s}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
+ $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${cl(s,1000)}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b> ›</button>
  <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
@@ -330,8 +336,8 @@ function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  $('goShop').onclick=()=>{$('view').close();go('shop',i.uid)};
  if(own){$('vSold').onclick=async()=>{await db.collection('listings').doc(i.id).update({sold:!i.sold});$('view').close()};
   $('vDel').onclick=async()=>{if(confirm(t('confirmDel'))){await db.collection('listings').doc(i.id).delete();$('view').close();if(view==='shop')loadShop(i.uid)}}}
- else{let mImg=null;$('msgImg').onchange=async e=>{const f=e.target.files[0];if(!f)return;mImg=await shrink(f,800,.65);$('msgPrev').innerHTML=`<img src="${mImg}" style="height:44px;border-radius:8px;vertical-align:middle" alt="">`;e.target.value=''};$('vSend').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}const x=$('msg').value.trim();if(!x&&!mImg)return;
-   await db.collection('messages').add({threadId:i.id+'_'+me.uid,listingId:i.id,listingTitle:i.t,sellerId:i.uid,buyerId:me.uid,sellerName:i.shop||'',buyerName:me.email,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,img:mImg||'',created:Date.now()});toast(t('msgSent'));$('view').close();go('msg');openT=i.id+'_'+me.uid;renderMsgs()};
+ else{let mImg=null;$('msgImg').onchange=async e=>{const f=e.target.files[0];if(!f)return;mImg=await shrink(f,800,.65);$('msgPrev').innerHTML=`<img src="${mImg}" style="height:44px;border-radius:8px;vertical-align:middle" alt="">`;e.target.value=''};$('vSend').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}const x=$('msg').value.trim();if(!x&&!mImg)return;let mUrl='';if(mImg){try{mUrl=await upImg(mImg)}catch(e2){return toast(t('upErr')+': '+e2.message)}}
+   await db.collection('messages').add({threadId:i.id+'_'+me.uid,listingId:i.id,listingTitle:i.t,sellerId:i.uid,buyerId:me.uid,sellerName:i.shop||'',buyerName:me.email,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,img:mUrl,created:Date.now()});toast(t('msgSent'));$('view').close();go('msg');openT=i.id+'_'+me.uid;renderMsgs()};
   $('vRep').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}await db.collection('reports').add({listingId:i.id,by:me.uid,created:Date.now()});toast(t('repSent'));$('view').close()}}}
 
 /* ----- ሱቅ ገጽ ----- */
@@ -355,7 +361,7 @@ const other=th=>me.uid===th.seller?(th.bName||'').split('@')[0]:(th.sName||t('se
 function loadMsgs(){openT=null;renderMsgs()}
 let cImg=null;
 const CLIP='<svg class="ic" viewBox="0 0 24 24"><path d="M21 12.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l9-9a3.7 3.7 0 0 1 5.2 5.2l-9 9a1.8 1.8 0 0 1-2.6-2.6l8.4-8.4"/></svg>',SND='<svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>';
-const bub=m=>`<div class="bub ${m.fromId===me.uid?'me':''}">${m.img?`<img class="bimg" src="${m.img}" alt="">`:''}${m.text?`<span>${esc(m.text)}</span>`:''}<small>${tm(m.created)}</small></div>`;
+const bub=m=>`<div class="bub ${m.fromId===me.uid?'me':''}">${m.img?`<img class="bimg" src="${cl(m.img,500)}" data-o="${m.img}" alt="">`:''}${m.text?`<span>${esc(m.text)}</span>`:''}<small>${tm(m.created)}</small></div>`;
 function renderMsgs(live){const el=$('v-msg');
  if(!me){document.body.classList.remove('inchat');el.innerHTML=`<h2>${t('msgs')}</h2><p class="note">${t('loginNeed')}</p><button class="btn alt" id="mLog" style="margin-top:8px">${t('login')}</button>`;$('mLog').onclick=()=>go('acc');return}
  const th=openT&&threads().find(x=>x.tid===openT);
@@ -368,10 +374,10 @@ function renderMsgs(live){const el=$('v-msg');
  el.innerHTML=`<div class="chatbar"><button class="btn line" id="cBack">←</button><div style="flex:1;min-width:0"><b>${esc(th.title)}</b><div class="meta">${esc(other(th))}</div></div>${th.phone&&me.uid===th.seller?`<a class="btn alt" href="tel:${esc(th.phone)}">${t('call')}</a>`:''}</div><div class="chat" id="chat">${bubs}</div><form class="cform" id="cForm"><div id="cPrev"></div><div class="crow"><label class="ci" for="cFile">${CLIP}</label><input id="cFile" type="file" accept="image/*" hidden><input id="cIn" autocomplete="off" placeholder="${t('typeMsg')}"><button class="send" aria-label="${t('send')}">${SND}</button></div></form>`;
  $('cBack').onclick=()=>{openT=null;renderMsgs()};
  $('cFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;cImg=await shrink(f,800,.65);$('cPrev').innerHTML=`<div class="cp"><img src="${cImg}" alt=""><button type="button" id="cX">✕</button></div>`;$('cX').onclick=()=>{cImg=null;$('cPrev').innerHTML=''};e.target.value=''};
- $('cForm').onsubmit=async e=>{e.preventDefault();const x=$('cIn').value.trim();if(!x&&!cImg)return;const im=cImg;$('cIn').value='';cImg=null;$('cPrev').innerHTML='';
+ $('cForm').onsubmit=async e=>{e.preventDefault();const x=$('cIn').value.trim();if(!x&&!cImg)return;let im=cImg;$('cIn').value='';cImg=null;$('cPrev').innerHTML='';if(im){try{im=await upImg(im)}catch(x){toast(t('upErr')+': '+x.message);return}}
   await db.collection('messages').add({threadId:th.tid,listingId:th.lid,listingTitle:th.title,sellerId:th.seller,buyerId:th.buyer,sellerName:me.uid===th.seller?((shop&&shop.name)||me.email.split('@')[0]):th.sName,buyerName:th.bName,fromId:me.uid,fromName:me.email,text:x,img:im||'',created:Date.now()})};
  scrollTo(0,document.body.scrollHeight)}
-$('v-msg').onclick=e=>{const m=e.target.closest('.bimg');if(m)return openLB([m.src],0);const c=e.target.closest('.conv');if(c){openT=c.dataset.t;renderMsgs()}};
+$('v-msg').onclick=e=>{const m=e.target.closest('.bimg');if(m)return openLB([m.dataset.o||m.src],0);const c=e.target.closest('.conv');if(c){openT=c.dataset.t;renderMsgs()}};
 
 /* ----- ዘመናዊ ምርጫ (bottom sheet) እና ሙሉ ማያ ፎቶ ----- */
 const CH='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
@@ -382,7 +388,7 @@ function openSheet(s,k){const sh=$('sheet');$('shT').textContent=t(k);
  $('shO').innerHTML=[...s.options].map(o=>`<button type="button" class="opt ${o.value===s.value?'on':''}" data-v="${esc(o.value)}"><span>${esc(o.text)}</span><i></i></button>`).join('');
  $('shO').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;s.value=b.dataset.v;s.dispatchEvent(new Event('change'));refreshPicks();sh.close()};sh.showModal()}
 $('sheet').onclick=e=>{if(e.target===$('sheet'))$('sheet').close()};
-function openLB(arr,k){$('lbBody').innerHTML=arr.map(s=>`<div><img src="${s}" alt=""></div>`).join('');$('lbN').textContent=arr.length>1?(k+1)+' / '+arr.length:'';$('lb').showModal();requestAnimationFrame(()=>{$('lbBody').scrollLeft=k*$('lbBody').clientWidth})}
+function openLB(arr,k){$('lbBody').innerHTML=arr.map(s=>`<div><img src="${cl(s,1600)}" alt=""></div>`).join('');$('lbN').textContent=arr.length>1?(k+1)+' / '+arr.length:'';$('lb').showModal();requestAnimationFrame(()=>{$('lbBody').scrollLeft=k*$('lbBody').clientWidth})}
 $('lbBody').onscroll=()=>{const b=$('lbBody'),n=b.children.length;if(n>1)$('lbN').textContent=(Math.round(b.scrollLeft/b.clientWidth)+1)+' / '+n};
 $('lbX').onclick=()=>$('lb').close();
 $('preview').onclick=e=>{const m=e.target.closest('img');if(m)openLB(pics,[...$('preview').children].indexOf(m))};
@@ -410,10 +416,11 @@ $('pPics').onchange=async e=>{
  for(const f of e.target.files){if(pics.length>=3){toast(t('picMax'));break}if(used()+pics.length>=10){toast(t('picDay'));break}pics.push(await shrink(f,700,.6))}
  $('preview').innerHTML=pics.map(s=>`<img src="${s}" alt="">`).join('');note();e.target.value=''};
 $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('payFirst'));
+ const btn=e.submitter||$('postForm').querySelector('[type=submit]');btn.disabled=true;toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(upImg))}catch(x){btn.disabled=false;return toast(t('upErr')+': '+x.message)}
  const b=db.batch(),r=db.collection('listings').doc();
- b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:pics,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,created:Date.now()});
+ b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,created:Date.now()});
  b.update(db.collection('users').doc(me.uid),{photosDay:today(),photosCount:used()+pics.length});
- try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}};
+ try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}btn.disabled=false};
 
 /* ----- አስተዳዳሪ ----- */
 $('adClose').onclick=()=>$('admin').close();
