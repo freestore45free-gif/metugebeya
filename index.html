@@ -121,10 +121,23 @@ body.inchat nav{display:none}body.inchat main{padding-bottom:16px}
 .cp{position:relative;display:inline-block;margin-bottom:6px}.cp img{height:90px;border-radius:10px;display:block}
 .cp button{position:absolute;top:-6px;right:-6px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;cursor:pointer}
 .bimg{display:block;max-width:220px;width:100%;border-radius:12px;margin-bottom:4px;cursor:zoom-in}
+nav button{position:relative}
+.bdg{position:absolute;top:2px;left:calc(50% + 4px);min-width:18px;height:18px;padding:0 5px;border-radius:99px;background:var(--red);color:#fff;font-size:.65rem;font-weight:700;display:grid;place-items:center;font-style:normal;line-height:1}
+.bdg[hidden]{display:none}
+.hbtn{position:relative;flex:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center;cursor:pointer;margin-left:auto}
+.hbtn .bdg{top:-4px;left:auto;right:-4px}
+.thumb{position:relative}
+.heart{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);color:#777;display:grid;place-items:center;cursor:pointer}
+.heart .ic{width:19px;height:19px}
+.heart.on,.favb.on{color:#e0245e}.heart.on svg,.favb.on svg{fill:currentColor}
+.favb{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--mute);display:grid;place-items:center;cursor:pointer;flex:none}
+.vtop{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;background:var(--card);padding-bottom:4px}
+.vback{position:static;box-shadow:none}
+.nb{flex:none;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--red);color:#fff;font-size:.75rem;font-weight:700;display:grid;place-items:center}
 </style>
 </head>
 <body>
-<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"></div></header>
+<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button></div></header>
 <main>
  <section id="v-home">
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
@@ -136,10 +149,11 @@ body.inchat nav{display:none}body.inchat main{padding-bottom:16px}
  <section id="v-acc" hidden></section>
  <section id="v-set" hidden></section>
  <section id="v-shop" hidden></section>
+ <section id="v-fav" hidden></section>
 </main>
 <nav id="nav">
  <button data-v="home"><span><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></span><em data-i="home" style="font-style:normal"></em></button>
- <button data-v="msg"><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg></span><em data-i="msgs" style="font-style:normal"></em></button>
+ <button data-v="msg"><span><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></svg></span><em data-i="msgs" style="font-style:normal"></em><b class="bdg" id="bdg" hidden></b></button>
  <button class="plus" data-v="post"><span><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><em data-i="post" style="font-style:normal"></em></button>
  <button data-v="acc"><span><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><em data-i="acct" style="font-style:normal"></em></button>
  <button data-v="set"><span><svg viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><em data-i="sets" style="font-style:normal"></em></button>
@@ -209,7 +223,7 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong']
 };
 const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
 const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
@@ -234,8 +248,8 @@ inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"It
 theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
 msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
 postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
-typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali"};
-let lang='am',theme='green',qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera"};
+let lang='am',theme='green',favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
 const cn=c=>lang==='en'?(CE[c]||c):lang==='om'?(CO[c]||c):c,yn=c=>lang==='en'?(CY[c]||c):lang==='om'?(CYO[c]||c):c;
@@ -259,20 +273,20 @@ function fill(){const cv=$('city').value,pc=$('pCat').value,pt=$('pCity').value;
 /* ----- ገጾች መቀያየር ----- */
 let shopArg=null;
 function go(v,arg){view=v;shopArg=arg||null;document.body.classList.remove('inchat');
- ['home','msg','acc','set','shop'].forEach(x=>$('v-'+x).hidden=x!==v);
+ ['home','msg','acc','set','shop','fav'].forEach(x=>$('v-'+x).hidden=x!==v);
  Q('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
  $('q').style.display=v==='home'?'':'none';
- ({home:render,msg:loadMsgs,acc:renderAcc,set:renderSet,shop:()=>loadShop(arg)})[v]();scrollTo(0,0)}
+ ({home:render,msg:loadMsgs,acc:renderAcc,set:renderSet,shop:()=>loadShop(arg),fav:renderFav})[v]();scrollTo(0,0)}
 $('nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.dataset.v==='post'?postClick():go(b.dataset.v)};
 
 /* ----- መግቢያ እና ፕሮፋይል ----- */
 auth.onAuthStateChanged(async u=>{
- me=u;unsubs.forEach(f=>f());unsubs=[];prof=null;shop=null;qm=[{},{},{}];openT=null;
+ me=u;unsubs.forEach(f=>f());unsubs=[];prof=null;shop=null;favs=new Set();rd={};qm=[{},{},{}];openT=null;
  if(u){const r=db.collection('users').doc(u.uid);
   if(!(await r.get()).exists)await r.set({email:u.email,paidUntil:0,photosDay:today(),photosCount:0});
   unsubs.push(r.onSnapshot(d=>{prof=d.data();if(view==='acc')renderAcc()}));
-  unsubs.push(db.collection('shops').doc(u.uid).onSnapshot(d=>{shop=d.exists?d.data():null;if(view==='acc')renderAcc()}));listenMsgs();}
- if(view==='acc'||view==='msg')go(view)});
+  unsubs.push(db.collection('shops').doc(u.uid).onSnapshot(d=>{shop=d.exists?d.data():null;if(view==='acc')renderAcc()}));loadRd();listenMsgs();unsubs.push(db.collection('favs').doc(u.uid).onSnapshot(d=>{favs=new Set((d.exists&&d.data().ids)||[]);renderHearts();if(view==='fav')renderFav()},()=>{}));}
+ renderHearts();updBadge();if(view==='acc'||view==='msg')go(view)});
 async function doAuth(){const e=$('aEmail').value.trim(),p=$('aPass').value;
  try{reg?await auth.createUserWithEmailAndPassword(e,p):await auth.signInWithEmailAndPassword(e,p)}
  catch(x){toast({'auth/email-already-in-use':t('dupe'),'auth/weak-password':t('weak')}[x.code]||t('authErr'))}}
@@ -293,22 +307,22 @@ function renderAcc(){const el=$('v-acc');
 
 /* ----- ዋና ገጽ ----- */
 db.collection('listings').orderBy('created','desc').limit(80).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));if(view==='home')render()});
-function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${i.img[0]}" alt="">`:ICON[i.c]||'📦'}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
+function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${i.img[0]}" alt="">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value;
  $('grid').innerHTML=cards(items.filter(i=>(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))))}
 $('cats').onclick=e=>{const b=e.target.closest('.chip');if(b){cat=b.dataset.c;fill();render()}};
 $('city').onchange=render;$('q').oninput=render;
-document.addEventListener('click',e=>{const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
+document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
 
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
- $('viewBody').innerHTML=`<button type="button" class="btn line vback" id="vBack">←</button>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${s}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
+ $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${s}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b> ›</button>
  <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
  (own?`<div class="row"><button class="btn line" id="vSold">${t(i.sold?'unsold':'markSold')}</button><button class="btn red" id="vDel">${t('del')}</button></div>`:
  `<label>${t('msgSeller')}<textarea id="msg" placeholder="${t('msgPh')}"></textarea></label><label>${t('yourPhone')}<input id="msgPh" type="tel"></label><div class="row" style="align-items:center"><label class="btn line" for="msgImg" style="margin:0">📷 ${t('addPhoto')}</label><input id="msgImg" type="file" accept="image/*" hidden><span id="msgPrev"></span></div><div class="row"><button class="btn alt" id="vSend">${t('send')}</button><button class="btn red" id="vRep">${t('report')}</button></div>`)+
  `<button class="btn line" id="vClose">${t('close')}</button>`;
- $('view').showModal();$('vClose').onclick=$('vBack').onclick=()=>$('view').close();
+ $('view').showModal();$('vClose').onclick=$('vBack').onclick=()=>$('view').close();$('vFav').onclick=()=>toggleFav(i.id);
  const sl=$('sl'),dots=$('dots');if(sl&&dots)sl.onscroll=()=>{const k=Math.round(sl.scrollLeft/sl.clientWidth);[...dots.children].forEach((d,x)=>d.classList.toggle('on',x===k))};
  if(sl)sl.onclick=e=>{const m=e.target.closest('img');if(m)openLB(im,[...sl.querySelectorAll('img')].indexOf(m))};
  if($('zoomBtn'))$('zoomBtn').onclick=()=>openLB(im,Math.round(sl.scrollLeft/sl.clientWidth));
@@ -328,7 +342,7 @@ async function loadShop(uid){const el=$('v-shop');el.innerHTML='…';
  $('shBack').onclick=()=>go('home')}
 
 /* ----- መልእክቶች (ውይይት) ----- */
-function listenMsgs(){['sellerId','buyerId','fromId'].forEach((f,k)=>unsubs.push(db.collection('messages').where(f,'==',me.uid).onSnapshot(s=>{qm[k]={};s.docs.forEach(d=>qm[k][d.id]={id:d.id,...d.data()});if(view==='msg')renderMsgs(true)},()=>{})))}
+function listenMsgs(){['sellerId','buyerId','fromId'].forEach((f,k)=>unsubs.push(db.collection('messages').where(f,'==',me.uid).onSnapshot(s=>{qm[k]={};s.docs.forEach(d=>qm[k][d.id]={id:d.id,...d.data()});updBadge();if(view==='msg')renderMsgs(true)},()=>{})))}
 function threads(){const all={};qm.forEach(o=>Object.assign(all,o));const T={};
  Object.values(all).forEach(m=>{const b=m.buyerId||m.fromId,tid=m.threadId||(m.listingId+'_'+b);
   const th=T[tid]||(T[tid]={tid,lid:m.listingId,title:m.listingTitle,seller:m.sellerId,buyer:b,msgs:[],sName:'',bName:'',phone:''});
@@ -347,8 +361,8 @@ function renderMsgs(live){const el=$('v-msg');
  const th=openT&&threads().find(x=>x.tid===openT);
  document.body.classList.toggle('inchat',!!th);
  if(!th){openT=null;const l=threads();
-  el.innerHTML=`<h2>${t('msgs')}</h2>`+(l.length?l.map(x=>{const m=x.msgs[x.msgs.length-1];return `<button class="conv" data-t="${esc(x.tid)}">${av('',other(x),44)}<div style="min-width:0;flex:1"><b>${esc(x.title)}</b> <span class="meta">· ${esc(other(x))}</span><p class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.fromId===me.uid?'↩ ':''}${m.text?esc(m.text):'📷'}</p></div></button>`}).join(''):`<p class="note">${t('noMsg')}</p>`);return}
- const bubs=th.msgs.map(bub).join('');
+  el.innerHTML=`<h2>${t('msgs')}</h2>`+(l.length?l.map(x=>{const m=x.msgs[x.msgs.length-1];return `<button class="conv" data-t="${esc(x.tid)}">${av('',other(x),44)}<div style="min-width:0;flex:1"><b>${esc(x.title)}</b> <span class="meta">· ${esc(other(x))}</span><p class="meta" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.fromId===me.uid?'↩ ':''}${m.text?esc(m.text):'📷'}</p></div>${unread(x)?`<span class="nb">${unread(x)}</span>`:''}</button>`}).join(''):`<p class="note">${t('noMsg')}</p>`);return}
+ const bubs=th.msgs.map(bub).join('');markRead(th);
  if(live&&$('chat')){$('chat').innerHTML=bubs;scrollTo(0,document.body.scrollHeight);return}
  cImg=null;
  el.innerHTML=`<div class="chatbar"><button class="btn line" id="cBack">←</button><div style="flex:1;min-width:0"><b>${esc(th.title)}</b><div class="meta">${esc(other(th))}</div></div>${th.phone&&me.uid===th.seller?`<a class="btn alt" href="tel:${esc(th.phone)}">${t('call')}</a>`:''}</div><div class="chat" id="chat">${bubs}</div><form class="cform" id="cForm"><div id="cPrev"></div><div class="crow"><label class="ci" for="cFile">${CLIP}</label><input id="cFile" type="file" accept="image/*" hidden><input id="cIn" autocomplete="off" placeholder="${t('typeMsg')}"><button class="send" aria-label="${t('send')}">${SND}</button></div></form>`;
@@ -403,12 +417,37 @@ $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('p
 
 /* ----- አስተዳዳሪ ----- */
 $('adClose').onclick=()=>$('admin').close();
-async function loadPay(){const s=await db.collection('payments').where('status','==','pending').get(),l=s.docs.map(d=>({id:d.id,...d.data()}));
- $('adList').innerHTML=l.length?l.map(p=>`<div class="box">${esc(p.email)}<br><b>${p.plan} ${t('birr')} · ${esc(p.txn)}</b><div class="row" style="margin-top:6px"><button class="btn alt" data-ok="${p.id}">${t('approve')}</button><button class="btn red" data-no="${p.id}">${t('reject')}</button></div></div>`).join(''):`<p class="note">${t('noPending')}</p>`;
+async function loadPay(){const s=await db.collection('payments').get(),all=s.docs.map(d=>({id:d.id,...d.data()})),cnt={},K=p=>String(p.txn).trim().toLowerCase();
+ all.forEach(p=>{cnt[K(p)]=(cnt[K(p)]||0)+1});
+ const l=all.filter(p=>p.status==='pending').sort((a,b)=>a.created-b.created);
+ $('adList').innerHTML=l.length?l.map(p=>`<div class="box"><div style="font-size:1.5rem;font-weight:800;color:var(--green)">${p.plan} ${t('birr')} <span style="font-size:.9rem;font-weight:600">· ${t(p.plan==300?'y1':'m1')}</span></div><div>${esc(p.email)}</div><div><b>${esc(p.txn)}</b></div><div class="meta">${tm(p.created)}</div>${cnt[K(p)]>1?`<div style="color:var(--red);font-weight:700">${t('dup')}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn alt" data-ok="${p.id}">${t('approve')}</button><button class="btn red" data-no="${p.id}">${t('reject')}</button></div></div>`).join(''):`<p class="note">${t('noPending')}</p>`;
  $('adList').onclick=async e=>{const id=e.target.dataset.ok||e.target.dataset.no;if(!id)return;const p=l.find(x=>x.id===id),pr=db.collection('payments').doc(id);
   if(e.target.dataset.no){await pr.update({status:'rejected'});return loadPay()}
+  if(!confirm(t('confirmApprove').replace('{a}',p.plan)))return;
   const ur=db.collection('users').doc(p.uid),u=(await ur.get()).data(),until=Math.max(Date.now(),u.paidUntil||0)+(p.plan==300?365:30)*864e5,b=db.batch();
   b.update(pr,{status:'approved'});b.update(ur,{paidUntil:until});await b.commit();toast(t('approved'));loadPay()}}
+
+/* ----- ያልተነበበ መልእክት ቁጥር ----- */
+function loadRd(){try{rd=JSON.parse(localStorage.getItem('rd:'+me.uid)||'{}')}catch(e){rd={}}}
+function saveRd(){try{localStorage.setItem('rd:'+me.uid,JSON.stringify(rd))}catch(e){}}
+const unread=th=>th.msgs.filter(m=>m.fromId!==me.uid&&m.created>(rd[th.tid]||0)).length;
+function markRead(th){const last=th.msgs[th.msgs.length-1].created;if((rd[th.tid]||0)<last){rd[th.tid]=last;saveRd();updBadge()}}
+function updBadge(){const b=$('bdg');if(!b)return;const n=me?threads().reduce((a,th)=>a+unread(th),0):0;b.hidden=!n;b.textContent=n>99?'99+':n}
+
+/* ----- ተወዳጆች (ልብ) ----- */
+const HRT='<svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+const heart=id=>`<span class="heart ${favs.has(id)?'on':''}" data-f="${id}">${HRT}</span>`;
+function renderHearts(){Q('.heart,.favb').forEach(x=>x.classList.toggle('on',favs.has(x.dataset.f)));const n=favs.size,b=$('fbd');b.hidden=!n;b.textContent=n}
+function toggleFav(id){if(!me){go('acc');return toast(t('loginNeed'))}
+ const F=firebase.firestore.FieldValue;db.collection('favs').doc(me.uid).set({ids:favs.has(id)?F.arrayRemove(id):F.arrayUnion(id)},{merge:true}).catch(()=>toast(t('err')))}
+$('favBtn').onclick=()=>go('fav');
+async function renderFav(){const el=$('v-fav'),hd=`<h2>${t('favs')}</h2>`;
+ if(!me){el.innerHTML=hd+`<p class="note">${t('loginNeed')}</p><button class="btn alt" id="fLog" style="margin-top:8px">${t('login')}</button>`;$('fLog').onclick=()=>go('acc');return}
+ const ids=[...favs];if(!ids.length){el.innerHTML=hd+`<p class="note">${t('noFav')}</p>`;return}
+ const list=[],miss=[];ids.forEach(id=>{const x=cache[id]||items.find(i=>i.id===id);x?list.push(x):miss.push(id)});
+ const show=()=>{list.sort((a,b)=>b.created-a.created);el.innerHTML=hd+`<div class="grid">${cards(list)}</div>`};show();
+ if(miss.length){const ds=await Promise.all(miss.map(id=>db.collection('listings').doc(id).get().catch(()=>null)));
+  ds.forEach(d=>{if(d&&d.exists)list.push({id:d.id,...d.data()})});if(view==='fav')show()}}
 
 applyTheme();applyLang();
 </script>
