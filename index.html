@@ -144,6 +144,15 @@ dialog#admin{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;b
 #fBtn svg,#cityP svg{flex:none}
 dialog#info{max-height:92vh}
 .vf{display:inline-grid;place-items:center;background:#1d9bf0;color:#fff;border-radius:50%;width:16px;height:16px;font-size:.62rem;margin-left:4px;vertical-align:middle;font-weight:700}
+html,body{overscroll-behavior-y:contain}
+#ptr{position:fixed;top:70px;left:50%;transform:translate(-50%,-80px);width:42px;height:42px;border-radius:50%;background:var(--card);box-shadow:0 3px 12px rgba(0,0,0,.3);z-index:30;opacity:0;pointer-events:none;display:grid;place-items:center}
+#ptr span{width:22px;height:22px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green)}
+#ptr.ready span{border-color:var(--green)}
+#ptr.spin span{border-color:var(--line);border-top-color:var(--green);animation:sp .7s linear infinite}
+.tspin{position:fixed;z-index:2147483647;border-radius:50%;box-sizing:border-box;border:3px solid rgba(0,0,0,.15);border-top-color:var(--green);background:rgba(255,255,255,.88);animation:sp .7s linear infinite;pointer-events:none}
+.tapd{opacity:.6}
+@keyframes sp{to{transform:rotate(360deg)}}
+.tspin{--green:#1e6b3a}
 </style>
 </head>
 <body>
@@ -529,7 +538,30 @@ function openInfo(){$('infoBody').innerHTML=`<h2>${t('aboutT')}</h2><p>${t('abou
 const dl=new URLSearchParams(location.search).get('l');
 if(dl)db.collection('listings').doc(dl).get().then(d=>{if(d.exists){cache[d.id]={id:d.id,...d.data()};openItem(cache[d.id])}}).catch(()=>{});
 
+
+/* ----- ወደታች ጎትቶ ማደስ (pull to refresh) ----- */
+(function(){let sy=0,pull=0,on=false;const el=document.createElement('div');el.id='ptr';el.innerHTML='<span></span>';document.body.appendChild(el);
+ const ok=t=>!document.querySelector('dialog[open]')&&!document.body.classList.contains('inchat')&&window.scrollY<=0&&!(t.closest&&t.closest('.slider,.filters,input,textarea,select,#lbBody'));
+ const reset=()=>{el.style.opacity=0;el.style.transform='translate(-50%,-80px)';el.classList.remove('ready')};
+ addEventListener('touchstart',e=>{on=ok(e.target);if(on){sy=e.touches[0].clientY;pull=0}},{passive:true});
+ addEventListener('touchmove',e=>{if(!on)return;pull=e.touches[0].clientY-sy;
+  if(pull>0){el.style.opacity=Math.min(1,pull/70);el.style.transform='translate(-50%,'+(Math.min(pull*.5,70)-80)+'px)';el.classList.toggle('ready',pull>110);if(e.cancelable)e.preventDefault()}else{on=false;reset()}},{passive:false});
+ addEventListener('touchend',()=>{if(!on)return;on=false;
+  if(pull>110){el.classList.add('spin');el.style.opacity=1;el.style.transform='translate(-50%,-10px)';try{sessionStorage.setItem('pv',view)}catch(x){}setTimeout(()=>location.reload(),250)}else reset()});
+})();
+
+/* ----- ማንኛውም ቁልፍ ሲነካ የሚዞር ምልክት ----- */
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button,.btn,.chip,.card,.conv,.pick,.opt,.heart,.hbtn,.plan');
+ if(!b||b.disabled||b.id==='lbX')return;
+ const r=b.getBoundingClientRect(),host=b.closest('dialog')||document.body,s=document.createElement('div'),z=Math.round(Math.min(32,Math.max(20,Math.min(r.width,r.height)*.6)));
+ s.className='tspin';s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+(r.left+r.width/2-z/2)+'px;top:'+(r.top+r.height/2-z/2)+'px';
+ host.appendChild(s);b.classList.add('tapd');
+ const t0=Date.now(),iv=setInterval(()=>{const d=Date.now()-t0;if((d>700&&!b.disabled)||d>20000){clearInterval(iv);s.remove();b.classList.remove('tapd')}},120);
+},true);
+
 applyTheme();applyLang();
+try{const pv=sessionStorage.getItem('pv');sessionStorage.removeItem('pv');if(pv&&['msg','acc','set','fav'].includes(pv))go(pv)}catch(x){}
 </script>
 </body>
 </html>
