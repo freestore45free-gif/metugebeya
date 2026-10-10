@@ -149,10 +149,9 @@ html,body{overscroll-behavior-y:contain}
 #ptr span{width:22px;height:22px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--green)}
 #ptr.ready span{border-color:var(--green)}
 #ptr.spin span{border-color:var(--line);border-top-color:var(--green);animation:sp .7s linear infinite}
-.tspin{position:fixed;z-index:2147483647;border-radius:50%;box-sizing:border-box;border:3px solid rgba(0,0,0,.15);border-top-color:var(--green);background:rgba(255,255,255,.88);animation:sp .7s linear infinite;pointer-events:none}
-.tapd{opacity:.6}
 @keyframes sp{to{transform:rotate(360deg)}}
-.tspin{--green:#1e6b3a}
+.bsp{display:inline-block;width:16px;height:16px;box-sizing:border-box;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px;margin-right:8px}
+.btn:disabled{opacity:.8;cursor:default}
 </style>
 </head>
 <body>
@@ -439,18 +438,18 @@ Q('.plan').forEach(p=>p.onclick=()=>{Q('.plan').forEach(x=>x.classList.remove('o
 $('payCancel').onclick=()=>$('pay').close();
 $('paySend').onclick=async()=>{if(!me){$('pay').close();return go('acc')}
  const x=$('txn').value.trim();if(x.length<6)return toast(t('txnErr'));
- await db.collection('payments').add({uid:me.uid,email:me.email,plan,txn:x,status:'pending',created:Date.now()});$('pay').close();toast(t('payOk'))};
+ const pb=$('paySend');busy(pb,true);try{await db.collection('payments').add({uid:me.uid,email:me.email,plan,txn:x,status:'pending',created:Date.now()});$('pay').close();toast(t('payOk'))}catch(e2){toast(t('err'))}busy(pb,false)};
 function shrink(f,max,q){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{
  const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',q))};im.src=fr.result};fr.readAsDataURL(f)})}
 $('pPics').onchange=async e=>{
  for(const f of e.target.files){if(pics.length>=3){toast(t('picMax'));break}if(used()+pics.length>=10){toast(t('picDay'));break}pics.push(await shrink(f,700,.6))}
  $('preview').innerHTML=pics.map(s=>`<img src="${s}" alt="">`).join('');note();e.target.value=''};
 $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('payFirst'));
- const btn=e.submitter||$('postForm').querySelector('[type=submit]');btn.disabled=true;toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(upImg))}catch(x){btn.disabled=false;return toast(t('upErr')+': '+x.message)}
+ const btn=e.submitter||$('postForm').querySelector('[type=submit]');busy(btn,true);toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(upImg))}catch(x){busy(btn,false);return toast(t('upErr')+': '+x.message)}
  const b=db.batch(),r=db.collection('listings').doc();
  b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,until:prof.paidUntil,verified:!!prof.verified,created:Date.now()});
  b.update(db.collection('users').doc(me.uid),{photosDay:today(),photosCount:used()+pics.length});
- try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}btn.disabled=false};
+ try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}busy(btn,false)};
 
 /* ----- አስተዳዳሪ ----- */
 $('adClose').onclick=()=>$('admin').close();
@@ -550,15 +549,8 @@ if(dl)db.collection('listings').doc(dl).get().then(d=>{if(d.exists){cache[d.id]=
   if(pull>110){el.classList.add('spin');el.style.opacity=1;el.style.transform='translate(-50%,-10px)';try{sessionStorage.setItem('pv',view)}catch(x){}setTimeout(()=>location.reload(),250)}else reset()});
 })();
 
-/* ----- ማንኛውም ቁልፍ ሲነካ የሚዞር ምልክት ----- */
-document.addEventListener('click',e=>{
- const b=e.target.closest('button,.btn,.chip,.card,.conv,.pick,.opt,.heart,.hbtn,.plan');
- if(!b||b.disabled||b.id==='lbX')return;
- const r=b.getBoundingClientRect(),host=b.closest('dialog')||document.body,s=document.createElement('div'),z=Math.round(Math.min(32,Math.max(20,Math.min(r.width,r.height)*.6)));
- s.className='tspin';s.style.cssText='width:'+z+'px;height:'+z+'px;left:'+(r.left+r.width/2-z/2)+'px;top:'+(r.top+r.height/2-z/2)+'px';
- host.appendChild(s);b.classList.add('tapd');
- const t0=Date.now(),iv=setInterval(()=>{const d=Date.now()-t0;if((d>700&&!b.disabled)||d>20000){clearInterval(iv);s.remove();b.classList.remove('tapd')}},120);
-},true);
+/* ----- በቁልፉ ውስጥ የሚዞር ምልክት (ለጥፍ እና ክፍያ ብቻ) ----- */
+function busy(b,on){if(on){b.disabled=true;b.dataset.h=b.innerHTML;b.innerHTML='<span class="bsp"></span>'+b.innerHTML}else{b.disabled=false;if(b.dataset.h!==undefined){b.innerHTML=b.dataset.h;delete b.dataset.h}}}
 
 applyTheme();applyLang();
 try{const pv=sessionStorage.getItem('pv');sessionStorage.removeItem('pv');if(pv&&['msg','acc','set','fav'].includes(pv))go(pv)}catch(x){}
