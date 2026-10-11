@@ -154,13 +154,34 @@ html,body{overscroll-behavior-y:contain}
 .btn:disabled{opacity:.8;cursor:default}
 dialog#upd{width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;border-radius:0}
 dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-align:center}
+.search{color:var(--ink)}.search::placeholder{color:var(--mute)}
+#hist{max-width:960px;margin:8px auto 0;color:#fff}
+#hist .hh{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;opacity:.95;margin-bottom:6px}
+#hist .hh button{background:rgba(255,255,255,.22);color:#fff;border:0;border-radius:99px;padding:4px 12px;cursor:pointer;font-size:.78rem}
+#hist .hc{display:flex;flex-wrap:wrap;gap:6px}
+.hchip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:99px;padding:4px 6px 4px 12px;font-size:.85rem;cursor:pointer}
+.hchip .hx{font-style:normal;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.25);display:grid;place-items:center;font-size:.65rem}
+#cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow:visible;padding:10px 0}
+.ctile{display:grid;justify-items:center;gap:4px;padding:10px 4px;border:1px solid var(--line);background:var(--card);border-radius:14px;cursor:pointer;font-size:.72rem;text-align:center;color:var(--ink);line-height:1.2}
+.ctile .ti{font-size:1.55rem}.ctile.on{background:var(--green);color:#fff;border-color:var(--green)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tg{font-size:.68rem;padding:1px 7px;border-radius:99px;background:var(--tint);color:var(--green);font-weight:600}
+.tg.used{background:#fdecc8;color:#7a5200}.tg.feat{background:#fff0b3;color:#7a5200}
+.card.featd{border-color:#f5a623;box-shadow:0 0 0 1px #f5a623 inset}
+.cover{width:100%;height:150px;object-fit:cover;border-radius:12px;margin-top:12px;display:block}
+.stars{color:#f5a623;letter-spacing:1px}
+.bnr{display:flex;gap:10px;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--gold),#ffd966);color:#2a2100;border-radius:12px;padding:10px 12px;margin:10px 0;font-weight:600}
+.bnr a{color:inherit;text-decoration:underline}.bnr button{border:0;background:rgba(0,0,0,.12);border-radius:50%;width:26px;height:26px;cursor:pointer;flex:none}
+.rv{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px;background:var(--card)}
+.starpick{display:flex;gap:6px;font-size:2.2rem;line-height:1}.starpick span{cursor:pointer;color:var(--line)}.starpick span.on{color:#f5a623}
 </style>
 </head>
 <body>
-<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button></div></header>
+<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button></div><div id="hist" hidden></div></header>
 <main>
  <section id="v-home">
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
+  <div id="bnr" class="bnr" hidden></div>
   <div class="filters" id="cats"></div>
   <div class="frow"><select class="city" id="city"></select><button type="button" id="fBtn" class="pick"></button></div>
   <div class="grid" id="grid"></div>
@@ -189,6 +210,8 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
  <div class="row"><label><span data-i="city"></span><select id="pCity"></select></label><label><span data-i="phone"></span><input id="pPhone" type="tel" placeholder="09..." required></label></div>
  <label><span data-i="tg"></span><input id="pTg" placeholder="@username"></label>
  <label><span data-i="desc"></span><textarea id="pDesc" required data-ph="descPh"></textarea></label>
+ <label><span data-i="cond"></span><select id="pCond"><option value="new" data-i="condNew"></option><option value="used" data-i="condUsed"></option></select></label>
+ <div class="row" style="gap:18px"><label style="display:flex;gap:8px;align-items:center;flex-direction:row"><input id="pNeg" type="checkbox" style="width:20px;height:20px"><span data-i="neg"></span></label><label style="display:flex;gap:8px;align-items:center;flex-direction:row"><input id="pDel" type="checkbox" style="width:20px;height:20px"><span data-i="deliv"></span></label></div>
  <label><span data-i="photos"></span><input id="pPics" type="file" accept="image/*" multiple></label>
  <div class="pics" id="preview"></div><div class="note" id="picNote"></div>
  <div class="row"><button type="button" class="btn line" id="cancelPost" data-i="back"></button><button class="btn alt" type="submit" data-i="submit"></button></div>
@@ -218,6 +241,18 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
  <label><span data-i="uMinL"></span><input id="uMin" type="number" min="0" inputmode="numeric"></label>
  <label><span data-i="uMsgL"></span><textarea id="uMsg"></textarea></label>
  <div class="row"><button type="button" class="btn line" id="uCancel" data-i="back"></button><button type="button" class="btn alt" id="uSave" data-i="save"></button></div></div></dialog>
+<dialog id="featdlg"><div class="in"><h2>⭐ <span data-i="promote"></span></h2><p class="note" data-i="featInfo"></p><div class="row" id="featPlans"></div>
+ <p><b>CBE:</b> 1000597799431 (Girma)<br><b>Telebirr:</b> 0962765475 (Girma)</p>
+ <label><span data-i="txn"></span><input id="fTxn" placeholder="FT2610..."></label>
+ <div class="row"><button type="button" class="btn line" id="fCancel2" data-i="back"></button><button type="button" class="btn alt" id="fSend" data-i="paySend"></button></div></div></dialog>
+<dialog id="rvdlg"><div class="in"><h2 data-i="writeReview"></h2><div class="starpick" id="rvStars"></div>
+ <label><span data-i="rvTextL"></span><textarea id="rvText" maxlength="300"></textarea></label>
+ <div class="row"><button type="button" class="btn line" id="rvCancel" data-i="back"></button><button type="button" class="btn alt" id="rvSave" data-i="save"></button></div></div></dialog>
+<dialog id="bnrdlg"><div class="in"><h2 data-i="bnrT"></h2>
+ <label style="display:flex;gap:10px;align-items:center;flex-direction:row"><input id="bOn" type="checkbox" style="width:22px;height:22px"><span data-i="bnrOn"></span></label>
+ <label><span data-i="bnrTextL"></span><input id="bText" maxlength="140"></label>
+ <label><span data-i="bnrLinkL"></span><input id="bLink" placeholder="https://..."></label>
+ <div class="row"><button type="button" class="btn line" id="bCancel" data-i="back"></button><button type="button" class="btn alt" id="bSave" data-i="save"></button></div></div></dialog>
 <dialog id="appdlg"><div class="in"><h2 data-i="getApp"></h2>
  <label><span data-i="linkL"></span><input id="aLink" placeholder="https://t.me/..."></label>
  <label><span data-i="photoL"></span><input id="aImg" type="file" accept="image/*"></label>
@@ -265,7 +300,7 @@ approve:['ተቀበል','Approve'],reject:['ውድቅ','Reject'],noPending:['የ
 inbox:['የደረሰኝ','Received'],sentL:['የላኩት','Sent'],noMsg:['ምንም መልእክት የለም።','No messages.'],loginNeed:['ለመቀጠል ይግቡ','Log in to continue'],
 theme:['የገጽታ ቀለም','Theme color'],lang:['ቋንቋ','Language'],listings:['ማስታወቂያዎች','listings'],
 msgSent:['መልእክት ተልኳል','Message sent'],repSent:['ሪፖርት ተልኳል','Report sent'],posted:['ማስታወቂያው ተለጥፏል','Listing posted'],
-postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed'],forgot:['የይለፍ ቃል ረስቻለሁ','Forgot password'],resetSent:['የይለፍ ቃል ማስተካከያ ሊንክ ወደ ኢሜይልዎ ተልኳል (Spam ማህደርንም ይመልከቱ)','Reset link sent to your email (check Spam too)'],enterEmail:['መጀመሪያ ኢሜይልዎን ያስገቡ','Enter your email first'],expSoon:['ኪራይዎ በ{n} ቀን ውስጥ ያበቃል፤ ማስታወቂያዎችዎ እንዳይደበቁ ያድሱ።','Your rent ends in {n} day(s); renew so your listings stay visible.'],expNow:['ኪራይዎ አልቋል፤ ማስታወቂያዎችዎ ተደብቀዋል። ለማደስ "ክፍያ / ማደስ" ይጫኑ።','Your rent has expired and your listings are hidden. Tap "Pay / Renew".'],expiredB:['ጊዜው አልፏል','Expired'],blockedMsg:['አካውንትዎ ታግዷል። አስተዳዳሪውን ያነጋግሩ።','Your account is blocked. Contact the admin.'],tPay:['ክፍያዎች','Payments'],tSel:['ሻጮች','Sellers'],tRep:['ሪፖርቶች','Reports'],stSellers:['ሻጮች','Sellers'],stActive:['ንቁ','Active'],stIncome:['ገቢ (ብር)','Income (Birr)'],expiredS:['አልቋል','Expired'],never:['አልከፈለም','Never paid'],daysLeft:['{n} ቀን ቀርቷል','{n} days left'],ext30:['+30 ቀን','+30 days'],block:['አግድ','Block'],unblock:['ፍቀድ','Unblock'],blockedL:['ታግዷል','Blocked'],noReports:['ሪፖርት የለም።','No reports.'],reportsN:['{n} ሪፖርት','{n} report(s)'],view:['እይ','View'],delL:['ማስታወቂያ ሰርዝ','Delete listing'],dismiss:['ሪፖርት አጥፋ','Dismiss'],more:['ተጨማሪ አሳይ','Show more'],filter:['ማጣሪያ','Filter'],pmin:['ዝቅተኛ ዋጋ (ብር)','Min price (Birr)'],pmax:['ከፍተኛ ዋጋ (ብር)','Max price (Birr)'],sortL:['ቅደም ተከተል','Sort'],sNew:['አዲስ መጀመሪያ','Newest'],sLow:['ዋጋ ዝቅተኛ → ከፍተኛ','Price: low to high'],sHigh:['ዋጋ ከፍተኛ → ዝቅተኛ','Price: high to low'],apply:['ተግብር','Apply'],reset:['አጽዳ','Reset'],share:['አጋራ','Share'],copied:['ሊንክ ተቀድቷል','Link copied'],aboutBtn:['ስለ እኛ · ደንብ · ማነጋገሪያ','About · Terms · Contact'],aboutT:['ስለ መቱ ገበያ','About Metu Gebeya'],aboutP:['መቱ ገበያ በመቱና አካባቢዋ ሰዎች እንዲገዙና እንዲሸጡ የሚያገናኝ የኦንላይን ገበያ ነው። ሻጮች የሱቅ ኪራይ ከፍለው ዕቃቸውን በፎቶ ይለጥፋሉ፤ ገዢዎች በነጻ ተመልክተው ሻጩን በቀጥታ ያገኛሉ።','Metu Gebeya is an online market connecting buyers and sellers in Metu and nearby areas. Sellers pay a shop rent to post items with photos; buyers browse for free and contact the seller directly.'],termsT:['ደንብና ሁኔታዎች','Terms & conditions'],terms1:['ሻጮች እውነተኛ መረጃና የራሳቸውን ዕቃ ፎቶ ብቻ መለጠፍ አለባቸው።','Sellers must post truthful information and photos of their own items.'],terms2:['ሕገወጥ፣ ሐሰተኛ ወይም የተሰረቀ ዕቃ መለጠፍ ክልክል ነው፤ ጥሰት ሲገኝ ማስታወቂያው ይወገዳል፣ አካውንቱም ሊታገድ ይችላል።','Illegal, counterfeit or stolen items are forbidden; violations lead to removal and possible account blocking.'],terms3:['መቱ ገበያ ገዢና ሻጭን የሚያገናኝ መድረክ ነው፤ ግብይቱ በሁለቱ መካከል ነው። ከመክፈልዎ በፊት እቃውን በአካል ይመልከቱ፤ አስቀድሞ ገንዘብ ከመላክ ይጠንቀቁ።','Metu Gebeya only connects buyers and sellers; the deal is between them. Inspect items in person before paying and avoid sending money in advance.'],terms4:['የሱቅ ኪራይ ከተረጋገጠ በኋላ ለተከፈለበት ጊዜ ማስታወቂያ መለጠፍ ይቻላል፤ ኪራይ ሲያልቅ ማስታወቂያዎች ይደበቃሉ፣ ሲታደስ ይመለሳሉ።','After the shop rent is verified you can post for the paid period; when it expires listings are hidden and return once renewed.'],contactT:['አስተዳዳሪውን ያነጋግሩ','Contact the admin'],verified:['የተረጋገጠ ሻጭ','Verified seller'],verify:['✔ ምልክት ስጥ','✔ Verify'],unverify:['✔ ምልክት አስወግድ','Remove ✔'],renew:['አድስ (ወደ ላይ አምጣ)','Renew (bump to top)'],renewWait:['በ24 ሰዓት አንድ ጊዜ ብቻ ማደስ ይቻላል','You can renew once every 24 hours'],renewed:['ማስታወቂያው ታድሷል','Listing renewed'],getApp:['አፑን አውርድ','Get the app'],getAppBtn:['አፑን አውርድ ↗','Download the app ↗'],linkL:['አፑ የተቀመጠበት ሊንክ (ለምሳሌ Telegram ቻናል)','App link (e.g. Telegram channel)'],photoL:['ፎቶ ወይም QR ኮድ','Photo or QR code'],removePhoto:['ፎቶ አስወግድ','Remove photo'],edit:['አስተካክል','Edit'],updT:['አዲስ ስሪት አለ','New version available'],updM:['ለመቀጠል አፑን ያሻሽሉ። የድሮውን አፕ Uninstall አድርገው አዲሱን ይጫኑ፤ መለያዎ አይጠፋም።','Please update the app to continue. Uninstall the old app and install the new one; your account is safe.'],updSet:['የአፕ ማሻሻያ ቅንብር','App update settings'],uOnL:['ማሻሻያ ግዴታ አድርግ','Require update'],uLinkL:['የአዲሱ አፕ ሊንክ','New app link'],uMinL:['ዝቅተኛ የአፕ ስሪት (ከዚህ በታች ያሉ ይሻሻላሉ)','Minimum app version (lower ones must update)'],uMsgL:['መልእክት (አማራጭ)','Message (optional)'],updOn:['ተከፍቷል','ON'],updOff:['ጠፍቷል','OFF']
+postFail:['አልተለጠፈም፤ ክፍያዎ ጊዜው ሳያልቅ አይቀርም','Could not post; your payment may have expired'],picMax:['በአንድ ማስታወቂያ 3 ፎቶ ብቻ','Max 3 photos per listing'],picDay:['በቀን 10 ፎቶ ብቻ ነው የሚፈቀደው','Only 10 photos per day'],payFirst:['መጀመሪያ ክፍያ ያድርጉ','Please pay first'],typeMsg:['መልእክት ጻፍ...','Type a message...'],seller:['ሻጭ','Seller'],addPhoto:['ፎቶ ጨምር','Add photo'],favs:['ተወዳጆች','Favorites'],noFav:['ምንም የወደዱት እቃ የለም። የልብ ምልክቱን ♥ ይጫኑ።','No favorites yet. Tap the ♥ on an item.'],dup:['⚠ ይህ ቁጥር ከዚህ በፊት ተጠቅሟል','⚠ This transaction number was used before'],confirmApprove:['{a} ብር ተቀብለዋል? ከባንክ/Telebirr አረጋግጠዋል?','Did you receive {a} Birr? Verified in bank/Telebirr?'],err:['ስህተት ተፈጥሯል','Something went wrong'],upl:['ፎቶ በመጫን ላይ...','Uploading photo...'],upErr:['ፎቶ መጫን አልተሳካም','Photo upload failed'],forgot:['የይለፍ ቃል ረስቻለሁ','Forgot password'],resetSent:['የይለፍ ቃል ማስተካከያ ሊንክ ወደ ኢሜይልዎ ተልኳል (Spam ማህደርንም ይመልከቱ)','Reset link sent to your email (check Spam too)'],enterEmail:['መጀመሪያ ኢሜይልዎን ያስገቡ','Enter your email first'],expSoon:['ኪራይዎ በ{n} ቀን ውስጥ ያበቃል፤ ማስታወቂያዎችዎ እንዳይደበቁ ያድሱ።','Your rent ends in {n} day(s); renew so your listings stay visible.'],expNow:['ኪራይዎ አልቋል፤ ማስታወቂያዎችዎ ተደብቀዋል። ለማደስ "ክፍያ / ማደስ" ይጫኑ።','Your rent has expired and your listings are hidden. Tap "Pay / Renew".'],expiredB:['ጊዜው አልፏል','Expired'],blockedMsg:['አካውንትዎ ታግዷል። አስተዳዳሪውን ያነጋግሩ።','Your account is blocked. Contact the admin.'],tPay:['ክፍያዎች','Payments'],tSel:['ሻጮች','Sellers'],tRep:['ሪፖርቶች','Reports'],stSellers:['ሻጮች','Sellers'],stActive:['ንቁ','Active'],stIncome:['ገቢ (ብር)','Income (Birr)'],expiredS:['አልቋል','Expired'],never:['አልከፈለም','Never paid'],daysLeft:['{n} ቀን ቀርቷል','{n} days left'],ext30:['+30 ቀን','+30 days'],block:['አግድ','Block'],unblock:['ፍቀድ','Unblock'],blockedL:['ታግዷል','Blocked'],noReports:['ሪፖርት የለም።','No reports.'],reportsN:['{n} ሪፖርት','{n} report(s)'],view:['እይ','View'],delL:['ማስታወቂያ ሰርዝ','Delete listing'],dismiss:['ሪፖርት አጥፋ','Dismiss'],more:['ተጨማሪ አሳይ','Show more'],filter:['ማጣሪያ','Filter'],pmin:['ዝቅተኛ ዋጋ (ብር)','Min price (Birr)'],pmax:['ከፍተኛ ዋጋ (ብር)','Max price (Birr)'],sortL:['ቅደም ተከተል','Sort'],sNew:['አዲስ መጀመሪያ','Newest'],sLow:['ዋጋ ዝቅተኛ → ከፍተኛ','Price: low to high'],sHigh:['ዋጋ ከፍተኛ → ዝቅተኛ','Price: high to low'],apply:['ተግብር','Apply'],reset:['አጽዳ','Reset'],share:['አጋራ','Share'],copied:['ሊንክ ተቀድቷል','Link copied'],aboutBtn:['ስለ እኛ · ደንብ · ማነጋገሪያ','About · Terms · Contact'],aboutT:['ስለ መቱ ገበያ','About Metu Gebeya'],aboutP:['መቱ ገበያ በመቱና አካባቢዋ ሰዎች እንዲገዙና እንዲሸጡ የሚያገናኝ የኦንላይን ገበያ ነው። ሻጮች የሱቅ ኪራይ ከፍለው ዕቃቸውን በፎቶ ይለጥፋሉ፤ ገዢዎች በነጻ ተመልክተው ሻጩን በቀጥታ ያገኛሉ።','Metu Gebeya is an online market connecting buyers and sellers in Metu and nearby areas. Sellers pay a shop rent to post items with photos; buyers browse for free and contact the seller directly.'],termsT:['ደንብና ሁኔታዎች','Terms & conditions'],terms1:['ሻጮች እውነተኛ መረጃና የራሳቸውን ዕቃ ፎቶ ብቻ መለጠፍ አለባቸው።','Sellers must post truthful information and photos of their own items.'],terms2:['ሕገወጥ፣ ሐሰተኛ ወይም የተሰረቀ ዕቃ መለጠፍ ክልክል ነው፤ ጥሰት ሲገኝ ማስታወቂያው ይወገዳል፣ አካውንቱም ሊታገድ ይችላል።','Illegal, counterfeit or stolen items are forbidden; violations lead to removal and possible account blocking.'],terms3:['መቱ ገበያ ገዢና ሻጭን የሚያገናኝ መድረክ ነው፤ ግብይቱ በሁለቱ መካከል ነው። ከመክፈልዎ በፊት እቃውን በአካል ይመልከቱ፤ አስቀድሞ ገንዘብ ከመላክ ይጠንቀቁ።','Metu Gebeya only connects buyers and sellers; the deal is between them. Inspect items in person before paying and avoid sending money in advance.'],terms4:['የሱቅ ኪራይ ከተረጋገጠ በኋላ ለተከፈለበት ጊዜ ማስታወቂያ መለጠፍ ይቻላል፤ ኪራይ ሲያልቅ ማስታወቂያዎች ይደበቃሉ፣ ሲታደስ ይመለሳሉ።','After the shop rent is verified you can post for the paid period; when it expires listings are hidden and return once renewed.'],contactT:['አስተዳዳሪውን ያነጋግሩ','Contact the admin'],verified:['የተረጋገጠ ሻጭ','Verified seller'],verify:['✔ ምልክት ስጥ','✔ Verify'],unverify:['✔ ምልክት አስወግድ','Remove ✔'],renew:['አድስ (ወደ ላይ አምጣ)','Renew (bump to top)'],renewWait:['በ24 ሰዓት አንድ ጊዜ ብቻ ማደስ ይቻላል','You can renew once every 24 hours'],renewed:['ማስታወቂያው ታድሷል','Listing renewed'],getApp:['አፑን አውርድ','Get the app'],getAppBtn:['አፑን አውርድ ↗','Download the app ↗'],linkL:['አፑ የተቀመጠበት ሊንክ (ለምሳሌ Telegram ቻናል)','App link (e.g. Telegram channel)'],photoL:['ፎቶ ወይም QR ኮድ','Photo or QR code'],removePhoto:['ፎቶ አስወግድ','Remove photo'],edit:['አስተካክል','Edit'],updT:['አዲስ ስሪት አለ','New version available'],updM:['ለመቀጠል አፑን ያሻሽሉ። የድሮውን አፕ Uninstall አድርገው አዲሱን ይጫኑ፤ መለያዎ አይጠፋም።','Please update the app to continue. Uninstall the old app and install the new one; your account is safe.'],updSet:['የአፕ ማሻሻያ ቅንብር','App update settings'],uOnL:['ማሻሻያ ግዴታ አድርግ','Require update'],uLinkL:['የአዲሱ አፕ ሊንክ','New app link'],uMinL:['ዝቅተኛ የአፕ ስሪት (ከዚህ በታች ያሉ ይሻሻላሉ)','Minimum app version (lower ones must update)'],uMsgL:['መልእክት (አማራጭ)','Message (optional)'],updOn:['ተከፍቷል','ON'],updOff:['ጠፍቷል','OFF'],recent:['የቅርብ ፍለጋዎች','Recent searches'],clearAll:['ሁሉንም አጽዳ','Clear all'],cond:['የእቃው ሁኔታ','Condition'],condNew:['አዲስ','New'],condUsed:['ያገለገለ','Used'],neg:['ድርድር አለው','Negotiable'],deliv:['ማድረስ አለ','Delivery available'],addrL:['አድራሻ (ሱቁ የት ነው)','Address (where is your shop)'],hoursL:['የሥራ ሰዓት (ለምሳሌ ሰኞ–ቅዳሜ 2:00–12:00)','Opening hours (e.g. Mon–Sat 8am–6pm)'],mapL:['የ Google Maps ሊንክ (አማራጭ)','Google Maps link (optional)'],coverL:['የሱቅ ሽፋን ፎቶ','Shop cover photo'],openMap:['Maps ላይ ክፈት','Open in Maps'],promote:['አስተዋውቅ','Promote'],featInfo:['ማስታወቂያዎ በዋና ገጽ አናት ላይ ከ⭐ ምልክት ጋር ይታያል። ክፍያው ሲረጋገጥ ይጀምራል።','Your listing will appear at the top of the home page with a ⭐ badge once the payment is verified.'],days:['ቀን','days'],featured:['ተመረጠ','Featured'],reviews:['ግምገማዎች','Reviews'],writeReview:['ግምገማ ጻፍ','Write a review'],editReview:['ግምገማዬን አስተካክል','Edit my review'],reviewNeed:['ለመገምገም መጀመሪያ ከሻጩ ጋር በመልእክት ይወያዩ።','To review, first chat with the seller.'],noReviews:['ገና ግምገማ የለም።','No reviews yet.'],rvTextL:['አስተያየት (አማራጭ)','Comment (optional)'],pickStars:['ኮከብ ይምረጡ','Pick a star rating'],safe:['ከመክፈልዎ በፊት እቃውን በአካል ያረጋግጡ፤ አስቀድሞ ገንዘብ ከመላክ ይጠንቀቁ።','Check the item in person before paying; avoid sending money in advance.'],bnrT:['የዋና ገጽ ባነር','Home banner'],bnrOn:['ባነር አሳይ','Show banner'],bnrTextL:['ጽሑፍ','Text'],bnrLinkL:['ሊንክ (አማራጭ)','Link (optional)']
 };
 const CO={"ሁሉም":"Hundumaa","ስልኮች":"Bilbilaalee","ኤሌክትሮኒክስ":"Elektirooniksii","ተሽከርካሪ":"Konkolaataa","ቤት እና መሬት":"Manaa fi lafa","ፋሽን":"Uffata","ቤት ዕቃ":"Meeshaa manaa","ሌላ":"Kan biraa"};
 const CYO={"ሁሉም ከተማ":"Magaalaa hundaa","መቱ":"Mattuu","ጅማ":"Jimmaa","ጋምቤላ":"Gambeellaa","አዲስ አበባ":"Finfinnee","ሌላ":"Kan biraa"};
@@ -290,7 +325,7 @@ inbox:"Kan natti dhufe",sentL:"Kan ergee",noMsg:"Ergaan hin jiru.",loginNeed:"It
 theme:"Halluu bifaa",lang:"Afaan",listings:"beeksisa",
 msgSent:"Ergaan ergameera",repSent:"Gabaasni ergameera",posted:"Beeksisni maxxanfameera",
 postFail:"Hin maxxanfamne; yeroon kaffaltii kee darbee ta’uu danda’a",picMax:"Beeksisa tokkoon suuraa 3 qofa",picDay:"Guyyaatti suuraa 10 qofa",payFirst:"Dura kaffalaa",
-typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne",forgot:"Jecha darbii dagatte",resetSent:"Hidhaan jecha darbii deebisanii qindeessuu imeelii keetti ergameera (Spam illee ilaali)",enterEmail:"Dura imeelii kee galchi",expSoon:"Kiraan kee guyyaa {n} keessatti xumurama; beeksisni kee akka hin dhokanne haaromsi.",expNow:"Kiraan kee xumurameera; beeksisni kee dhokateera. “Kaffali / Haaromsi” tuqi.",expiredB:"Yeroon darbeera",blockedMsg:"Akaawuntiin kee dhorkameera. Bulchaa quunnami.",more:"Dabalataa agarsiisi",filter:"Calallii",pmin:"Gatii xiqqaa (Birrii)",pmax:"Gatii guddaa (Birrii)",sortL:"Tartiiba",sNew:"Haaraan duraa",sLow:"Gatii: gadi aanaa → ol aanaa",sHigh:"Gatii: ol aanaa → gadi aanaa",apply:"Hojiirra oolchi",reset:"Haqi",share:"Qoodi",copied:"Hidhaan koopii ta’eera",verified:"Gurgurtuu mirkanaa’e",renew:"Haaromsi (olitti fiduu)",renewWait:"Sa’aatii 24 keessatti altokko qofa haaromsuu dandeessa",renewed:"Beeksisni haaromfameera",getApp:"Appii buufadhu",getAppBtn:"Appii buufadhu ↗",updT:"Fooyya’iinsi haaraan jira",updM:"Itti fufuuf appii haaromsaa. Appii duraa balleessitanii kan haaraa buufadhaa; akaawuntiin keessan hin badu."};
+typeMsg:"Ergaa barreessi...",seller:"Gurgurtuu",addPhoto:"Suuraa dabali",favs:"Kan jaallatame",noFav:"Ammaaf kan jaallatame hin jiru. Mallattoo ♥ tuqi.",dup:"⚠ Lakkoofsi kun dura fayyadamameera",confirmApprove:"Birrii {a} fudhattaniirtu? Baankii/Telebirr keessatti mirkaneessitaniirtu?",err:"Rakkoon uumameera",upl:"Suuraa ol-fe’aa jira...",upErr:"Suuraa ol-fe’uun hin milkoofne",forgot:"Jecha darbii dagatte",resetSent:"Hidhaan jecha darbii deebisanii qindeessuu imeelii keetti ergameera (Spam illee ilaali)",enterEmail:"Dura imeelii kee galchi",expSoon:"Kiraan kee guyyaa {n} keessatti xumurama; beeksisni kee akka hin dhokanne haaromsi.",expNow:"Kiraan kee xumurameera; beeksisni kee dhokateera. “Kaffali / Haaromsi” tuqi.",expiredB:"Yeroon darbeera",blockedMsg:"Akaawuntiin kee dhorkameera. Bulchaa quunnami.",more:"Dabalataa agarsiisi",filter:"Calallii",pmin:"Gatii xiqqaa (Birrii)",pmax:"Gatii guddaa (Birrii)",sortL:"Tartiiba",sNew:"Haaraan duraa",sLow:"Gatii: gadi aanaa → ol aanaa",sHigh:"Gatii: ol aanaa → gadi aanaa",apply:"Hojiirra oolchi",reset:"Haqi",share:"Qoodi",copied:"Hidhaan koopii ta’eera",verified:"Gurgurtuu mirkanaa’e",renew:"Haaromsi (olitti fiduu)",renewWait:"Sa’aatii 24 keessatti altokko qofa haaromsuu dandeessa",renewed:"Beeksisni haaromfameera",getApp:"Appii buufadhu",getAppBtn:"Appii buufadhu ↗",updT:"Fooyya’iinsi haaraan jira",updM:"Itti fufuuf appii haaromsaa. Appii duraa balleessitanii kan haaraa buufadhaa; akaawuntiin keessan hin badu.",recent:"Barbaacha dhiyoo",clearAll:"Hunda haqi",cond:"Haala meeshaa",condNew:"Haaraa",condUsed:"Fayyadamaa",neg:"Waliigaltee danda’ama",deliv:"Geessuun ni jira",openMap:"Maapii irratti bani",reviews:"Madaallii",writeReview:"Madaallii barreessi",noReviews:"Ammaaf madaalliin hin jiru.",safe:"Osoo hin kaffalin dura meeshaa ofiin mirkaneeffadhaa; duraan dura maallaqa erguu irraa of eegaa."};
 let lang='am',theme='green',lim=24,fMin=0,fMax=0,fSort='new',unsubL=null,moreAvail=false,favs=new Set(),rd={},qm=[{},{},{}],openT=null,me=null,prof=null,shop=null,items=[],cache={},plan=50,cat='ሁሉም',pics=[],reg=false,view='home',unsubs=[],newAv=null;
 try{lang=localStorage.getItem('lang')||'am';theme=localStorage.getItem('theme')||'green'}catch(e){}
 const t=k=>lang==='om'&&OM[k]?OM[k]:(L[k]||[k,k])[lang==='am'?0:1];
@@ -313,7 +348,7 @@ function applyTheme(){document.documentElement.dataset.theme=theme}
 function applyLang(){document.documentElement.lang=lang;document.title=t('app');
  Q('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));Q('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));fill();go(view,shopArg)}
 function fill(){const cv=$('city').value,pc=$('pCat').value,pt=$('pCity').value;
- $('cats').innerHTML=CATS.map(c=>`<button class="chip ${c===cat?'on':''}" data-c="${c}">${cn(c)}</button>`).join('');
+ $('cats').innerHTML=CATS.map(c=>`<button class="ctile ${c===cat?'on':''}" data-c="${c}"><span class="ti">${c==='ሁሉም'?'🛍️':ICON[c]}</span><span>${cn(c)}</span></button>`).join('');
  const o=(a,f)=>a.map(c=>`<option value="${c}">${f(c)}</option>`).join('');
  $('city').innerHTML=o(CITIES,yn);$('pCat').innerHTML=o(CATS.slice(1),cn);$('pCity').innerHTML=o(CITIES.slice(1),yn);
  if(cv)$('city').value=cv;if(pc)$('pCat').value=pc;if(pt)$('pCity').value=pt;refreshPicks()}
@@ -345,33 +380,39 @@ function renderAcc(){const el=$('v-acc');
  el.innerHTML=`<div class="prof"><label class="avedit">${av(shop&&shop.avatar,nm,76)}<span class="cam">📷</span><input id="sAv" type="file" accept="image/*" hidden></label><div><b style="font-size:1.1rem">${esc(nm)}</b><div class="meta">${esc(me.email)}</div><div class="meta">${paid()?t('paidUntil')+' '+new Date(prof.paidUntil).toLocaleDateString():t('notPaid')}</div>${expBanner()}</div></div>
  <div class="in" style="padding:0"><label>${t('shopName')}<input id="sName" maxlength="40" value="${esc((shop&&shop.name)||'')}"></label>
  <label>${t('bio')}<textarea id="sBio" maxlength="200">${esc((shop&&shop.bio)||'')}</textarea></label>
+ <label>${t('addrL')}<input id="sAddr" maxlength="120" value="${esc((shop&&shop.addr)||'')}"></label>
+ <label>${t('hoursL')}<input id="sHours" maxlength="80" value="${esc((shop&&shop.hours)||'')}"></label>
+ <label>${t('mapL')}<input id="sMap" placeholder="https://maps.google.com/..." value="${esc((shop&&shop.map)||'')}"></label>
+ <label>${t('coverL')}<input id="sCov" type="file" accept="image/*"></label>${shop&&shop.cover?`<img class="cover" style="margin-top:0;height:90px" src="${cl(shop.cover,500)}" alt="">`:''}
  <div class="row"><button class="btn alt" id="sSave">${t('save')}</button><button class="btn line" id="sView">${t('myShop')}</button></div>
  <button class="btn" id="aPay">${t('payBtn')}</button>${isAdmin()?`<button class="btn line" id="aAdm">${t('admin')}</button>`:''}<button class="btn line" id="aOut">${t('logout')}</button></div>`;
- $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast(t('upl'));let a;try{a=await upImg(await shrink(f,240,.7))}catch(x){return toast(t('upErr')+': '+x.message)}await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a});toast(t('saved'))};
- $('sSave').onclick=async()=>{await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:newAv!==null?newAv:((shop&&shop.avatar)||'')});toast(t('saved'))};
+ $('sAv').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast(t('upl'));let a;try{a=await upImg(await shrink(f,240,.7))}catch(x){return toast(t('upErr')+': '+x.message)}await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),avatar:a},{merge:true});toast(t('saved'))};
+ $('sSave').onclick=async()=>{await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],bio:$('sBio').value.trim(),addr:$('sAddr').value.trim(),hours:$('sHours').value.trim(),map:$('sMap').value.trim()},{merge:true});toast(t('saved'))};
+ $('sCov').onchange=async e=>{const f=e.target.files[0];if(!f)return;toast(t('upl'));let c;try{c=await upImg(await shrink(f,1200,.75))}catch(x){return toast(t('upErr')+': '+x.message)}await db.collection('shops').doc(me.uid).set({uid:me.uid,name:$('sName').value.trim()||me.email.split('@')[0],cover:c},{merge:true});toast(t('saved'))};
  $('sView').onclick=()=>go('shop',me.uid);$('aPay').onclick=()=>$('pay').showModal();
  if(isAdmin())$('aAdm').onclick=()=>{adTab('pay');$('admin').showModal()};
  $('aOut').onclick=()=>auth.signOut()}
 
 /* ----- ዋና ገጽ ----- */
 function listenL(){if(unsubL)unsubL();unsubL=db.collection('listings').orderBy('created','desc').limit(lim).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));moreAvail=s.docs.length>=lim;if(view==='home')render()})}listenL();
-function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}${i.verified?'<span class="vf">✔</span>':''}</b><span class="price">${fmt(i.p)}</span><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
+function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card ${isFeat(i)?'featd':''}" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}${i.verified?'<span class="vf">✔</span>':''}</b><span class="price">${fmt(i.p)}</span><div class="tags">${tagHtml(i)}</div><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value,act=q||fMin||fMax||fSort!=='new';
  if(act&&lim<100){lim=100;listenL()}
- let l=items.filter(i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax));
+ const pass=i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax);let l=items.filter(pass);
  if(fSort==='low')l=[...l].sort((x,y)=>x.p-y.p);if(fSort==='high')l=[...l].sort((x,y)=>y.p-x.p);
+ if(fSort==='new'){const ft=featItems.filter(i=>isFeat(i)&&pass(i)),ids=new Set(ft.map(x=>x.id));l=[...ft,...l.filter(x=>!ids.has(x.id))]}
  $('grid').innerHTML=cards(l);$('moreBtn').hidden=!moreAvail;$('moreBtn').textContent=t('more');
  $('fBtn').innerHTML=FI+'<span>'+t('filter')+((fMin||fMax||fSort!=='new')?' •':'')+'</span>'}
-$('cats').onclick=e=>{const b=e.target.closest('.chip');if(b){cat=b.dataset.c;fill();render()}};
+$('cats').onclick=e=>{const b=e.target.closest('.ctile');if(b){cat=b.dataset.c;fill();render()}};
 $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
 
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${cl(s,1000)}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b>${i.verified?'<span class="vf">✔</span> <small>'+t('verified')+'</small>':''} ›</button>
- <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><p>${esc(i.d)}</p><div class="row">${shareBtns(i)}</div>
+ <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><div class="tags">${tagHtml(i)}</div><p>${esc(i.d)}</p><div class="row">${shareBtns(i)}</div>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
- (own?`<div class="row"><button class="btn alt" id="vRenew">🔄 ${t('renew')}</button></div><div class="row"><button class="btn line" id="vSold">${t(i.sold?'unsold':'markSold')}</button><button class="btn red" id="vDel">${t('del')}</button></div>`:
+ (own?`<div class="row"><button class="btn alt" id="vRenew">🔄 ${t('renew')}</button><button class="btn" id="vFeat">⭐ ${t('promote')}</button></div><div class="row"><button class="btn line" id="vSold">${t(i.sold?'unsold':'markSold')}</button><button class="btn red" id="vDel">${t('del')}</button></div>`:
  `<label>${t('msgSeller')}<textarea id="msg" placeholder="${t('msgPh')}"></textarea></label><label>${t('yourPhone')}<input id="msgPh" type="tel"></label><div class="row" style="align-items:center"><label class="btn line" for="msgImg" style="margin:0">📷 ${t('addPhoto')}</label><input id="msgImg" type="file" accept="image/*" hidden><span id="msgPrev"></span></div><div class="row"><button class="btn alt" id="vSend">${t('send')}</button><button class="btn red" id="vRep">${t('report')}</button></div>`)+
  `<button class="btn line" id="vClose">${t('close')}</button>`;
  $('view').showModal();$('vClose').onclick=$('vBack').onclick=()=>$('view').close();$('vFav').onclick=()=>toggleFav(i.id);$('vCopy').onclick=()=>{const u=shareUrl(i);(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast(t('copied'))).catch(()=>prompt(t('share'),u))};
@@ -380,18 +421,20 @@ function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  if($('zoomBtn'))$('zoomBtn').onclick=()=>openLB(im,Math.round(sl.scrollLeft/sl.clientWidth));
  db.collection('shops').doc(i.uid).get().then(d=>{if(d.exists&&d.data().avatar&&$('sAvt'))$('sAvt').innerHTML=av(d.data().avatar,i.shop,36)}).catch(()=>{});
  $('goShop').onclick=()=>{$('view').close();go('shop',i.uid)};
- if(own){$('vRenew').onclick=async()=>{if(Date.now()-(i.created||0)<864e5)return toast(t('renewWait'));await db.collection('listings').doc(i.id).update({created:Date.now()});toast(t('renewed'));$('view').close();if(view==='shop')loadShop(i.uid)};$('vSold').onclick=async()=>{await db.collection('listings').doc(i.id).update({sold:!i.sold});$('view').close()};
+ db.collection('reviews').where('sellerId','==',i.uid).limit(50).get().then(s=>{const r=s.docs.map(d=>d.data().rating);if(r.length&&$('goShop')){const a=r.reduce((x,y)=>x+y,0)/r.length;$('goShop').insertAdjacentHTML('beforeend',` <span class="stars">★</span> ${a.toFixed(1)} (${r.length})`)}}).catch(()=>{});
+ if(own){$('vFeat').onclick=()=>openFeat(i);$('vRenew').onclick=async()=>{if(Date.now()-(i.created||0)<864e5)return toast(t('renewWait'));await db.collection('listings').doc(i.id).update({created:Date.now()});toast(t('renewed'));$('view').close();if(view==='shop')loadShop(i.uid)};$('vSold').onclick=async()=>{await db.collection('listings').doc(i.id).update({sold:!i.sold});$('view').close()};
   $('vDel').onclick=async()=>{if(confirm(t('confirmDel'))){await db.collection('listings').doc(i.id).delete();$('view').close();if(view==='shop')loadShop(i.uid)}}}
  else{let mImg=null;$('msgImg').onchange=async e=>{const f=e.target.files[0];if(!f)return;mImg=await shrink(f,800,.65);$('msgPrev').innerHTML=`<img src="${mImg}" style="height:44px;border-radius:8px;vertical-align:middle" alt="">`;e.target.value=''};$('vSend').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}const x=$('msg').value.trim();if(!x&&!mImg)return;let mUrl='';if(mImg){try{mUrl=await upImg(mImg)}catch(e2){return toast(t('upErr')+': '+e2.message)}}
-   await db.collection('messages').add({threadId:i.id+'_'+me.uid,listingId:i.id,listingTitle:i.t,sellerId:i.uid,buyerId:me.uid,sellerName:i.shop||'',buyerName:me.email,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,img:mUrl,created:Date.now()});toast(t('msgSent'));$('view').close();go('msg');openT=i.id+'_'+me.uid;renderMsgs()};
+   await db.collection('messages').add({threadId:i.id+'_'+me.uid,listingId:i.id,listingTitle:i.t,sellerId:i.uid,buyerId:me.uid,sellerName:i.shop||'',buyerName:me.email,fromId:me.uid,fromName:me.email,phone:$('msgPh').value,text:x,img:mUrl,created:Date.now()});db.collection('contacts').doc(me.uid+'_'+i.uid).set({buyerId:me.uid,sellerId:i.uid,created:Date.now()}).catch(()=>{});toast(t('msgSent'));$('view').close();go('msg');openT=i.id+'_'+me.uid;renderMsgs()};
   $('vRep').onclick=async()=>{if(!me){$('view').close();go('acc');return toast(t('loginNeed'))}await db.collection('reports').add({listingId:i.id,by:me.uid,created:Date.now()});toast(t('repSent'));$('view').close()}}}
 
 /* ----- ሱቅ ገጽ ----- */
 async function loadShop(uid){const el=$('v-shop');el.innerHTML='…';
  const [s,l]=await Promise.all([db.collection('shops').doc(uid).get(),db.collection('listings').where('uid','==',uid).get()]);
  const sh=s.exists?s.data():{},list=l.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.created-a.created).filter(i=>alive(i)||(me&&me.uid===uid)),nm=sh.name||(list[0]&&list[0].shop)||'—';
- el.innerHTML=`<button class="btn line" id="shBack">← ${t('back')}</button><div class="prof" style="margin-top:12px">${av(sh.avatar,nm,76)}<div><b style="font-size:1.2rem">${esc(nm)}</b>${list.some(x=>x.verified)?'<span class="vf">✔</span>':''}<p>${esc(sh.bio||'')}</p><div class="meta">${list.length} ${t('listings')}</div></div></div><div class="grid">${cards(list)}</div>`;
- $('shBack').onclick=()=>go('home')}
+ const mapUrl=sh.map?(/^https?:\/\//.test(sh.map)?sh.map:'https://'+sh.map):(sh.addr?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(sh.addr+' Metu Ethiopia'):'');
+ el.innerHTML=`<button class="btn line" id="shBack">← ${t('back')}</button>${sh.cover?`<img class="cover" src="${cl(sh.cover,900)}" alt="">`:''}<div class="prof" style="margin-top:12px">${av(sh.avatar,nm,76)}<div><b style="font-size:1.2rem">${esc(nm)}</b>${list.some(x=>x.verified)?'<span class="vf">✔</span>':''}<div id="shRate" class="meta"></div><p>${esc(sh.bio||'')}</p><div class="meta">${list.length} ${t('listings')}</div></div></div>${sh.addr?`<div class="meta">📍 ${esc(sh.addr)}</div>`:''}${sh.hours?`<div class="meta">🕒 ${esc(sh.hours)}</div>`:''}${mapUrl?`<a class="btn line" style="margin:8px 0" href="${esc(mapUrl)}">🗺 ${t('openMap')}</a>`:''}<div class="grid">${cards(list)}</div><div id="shRev"></div>`;
+ $('shBack').onclick=()=>go('home');loadReviews(uid)}
 
 /* ----- መልእክቶች (ውይይት) ----- */
 function listenMsgs(){['sellerId','buyerId','fromId'].forEach((f,k)=>unsubs.push(db.collection('messages').where(f,'==',me.uid).onSnapshot(s=>{qm[k]={};s.docs.forEach(d=>qm[k][d.id]={id:d.id,...d.data()});updBadge();if(view==='msg')renderMsgs(true)},()=>{})))}
@@ -417,11 +460,11 @@ function renderMsgs(live){const el=$('v-msg');
  const bubs=th.msgs.map(bub).join('');markRead(th);
  if(live&&$('chat')){$('chat').innerHTML=bubs;scrollTo(0,document.body.scrollHeight);return}
  cImg=null;
- el.innerHTML=`<div class="chatbar"><button class="btn line" id="cBack">←</button><div style="flex:1;min-width:0"><b>${esc(th.title)}</b><div class="meta">${esc(other(th))}</div></div>${th.phone&&me.uid===th.seller?`<a class="btn alt" href="tel:${esc(th.phone)}">${t('call')}</a>`:''}</div><div class="chat" id="chat">${bubs}</div><form class="cform" id="cForm"><div id="cPrev"></div><div class="crow"><label class="ci" for="cFile">${CLIP}</label><input id="cFile" type="file" accept="image/*" hidden><input id="cIn" autocomplete="off" placeholder="${t('typeMsg')}"><button class="send" aria-label="${t('send')}">${SND}</button></div></form>`;
+ el.innerHTML=`<div class="chatbar"><button class="btn line" id="cBack">←</button><div style="flex:1;min-width:0"><b>${esc(th.title)}</b><div class="meta">${esc(other(th))}</div></div>${th.phone&&me.uid===th.seller?`<a class="btn alt" href="tel:${esc(th.phone)}">${t('call')}</a>`:''}</div><div class="warn" style="margin:0 0 6px">⚠ ${t('safe')}</div><div class="chat" id="chat">${bubs}</div><form class="cform" id="cForm"><div id="cPrev"></div><div class="crow"><label class="ci" for="cFile">${CLIP}</label><input id="cFile" type="file" accept="image/*" hidden><input id="cIn" autocomplete="off" placeholder="${t('typeMsg')}"><button class="send" aria-label="${t('send')}">${SND}</button></div></form>`;
  $('cBack').onclick=()=>{openT=null;renderMsgs()};
  $('cFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;cImg=await shrink(f,800,.65);$('cPrev').innerHTML=`<div class="cp"><img src="${cImg}" alt=""><button type="button" id="cX">✕</button></div>`;$('cX').onclick=()=>{cImg=null;$('cPrev').innerHTML=''};e.target.value=''};
  $('cForm').onsubmit=async e=>{e.preventDefault();const x=$('cIn').value.trim();if(!x&&!cImg)return;let im=cImg;$('cIn').value='';cImg=null;$('cPrev').innerHTML='';if(im){try{im=await upImg(im)}catch(x){toast(t('upErr')+': '+x.message);return}}
-  await db.collection('messages').add({threadId:th.tid,listingId:th.lid,listingTitle:th.title,sellerId:th.seller,buyerId:th.buyer,sellerName:me.uid===th.seller?((shop&&shop.name)||me.email.split('@')[0]):th.sName,buyerName:th.bName,fromId:me.uid,fromName:me.email,text:x,img:im||'',created:Date.now()})};
+  await db.collection('messages').add({threadId:th.tid,listingId:th.lid,listingTitle:th.title,sellerId:th.seller,buyerId:th.buyer,sellerName:me.uid===th.seller?((shop&&shop.name)||me.email.split('@')[0]):th.sName,buyerName:th.bName,fromId:me.uid,fromName:me.email,text:x,img:im||'',created:Date.now()});if(me.uid===th.buyer)db.collection('contacts').doc(me.uid+'_'+th.seller).set({buyerId:me.uid,sellerId:th.seller,created:Date.now()}).catch(()=>{})};
  scrollTo(0,document.body.scrollHeight)}
 $('v-msg').onclick=e=>{const m=e.target.closest('.bimg');if(m)return openLB([m.dataset.o||m.src],0);const c=e.target.closest('.conv');if(c){openT=c.dataset.t;renderMsgs()}};
 
@@ -441,10 +484,10 @@ $('preview').onclick=e=>{const m=e.target.closest('img');if(m)openLB(pics,[...$(
 
 /* ----- ቅንብር ----- */
 function renderSet(){$('v-set').innerHTML=`<h2>${t('sets')}</h2><h3>${t('theme')}</h3><div class="sw">${TH.map(([k,c])=>`<button class="${k===theme?'on':''}" data-th="${k}" style="background:${c}" aria-label="${k}"></button>`).join('')}</div>
- <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button><button class="btn ${lang==='om'?'alt':'line'}" data-lg="om">Afaan Oromoo</button></div><h3>${t('aboutT')}</h3><button class="btn line" id="aboutBtn">${t('aboutBtn')}</button>${appBox()}${updBox()}`}
+ <h3>${t('lang')}</h3><div class="row"><button class="btn ${lang==='am'?'alt':'line'}" data-lg="am">አማርኛ</button><button class="btn ${lang==='en'?'alt':'line'}" data-lg="en">English</button><button class="btn ${lang==='om'?'alt':'line'}" data-lg="om">Afaan Oromoo</button></div><h3>${t('aboutT')}</h3><button class="btn line" id="aboutBtn">${t('aboutBtn')}</button>${appBox()}${updBox()}${bnrBox()}`}
 $('v-set').onclick=e=>{if(e.target.id==='appImg'&&appCfg.img)return openLB([appCfg.img],0);const b=e.target.closest('button');if(!b)return;
  if(b.dataset.th){theme=b.dataset.th;setStore('theme',theme);applyTheme();renderSet()}
- if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}if(b.id==='aboutBtn')openInfo();if(b.id==='appEdit')openAppEdit();if(b.id==='updEdit')openUpdEdit()};
+ if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}if(b.id==='aboutBtn')openInfo();if(b.id==='appEdit')openAppEdit();if(b.id==='updEdit')openUpdEdit();if(b.id==='bnrEdit')openBnrEdit()};
 
 /* ----- ለጥፍ እና ክፍያ ----- */
 function postClick(){if(!me){go('acc');return toast(t('loginNeed'))}if(prof&&prof.blocked)return toast(t('blockedMsg'));if(!paid())return $('pay').showModal();
@@ -462,9 +505,9 @@ $('pPics').onchange=async e=>{
  for(const f of e.target.files){if(pics.length>=3){toast(t('picMax'));break}if(used()+pics.length>=10){toast(t('picDay'));break}pics.push(await shrink(f,700,.6))}
  $('preview').innerHTML=pics.map(s=>`<img src="${s}" alt="">`).join('');note();e.target.value=''};
 $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('payFirst'));
- const btn=e.submitter||$('postForm').querySelector('[type=submit]');busy(btn,true);toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(upImg))}catch(x){busy(btn,false);return toast(t('upErr')+': '+x.message)}
+ const btn=e.submitter||$('postForm').querySelector('[type=submit]');busy(btn,true);toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(async s=>upImg(await wm(s,(shop&&shop.name)||me.email.split('@')[0]))))}catch(x){busy(btn,false);return toast(t('upErr')+': '+x.message)}
  const b=db.batch(),r=db.collection('listings').doc();
- b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,until:prof.paidUntil,verified:!!prof.verified,created:Date.now()});
+ b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,cond:$('pCond').value,neg:$('pNeg').checked,deliv:$('pDel').checked,img:urls,uid:me.uid,shop:(shop&&shop.name)||me.email.split('@')[0],sold:false,until:prof.paidUntil,verified:!!prof.verified,created:Date.now()});
  b.update(db.collection('users').doc(me.uid),{photosDay:today(),photosCount:used()+pics.length});
  try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}busy(btn,false)};
 
@@ -473,10 +516,11 @@ $('adClose').onclick=()=>$('admin').close();
 async function loadPay(){const s=await db.collection('payments').get(),all=s.docs.map(d=>({id:d.id,...d.data()})),cnt={},K=p=>String(p.txn).trim().toLowerCase();
  all.forEach(p=>{cnt[K(p)]=(cnt[K(p)]||0)+1});
  const l=all.filter(p=>p.status==='pending').sort((a,b)=>a.created-b.created);
- $('adList').innerHTML=l.length?l.map(p=>`<div class="box"><div style="font-size:1.5rem;font-weight:800;color:var(--green)">${p.plan} ${t('birr')} <span style="font-size:.9rem;font-weight:600">· ${t(p.plan==300?'y1':'m1')}</span></div><div>${esc(p.email)}</div><div><b>${esc(p.txn)}</b></div><div class="meta">${tm(p.created)}</div>${cnt[K(p)]>1?`<div style="color:var(--red);font-weight:700">${t('dup')}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn alt" data-ok="${p.id}">${t('approve')}</button><button class="btn red" data-no="${p.id}">${t('reject')}</button></div></div>`).join(''):`<p class="note">${t('noPending')}</p>`;
+ $('adList').innerHTML=l.length?l.map(p=>`<div class="box"><div style="font-size:1.5rem;font-weight:800;color:var(--green)">${p.kind==='feature'?`⭐ ${p.plan} ${t('birr')} <span style="font-size:.9rem;font-weight:600">· ${p.days} ${t('days')}</span></div><div class="meta">${esc(p.listingTitle||'')}</div>`:`${p.plan} ${t('birr')} <span style="font-size:.9rem;font-weight:600">· ${t(p.plan==300?'y1':'m1')}</span></div>`}<div>${esc(p.email)}</div><div><b>${esc(p.txn)}</b></div><div class="meta">${tm(p.created)}</div>${cnt[K(p)]>1?`<div style="color:var(--red);font-weight:700">${t('dup')}</div>`:''}<div class="row" style="margin-top:6px"><button class="btn alt" data-ok="${p.id}">${t('approve')}</button><button class="btn red" data-no="${p.id}">${t('reject')}</button></div></div>`).join(''):`<p class="note">${t('noPending')}</p>`;
  $('adList').onclick=async e=>{const id=e.target.dataset.ok||e.target.dataset.no;if(!id)return;const p=l.find(x=>x.id===id),pr=db.collection('payments').doc(id);
   if(e.target.dataset.no){await pr.update({status:'rejected'});return loadPay()}
   if(!confirm(t('confirmApprove').replace('{a}',p.plan)))return;
+  if(p.kind==='feature'){const fr=db.collection('featured').doc(p.listingId),cur=await fr.get(),base=Math.max(Date.now(),(cur.exists&&cur.data().until)||0),fb=db.batch();fb.set(fr,{until:base+p.days*864e5,uid:p.uid});fb.update(pr,{status:'approved'});await fb.commit();toast(t('approved'));loadPay();adStats();return}
   const {b}=await grant(p.uid,p.plan==300?365:30);b.update(pr,{status:'approved'});await b.commit();toast(t('approved'));loadPay();adStats()}}
 
 /* ----- ያልተነበበ መልእክት ቁጥር ----- */
@@ -606,6 +650,88 @@ function openUpdEdit(){$('uOn').checked=!!updCfg.enabled;$('uLink').value=updCfg
 $('uCancel').onclick=()=>$('upddlg').close();
 $('uSave').onclick=async()=>{const b=$('uSave');b.disabled=true;
  try{await db.collection('config').doc('update').set({enabled:$('uOn').checked,link:$('uLink').value.trim(),minVersion:+$('uMin').value||0,message:$('uMsg').value.trim()});$('upddlg').close();toast(t('saved'))}
+ catch(x){toast(t('err'))}b.disabled=false};
+
+
+/* ----- በፎቶ መሃል የሻጭ ስምና Metu Gebeya (ደብዛዛ ውሃ ምልክት) ----- */
+async function wm(src,name){try{await document.fonts.load('700 40px "Noto Sans Ethiopic"')}catch(e){}
+ return new Promise(res=>{const im=new Image();
+  im.onload=()=>{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const g=c.getContext('2d');g.drawImage(im,0,0);
+   g.textAlign='center';g.textBaseline='middle';g.save();g.translate(im.width/2,im.height/2);g.rotate(-Math.PI/16);
+   const draw=(txt,y,fs)=>{const set=s=>g.font='700 '+s+'px "Noto Sans Ethiopic",Arial,sans-serif';set(fs);
+    while(g.measureText(txt).width>im.width*.78&&fs>12){fs-=2;set(fs)}
+    g.lineWidth=Math.max(2,fs/10);g.lineJoin='round';g.strokeStyle='rgba(0,0,0,.2)';g.strokeText(txt,0,y);g.fillStyle='rgba(255,255,255,.4)';g.fillText(txt,0,y)};
+   const f1=Math.round(im.width*.075),f2=Math.round(im.width*.05);
+   draw(name,-f1*.4,f1);draw('Metu Gebeya',f2*.95,f2);g.restore();res(c.toDataURL('image/jpeg',.85))};
+  im.onerror=()=>res(src);im.src=src})}
+
+/* ----- የፍለጋ ታሪክ ----- */
+let sh=[],histOpen=false;
+try{sh=JSON.parse(localStorage.getItem('sh')||'[]')}catch(e){sh=[]}
+const saveSh=()=>{try{localStorage.setItem('sh',JSON.stringify(sh))}catch(e){}};
+function addSh(q){q=(q||'').trim();if(q.length<2)return;sh=[q,...sh.filter(x=>x.toLowerCase()!==q.toLowerCase())].slice(0,12);saveSh()}
+function renderSh(){const el=$('hist'),q=$('q').value.trim().toLowerCase(),l=sh.map((x,i)=>({x,i})).filter(o=>!q||o.x.toLowerCase().includes(q));
+ if(!histOpen||!l.length){el.hidden=true;return}
+ el.hidden=false;el.innerHTML=`<div class="hh"><span>${t('recent')}</span><button type="button" id="hClr">${t('clearAll')}</button></div><div class="hc">${l.map(o=>`<span class="hchip" data-i="${o.i}"><b>${esc(o.x)}</b><i class="hx" data-x="${o.i}">✕</i></span>`).join('')}</div>`}
+$('hist').addEventListener('pointerdown',e=>e.preventDefault());
+$('hist').addEventListener('click',e=>{
+ if(e.target.id==='hClr'){sh=[];saveSh();renderSh();return}
+ const x=e.target.closest('[data-x]');if(x){sh.splice(+x.dataset.x,1);saveSh();renderSh();return}
+ const c=e.target.closest('.hchip');if(c){const v=sh[+c.dataset.i];$('q').value=v;addSh(v);histOpen=false;$('q').blur();renderSh();render()}});
+$('q').addEventListener('focus',()=>{histOpen=true;renderSh()});
+$('q').addEventListener('blur',()=>{histOpen=false;setTimeout(renderSh,120)});
+$('q').addEventListener('input',renderSh);
+$('q').addEventListener('change',()=>addSh($('q').value));
+$('q').addEventListener('keydown',e=>{if(e.key==='Enter'){addSh($('q').value);$('q').blur()}});
+
+
+/* ----- ተጨማሪ ባህሪያት: መለያዎች፣ ⭐ ማስተዋወቅ፣ ግምገማ፣ ባነር ----- */
+const FEAT=[{d:7,p:20},{d:30,p:60}]; // ⭐ ማስተዋወቂያ ዋጋ (ቀን፣ ብር): እዚህ ይቀይሩ
+function tagHtml(i){return (i.cond?`<span class="tg ${i.cond==='used'?'used':''}">${t(i.cond==='new'?'condNew':'condUsed')}</span>`:'')+(i.neg?`<span class="tg">${t('neg')}</span>`:'')+(i.deliv?`<span class="tg">${t('deliv')}</span>`:'')+(isFeat(i)?`<span class="tg feat">⭐ ${t('featured')}</span>`:'')}
+let feat={},featItems=[];
+db.collection('featured').onSnapshot(s=>{feat={};s.docs.forEach(d=>feat[d.id]=d.data().until||0);loadFeat()},()=>{});
+const isFeat=i=>(feat[i.id]||0)>Date.now();
+async function loadFeat(){const ids=Object.keys(feat).filter(id=>feat[id]>Date.now());
+ featItems=(await Promise.all(ids.map(id=>db.collection('listings').doc(id).get().catch(()=>null)))).filter(d=>d&&d.exists).map(d=>({id:d.id,...d.data()}));if(view==='home')render()}
+let fpl=0,flst=null;
+function openFeat(i){flst=i;fpl=0;$('featPlans').innerHTML=FEAT.map((x,k)=>`<div class="plan ${k===0?'on':''}" data-k="${k}"><b>${x.p} ${t('birr')}</b>${x.d} ${t('days')}</div>`).join('');$('fTxn').value='';$('view').close();$('featdlg').showModal()}
+$('featPlans').onclick=e=>{const p=e.target.closest('.plan');if(!p)return;fpl=+p.dataset.k;Q('#featPlans .plan').forEach((x,k)=>x.classList.toggle('on',k===fpl))};
+$('fCancel2').onclick=()=>$('featdlg').close();
+$('fSend').onclick=async()=>{const x=$('fTxn').value.trim();if(x.length<6)return toast(t('txnErr'));const pl=FEAT[fpl],b=$('fSend');busy(b,true);
+ try{await db.collection('payments').add({uid:me.uid,email:me.email,plan:pl.p,days:pl.d,kind:'feature',listingId:flst.id,listingTitle:flst.t,txn:x,status:'pending',created:Date.now()});$('featdlg').close();toast(t('payOk'))}catch(e2){toast(t('err'))}busy(b,false)};
+
+const stars=n=>{const r=Math.round(n);return '★'.repeat(r)+'☆'.repeat(5-r)};
+async function loadReviews(uid){let rs=[];
+ try{const s=await db.collection('reviews').where('sellerId','==',uid).limit(50).get();rs=s.docs.map(d=>({id:d.id,...d.data()}))}catch(e){}
+ rs.sort((a,b)=>b.created-a.created);
+ const avg=rs.length?rs.reduce((a,r)=>a+r.rating,0)/rs.length:0,rate=$('shRate');
+ if(rate)rate.innerHTML=rs.length?`<span class="stars">${stars(avg)}</span> ${avg.toFixed(1)} (${rs.length})`:'';
+ const box=$('shRev');if(!box)return;let can=false,mine=null;
+ if(me&&me.uid!==uid){mine=rs.find(r=>r.buyerId===me.uid)||null;try{can=(await db.collection('contacts').doc(me.uid+'_'+uid).get()).exists}catch(e){}}
+ box.innerHTML=`<h3>${t('reviews')}</h3>${me&&me.uid!==uid?(can?`<button class="btn alt" id="rvBtn">${mine?t('editReview'):t('writeReview')}</button>`:`<p class="note">${t('reviewNeed')}</p>`):''}${rs.length?rs.map(r=>`<div class="rv"><span class="stars">${stars(r.rating)}</span> <b>${esc((r.buyerName||'').split('@')[0])}</b><div class="meta">${tm(r.created)}</div>${r.text?`<p>${esc(r.text)}</p>`:''}${me&&(me.uid===r.buyerId||isAdmin())?`<button class="btn line" data-rdel="${r.id}" style="margin-top:6px">${t('del')}</button>`:''}</div>`).join(''):`<p class="note">${t('noReviews')}</p>`}`;
+ if($('rvBtn'))$('rvBtn').onclick=()=>openReview(uid,mine);
+ box.onclick=async e=>{const id=e.target.dataset.rdel;if(id&&confirm(t('del')+'?')){await db.collection('reviews').doc(id).delete();loadReviews(uid)}}}
+let rvSel=0,rvUid=null;
+function drawStars(){$('rvStars').innerHTML=[1,2,3,4,5].map(n=>`<span data-n="${n}" class="${n<=rvSel?'on':''}">★</span>`).join('')}
+function openReview(uid,mine){rvUid=uid;rvSel=mine?mine.rating:0;$('rvText').value=mine&&mine.text?mine.text:'';drawStars();$('rvdlg').showModal()}
+$('rvStars').onclick=e=>{const n=+e.target.dataset.n;if(n){rvSel=n;drawStars()}};
+$('rvCancel').onclick=()=>$('rvdlg').close();
+$('rvSave').onclick=async()=>{if(!rvSel)return toast(t('pickStars'));const b=$('rvSave');b.disabled=true;
+ try{await db.collection('reviews').doc(me.uid+'_'+rvUid).set({sellerId:rvUid,buyerId:me.uid,buyerName:me.email,rating:rvSel,text:$('rvText').value.trim(),created:Date.now()});$('rvdlg').close();toast(t('saved'));loadReviews(rvUid)}
+ catch(x){toast(t('err'))}b.disabled=false};
+
+let bnrCfg={};
+db.collection('config').doc('banner').onSnapshot(d=>{bnrCfg=d.exists?d.data():{};drawBnr();if(view==='set')renderSet()},()=>{});
+function drawBnr(){const el=$('bnr'),c=bnrCfg;let dis='';try{dis=sessionStorage.getItem('bd')||''}catch(e){}
+ if(!c.enabled||!c.text||dis===c.text){el.hidden=true;return}
+ const lk=c.link?(/^https?:\/\//.test(c.link)?c.link:'https://'+c.link):'';
+ el.hidden=false;el.innerHTML=`<span>${lk?`<a href="${esc(lk)}">${esc(c.text)}</a>`:esc(c.text)}</span><button type="button" id="bnrX" aria-label="close">✕</button>`}
+$('bnr').addEventListener('click',e=>{if(e.target.id==='bnrX'){try{sessionStorage.setItem('bd',bnrCfg.text)}catch(x){}drawBnr()}});
+function bnrBox(){if(!isAdmin())return '';return `<h3>📢 ${t('bnrT')}</h3><div class="note">${bnrCfg.enabled?t('updOn')+' · '+esc(bnrCfg.text||''):t('updOff')}</div><button type="button" class="btn line" id="bnrEdit" style="margin-top:8px">✏️ ${t('edit')}</button>`}
+function openBnrEdit(){$('bOn').checked=!!bnrCfg.enabled;$('bText').value=bnrCfg.text||'';$('bLink').value=bnrCfg.link||'';$('bnrdlg').showModal()}
+$('bCancel').onclick=()=>$('bnrdlg').close();
+$('bSave').onclick=async()=>{const b=$('bSave');b.disabled=true;
+ try{await db.collection('config').doc('banner').set({enabled:$('bOn').checked,text:$('bText').value.trim(),link:$('bLink').value.trim()});$('bnrdlg').close();toast(t('saved'))}
  catch(x){toast(t('err'))}b.disabled=false};
 
 applyTheme();applyLang();
