@@ -172,6 +172,7 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
 .stars{color:#f5a623;letter-spacing:1px}
 .bnr{display:flex;gap:10px;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--gold),#ffd966);color:#2a2100;border-radius:12px;padding:10px 12px;margin:10px 0;font-weight:600}
 .bnr a{color:inherit;text-decoration:underline}.bnr button{border:0;background:rgba(0,0,0,.12);border-radius:50%;width:26px;height:26px;cursor:pointer;flex:none}
+#bnr{flex-direction:column;align-items:stretch}#serviceListBtn{margin-left:8px;font-size:18px}#v-service{padding-top:8px}.service-tabs{display:flex;gap:8px;overflow-x:auto;padding:8px 0 12px}.service-tabs button{white-space:nowrap;flex:none}.bnr-media{display:block;position:relative;overflow:hidden;width:100%;border-radius:12px;margin:10px 0;background:var(--card)}.bnr-track{display:flex;transition:transform .65s ease;will-change:transform}.bnr-slide{flex:0 0 100%;width:100%;display:block}.bnr-slide img{display:block;width:100%;height:auto;max-height:360px;object-fit:contain;background:#f5f5f5}.bnr-media .bnr-close{position:absolute;right:8px;top:8px;z-index:2}.bnr-caption{padding:8px 12px;background:linear-gradient(90deg,var(--gold),#ffd966);color:#2a2100;font-weight:600}
 .rv{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px;background:var(--card)}
 .starpick{display:flex;gap:6px;font-size:2.2rem;line-height:1}.starpick span{cursor:pointer;color:var(--line)}.starpick span.on{color:#f5a623}
 .dots3{display:flex;gap:12px;justify-content:center;padding:36px 0 12px}
@@ -181,8 +182,9 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
 </style>
 </head>
 <body>
-<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button></div><div id="hist" hidden></div></header>
+<header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button><button id="serviceListBtn" class="hbtn" aria-label="አገልግሎቶች" title="አገልግሎቶች">🏨</button></div><div id="hist" hidden></div></header>
 <main>
+ <section id="v-service" hidden><h2>🏨 አገልግሎቶች</h2><p class="note">ሆቴል፣ ምግብ ቤት፣ አልጋ ቤት እና ባጃጅ ኩንትራት ማስታወቂያዎች ብቻ</p><div class="service-tabs" id="serviceTabs"></div><div class="grid" id="serviceGrid"></div><button type="button" class="btn line" id="serviceBack">← ወደ ዋና ገጽ</button></section>
  <section id="v-home">
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
   <div id="bnr" class="bnr" hidden></div>
@@ -259,6 +261,7 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
  <label style="display:flex;gap:10px;align-items:center;flex-direction:row"><input id="bOn" type="checkbox" style="width:22px;height:22px"><span data-i="bnrOn"></span></label>
  <label><span data-i="bnrTextL"></span><input id="bText" maxlength="140"></label>
  <label><span data-i="bnrLinkL"></span><input id="bLink" placeholder="https://..."></label>
+ <label>ባነር ፎቶዎች (እስከ 5 ፎቶ)<input id="bPics" type="file" accept="image/*" multiple></label><div id="bPicsPreview" class="pics"></div><p class="note">ፎቶዎቹ በየ8 ሰከንዱ ይቀያየራሉ። አዲስ ፎቶ ካልመረጡ የቀድሞዎቹ ይቀጥላሉ።</p>
  <div class="row"><button type="button" class="btn line" id="bCancel" data-i="back"></button><button type="button" class="btn alt" id="bSave" data-i="save"></button></div></div></dialog>
 <dialog id="appdlg"><div class="in"><h2 data-i="getApp"></h2>
  <label><span data-i="linkL"></span><input id="aLink" placeholder="https://t.me/..."></label>
@@ -356,7 +359,7 @@ function applyTheme(){document.documentElement.dataset.theme=theme}
 function applyLang(){document.documentElement.lang=lang;document.title=t('app');
  Q('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));Q('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));fill();go(view,shopArg)}
 function fill(){const cv=$('city').value,pc=$('pCat').value,pt=$('pCity').value;
- $('cats').innerHTML=CATS.map(c=>`<button class="ctile ${c===cat?'on':''}" data-c="${c}"><span class="ti">${c==='ሁሉም'?'🛍️':ICON[c]}</span><span>${cn(c)}</span></button>`).join('');
+ $('cats').innerHTML=CATS.filter(c=>c==='ሁሉም'||!SERVICE_CATS.includes(c)).map(c=>`<button class="ctile ${c===cat?'on':''}" data-c="${c}"><span class="ti">${c==='ሁሉም'?'🛍️':ICON[c]}</span><span>${cn(c)}</span></button>`).join('');
  const o=(a,f)=>a.map(c=>`<option value="${c}">${f(c)}</option>`).join('');
  $('city').innerHTML=o(CITIES,yn);$('pCat').innerHTML=o(CATS.slice(1),cn);$('pCity').innerHTML=o(CITIES.slice(1),yn);
  if(cv)$('city').value=cv;if(pc)$('pCat').value=pc;if(pt)$('pCity').value=pt;refreshPicks()}
@@ -364,11 +367,12 @@ function fill(){const cv=$('city').value,pc=$('pCat').value,pt=$('pCity').value;
 /* ----- ገጾች መቀያየር ----- */
 let shopArg=null;
 function go(v,arg){view=v;shopArg=arg||null;document.body.classList.remove('inchat');
- ['home','msg','acc','set','shop','fav'].forEach(x=>$('v-'+x).hidden=x!==v);
+ ['home','service','msg','acc','set','shop','fav'].forEach(x=>$('v-'+x).hidden=x!==v);
  Q('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
  $('q').style.display=v==='home'?'':'none';
- ({home:render,msg:loadMsgs,acc:renderAcc,set:renderSet,shop:()=>loadShop(arg),fav:renderFav})[v]();scrollTo(0,0)}
+ ({home:render,service:renderServices,msg:loadMsgs,acc:renderAcc,set:renderSet,shop:()=>loadShop(arg),fav:renderFav})[v]();scrollTo(0,0)}
 $('nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;b.dataset.v==='post'?postClick():go(b.dataset.v)};
+$('serviceListBtn').onclick=()=>{if(lim<100){lim=100;listenL()}go('service')};$('serviceBack').onclick=()=>go('home');
 
 /* ----- መግቢያ እና ፕሮፋይል ----- */
 async function authChanged(u){
@@ -405,16 +409,19 @@ function renderAcc(){const el=$('v-acc');
  $('aOut').onclick=()=>auth.signOut()}
 
 /* ----- ዋና ገጽ ----- */
-function listenL(){if(unsubL)unsubL();unsubL=db.collection('listings').orderBy('created','desc').limit(lim).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));moreAvail=s.docs.length>=lim;loadedL=true;listErr=false;if(view==='home')render()},e=>{loadedL=true;listErr=true;if(view==='home')render()})}listenL();
+function listenL(){if(unsubL)unsubL();unsubL=db.collection('listings').orderBy('created','desc').limit(lim).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));moreAvail=s.docs.length>=lim;loadedL=true;listErr=false;if(view==='home')render();if(view==='service')renderServices()},e=>{loadedL=true;listErr=true;if(view==='home')render();if(view==='service')renderServices()})}listenL();
 function displayPrice(i){if(i.c==='ባጃጅ ኩንትራት')return 'በስምምነት';if(i.c==='ምግብ ቤት'&&i.service&&i.service.menu&&i.service.menu.length)return 'ከ '+fmt(Math.min(...i.service.menu.map(x=>+x.price||0)));if(i.c==='ሆቴል')return fmt(i.service&&i.service.nightPrice!=null?i.service.nightPrice:i.p)+' / አዳር';if(i.c==='አልጋ ቤት')return fmt(i.service&&i.service.dayPrice!=null?i.service.dayPrice:i.p)+' / ቀን';return fmt(i.p)}
 function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card ${isFeat(i)?'featd':''}" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}${i.verified?'<span class="vf">✔</span>':''}</b><span class="price">${displayPrice(i)}</span><div class="tags">${tagHtml(i)}</div><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value,act=q||fMin||fMax||fSort!=='new';
  if(act&&lim<100){lim=100;listenL()}
- const pass=i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax);let l=items.filter(pass);
+ const pass=i=>alive(i)&&!SERVICE_CATS.includes(i.c)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax);let l=items.filter(pass);
  if(fSort==='low')l=[...l].sort((x,y)=>x.p-y.p);if(fSort==='high')l=[...l].sort((x,y)=>y.p-x.p);
  if(fSort==='new'){const ft=featItems.filter(i=>isFeat(i)&&pass(i)),ids=new Set(ft.map(x=>x.id));l=[...ft,...l.filter(x=>!ids.has(x.id))]}
  $('grid').innerHTML=(!navigator.onLine||listErr||!loadedL)?`<div class="empty">${dots3()}<p class="note">${!navigator.onLine?'Network unavailable. Waiting for connection…':listErr?'Connecting…':Date.now()-t0L>8000?t('slowNet'):''}</p></div>`:cards(l);$('moreBtn').hidden=!moreAvail;$('moreBtn').textContent=t('more');
  $('fBtn').innerHTML=FI+'<span>'+t('filter')+((fMin||fMax||fSort!=='new')?' •':'')+'</span>'}
+let serviceFilter='ሁሉም';
+function renderServices(){const tabs=$('serviceTabs');if(!tabs)return;const choices=['ሁሉም',...SERVICE_CATS];tabs.innerHTML=choices.map(c=>`<button type="button" class="btn ${serviceFilter===c?'alt':'line'}" data-svc-filter="${c}">${c==='ሁሉም'?'ሁሉም አገልግሎቶች':cn(c)}</button>`).join('');const list=items.filter(i=>alive(i)&&SERVICE_CATS.includes(i.c)&&(serviceFilter==='ሁሉም'||i.c===serviceFilter));$('serviceGrid').innerHTML=(!navigator.onLine||listErr||!loadedL)?`<div class="empty">${dots3()}<p class="note">${!navigator.onLine?'Network unavailable. Waiting for connection…':listErr?'Connecting…':t('slowNet')}</p></div>`:cards(list)}
+$('serviceTabs').onclick=e=>{const b=e.target.closest('[data-svc-filter]');if(b){serviceFilter=b.dataset.svcFilter;renderServices()}};
 $('cats').onclick=e=>{const b=e.target.closest('.ctile');if(b){cat=b.dataset.c;fill();render()}};
 $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
@@ -764,20 +771,27 @@ $('rvSave').onclick=async()=>{if(!rvSel)return toast(t('pickStars'));const b=$('
  try{await db.collection('reviews').doc(me.uid+'_'+rvUid).set({sellerId:rvUid,buyerId:me.uid,buyerName:myEmail(),rating:rvSel,text:$('rvText').value.trim(),created:Date.now()});$('rvdlg').close();toast(t('saved'));loadReviews(rvUid)}
  catch(x){toast(t('err'))}b.disabled=false};
 
-let bnrCfg={};
-db.collection('config').doc('banner').onSnapshot(d=>{bnrCfg=d.exists?d.data():{};drawBnr();if(view==='set')renderSet()},()=>{});
+let bnrCfg={},bnrImages=[],bnrIndex=0,bnrTimer=null,bnrNewFiles=[];
+db.collection('config').doc('banner').onSnapshot(d=>{bnrCfg=d.exists?d.data():{};bnrImages=Array.isArray(bnrCfg.images)?bnrCfg.images:[];drawBnr();if(view==='set')renderSet()},()=>{});
 function drawBnr(){const el=$('bnr'),c=bnrCfg;let dis='';try{dis=sessionStorage.getItem('bd')||''}catch(e){}
- if(!c.enabled||!c.text||dis===c.text){el.hidden=true;return}
+ if(bnrTimer){clearInterval(bnrTimer);bnrTimer=null}bnrIndex=0;
+ const hasText=!!(c.enabled&&c.text),imgs=(c.enabled&&Array.isArray(c.images)?c.images:[]).filter(Boolean);
+ if((!hasText&&!imgs.length)||dis===(c.text||'__banner__')){el.hidden=true;el.innerHTML='';return}
  const lk=c.link?(/^https?:\/\//.test(c.link)?c.link:'https://'+c.link):'';
- el.hidden=false;el.innerHTML=`<span>${lk?`<a href="${esc(lk)}">${esc(c.text)}</a>`:esc(c.text)}</span><button type="button" id="bnrX" aria-label="close">✕</button>`}
-$('bnr').addEventListener('click',e=>{if(e.target.id==='bnrX'){try{sessionStorage.setItem('bd',bnrCfg.text)}catch(x){}drawBnr()}});
-function bnrBox(){if(!isAdmin())return '';return `<h3>📢 ${t('bnrT')}</h3><div class="note">${bnrCfg.enabled?t('updOn')+' · '+esc(bnrCfg.text||''):t('updOff')}</div><button type="button" class="btn line" id="bnrEdit" style="margin-top:8px">✏️ ${t('edit')}</button>`}
-function openBnrEdit(){$('bOn').checked=!!bnrCfg.enabled;$('bText').value=bnrCfg.text||'';$('bLink').value=bnrCfg.link||'';$('bnrdlg').showModal()}
+ let html='';
+ if(imgs.length){html+=`<div class="bnr-media"><button type="button" class="bnr-close" id="bnrX" aria-label="close">✕</button>${lk?`<a href="${esc(lk)}" target="_blank" rel="noopener" aria-label="Open promotion link">`:''}<div class="bnr-track" id="bnrTrack">${imgs.slice(0,5).map(u=>`<div class="bnr-slide"><img src="${esc(u)}" alt="ማስታወቂያ ፎቶ" loading="lazy"></div>`).join('')}</div>${lk?'</a>':''}</div>`;if(imgs.length>1)bnrTimer=setInterval(()=>{const tr=$('bnrTrack');if(!tr)return;bnrIndex=(bnrIndex+1)%imgs.length;tr.style.transform=`translateX(-${bnrIndex*100}%)`},8000)}
+ if(hasText)html+=`<div class="bnr"><span>${lk?`<a href="${esc(lk)}" target="_blank" rel="noopener">${esc(c.text)}</a>`:esc(c.text)} </span>${imgs.length?'':`<button type="button" id="bnrX" aria-label="close">✕</button>`}</div>`;
+ el.hidden=false;el.innerHTML=html;
+}
+$('bnr').addEventListener('click',e=>{if(e.target.id==='bnrX'){try{sessionStorage.setItem('bd',bnrCfg.text||'__banner__')}catch(x){}drawBnr()}});
+function bnrBox(){if(!isAdmin())return '';return `<h3>📢 ${t('bnrT')}</h3><div class="note">${bnrCfg.enabled?t('updOn')+' · '+esc(bnrCfg.text||'')+' · '+(Array.isArray(bnrCfg.images)?bnrCfg.images.length:0)+' ፎቶ':t('updOff')}</div><button type="button" class="btn line" id="bnrEdit" style="margin-top:8px">✏️ ${t('edit')}</button>`}
+function openBnrEdit(){bnrNewFiles=[];$('bOn').checked=!!bnrCfg.enabled;$('bText').value=bnrCfg.text||'';$('bLink').value=bnrCfg.link||'';$('bPics').value='';$('bPicsPreview').innerHTML=(bnrCfg.images||[]).map((u,i)=>`<div style="position:relative"><img src="${esc(u)}" alt="banner ${i+1}" style="width:75px;height:65px;object-fit:cover;border-radius:8px"><button type="button" class="btn red" data-bnr-remove="${i}" style="padding:3px 7px">✕</button></div>`).join('');$('bnrdlg').showModal()}
+$('bPics').onchange=async e=>{const files=Array.from(e.target.files||[]);if(files.length>5){toast('እስከ 5 ፎቶ ብቻ ይምረጡ');e.target.value='';return}bnrNewFiles=files;const old=(bnrCfg.images||[]);$('bPicsPreview').innerHTML=files.length?files.map((f,i)=>`<div><img src="${URL.createObjectURL(f)}" alt="preview ${i+1}" style="width:75px;height:65px;object-fit:cover;border-radius:8px"></div>`).join(''):old.map((u,i)=>`<div style="position:relative"><img src="${esc(u)}" alt="banner ${i+1}" style="width:75px;height:65px;object-fit:cover;border-radius:8px"><button type="button" class="btn red" data-bnr-remove="${i}" style="padding:3px 7px">✕</button></div>`).join('')};
+$('bPicsPreview').onclick=e=>{const b=e.target.closest('[data-bnr-remove]');if(!b)return;const idx=+b.dataset.bnrRemove;bnrCfg.images=(bnrCfg.images||[]).filter((_,i)=>i!==idx);$('bPicsPreview').innerHTML=(bnrCfg.images||[]).map((u,i)=>`<div style="position:relative"><img src="${esc(u)}" alt="banner ${i+1}" style="width:75px;height:65px;object-fit:cover;border-radius:8px"><button type="button" class="btn red" data-bnr-remove="${i}" style="padding:3px 7px">✕</button></div>`).join('')};
 $('bCancel').onclick=()=>$('bnrdlg').close();
 $('bSave').onclick=async()=>{const b=$('bSave');b.disabled=true;
- try{await db.collection('config').doc('banner').set({enabled:$('bOn').checked,text:$('bText').value.trim(),link:$('bLink').value.trim()});$('bnrdlg').close();toast(t('saved'))}
- catch(x){toast(t('err'))}b.disabled=false};
-
+ try{let images=Array.isArray(bnrCfg.images)?bnrCfg.images.slice(0,5):[];if(bnrNewFiles.length){images=[];for(const f of bnrNewFiles){const data=await shrink(f,1200,.78);images.push(await upImg(data))}}await db.collection('config').doc('banner').set({enabled:$('bOn').checked,text:$('bText').value.trim(),link:$('bLink').value.trim(),images});bnrNewFiles=[];$('bnrdlg').close();toast(t('saved'))}
+ catch(x){toast(t('upErr')+': '+x.message)}b.disabled=false};
 
 /* ----- ዳታ እስኪመጣ የሚዞሩ ሦስት ነጥቦች ----- */
 const dots3=()=>'<div class="dots3"><i></i><i></i><i></i></div>';
