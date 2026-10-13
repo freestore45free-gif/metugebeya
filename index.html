@@ -187,6 +187,7 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
   <div id="bnr" class="bnr" hidden></div>
   <div class="filters" id="cats"></div>
+  <button type="button" class="btn alt" id="serviceBtn" style="width:100%;margin:4px 0 8px">🏨 አገልግሎቶች · ሆቴል / ምግብ ቤት / አልጋ / ባጃጅ</button>
   <div class="frow"><select class="city" id="city"></select><button type="button" id="fBtn" class="pick"></button></div>
   <div class="grid" id="grid"></div>
   <div class="row" style="margin-top:14px"><button class="btn line" id="moreBtn" hidden></button></div>
@@ -207,10 +208,12 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
 
 <dialog id="view"><div class="in" id="viewBody"></div></dialog>
 
+<dialog id="serviceChooser"><div class="in"><h2>አገልግሎት ይምረጡ</h2><button type="button" class="btn line service-choice" data-service="ሆቴል">🏨 ሆቴል</button><button type="button" class="btn line service-choice" data-service="ምግብ ቤት">🍽️ ምግብ ቤት</button><button type="button" class="btn line service-choice" data-service="አልጋ ቤት">🛏️ አልጋ ቤት</button><button type="button" class="btn line service-choice" data-service="ባጃጅ ኩንትራት">🛺 ባጃጅ ኩንትራት</button><button type="button" class="btn line" id="serviceCancel">ተመለስ</button></div></dialog>
 <dialog id="post"><form class="in" id="postForm" method="dialog">
  <h2 data-i="postT"></h2>
  <label><span data-i="title"></span><input id="pTitle" required maxlength="60"></label>
- <div class="row"><label><span data-i="price"></span><input id="pPrice" type="number" min="0" required></label><label><span data-i="cat"></span><select id="pCat"></select></label></div>
+ <div id="serviceFields" class="in" style="padding:0;gap:10px" hidden></div>
+ <div class="row"><label id="pPriceWrap"><span data-i="price"></span><input id="pPrice" type="number" min="0" required></label><label><span data-i="cat"></span><select id="pCat"></select></label></div>
  <div class="row"><label><span data-i="city"></span><select id="pCity"></select></label><label><span data-i="phone"></span><input id="pPhone" type="tel" placeholder="09..." required></label></div>
  <label><span data-i="tg"></span><input id="pTg" placeholder="@username"></label>
  <label><span data-i="desc"></span><textarea id="pDesc" required data-ph="descPh"></textarea></label>
@@ -277,11 +280,11 @@ const ADMIN_EMAIL="freestore45free@gmail.com";
 firebase.initializeApp(FB);
 const auth=firebase.auth(),db=firebase.firestore();
 const $=id=>document.getElementById(id),Q=s=>document.querySelectorAll(s);
-const CATS=['ሁሉም','ስልኮች','ኤሌክትሮኒክስ','ተሽከርካሪ','ቤት እና መሬት','ፋሽን','ቤት ዕቃ','ሌላ'];
-const CE={'ሁሉም':'All','ስልኮች':'Phones','ኤሌክትሮኒክስ':'Electronics','ተሽከርካሪ':'Vehicles','ቤት እና መሬት':'Property','ፋሽን':'Fashion','ቤት ዕቃ':'Home items','ሌላ':'Other'};
+const CATS=['ሁሉም','ስልኮች','ኤሌክትሮኒክስ','ተሽከርካሪ','ቤት እና መሬት','ፋሽን','ቤት ዕቃ','ሌላ','ሆቴል','ምግብ ቤት','አልጋ ቤት','ባጃጅ ኩንትራት'];
+const CE={'ሁሉም':'All','ስልኮች':'Phones','ኤሌክትሮኒክስ':'Electronics','ተሽከርካሪ':'Vehicles','ቤት እና መሬት':'Property','ፋሽን':'Fashion','ቤት ዕቃ':'Home items','ሌላ':'Other','ሆቴል':'Hotel','ምግብ ቤት':'Restaurant','አልጋ ቤት':'Bed rental','ባጃጅ ኩንትራት':'Bajaj contract'};
 const CITIES=['ሁሉም ከተማ','መቱ','ጅማ','ጋምቤላ','አዲስ አበባ','ሌላ'];
 const CY={'ሁሉም ከተማ':'All cities','መቱ':'Metu','ጅማ':'Jimma','ጋምቤላ':'Gambela','አዲስ አበባ':'Addis Ababa','ሌላ':'Other'};
-const ICON={'ስልኮች':'📱','ኤሌክትሮኒክስ':'💻','ተሽከርካሪ':'🚗','ቤት እና መሬት':'🏠','ፋሽን':'👕','ቤት ዕቃ':'🛋️','ሌላ':'📦'};
+const ICON={'ስልኮች':'📱','ኤሌክትሮኒክስ':'💻','ተሽከርካሪ':'🚗','ቤት እና መሬት':'🏠','ፋሽን':'👕','ቤት ዕቃ':'🛋️','ሌላ':'📦','ሆቴል':'🏨','ምግብ ቤት':'🍽️','አልጋ ቤት':'🛏️','ባጃጅ ኩንትራት':'🛺'};
 const TH=[['white','#ffffff'],['dark','#18201a'],['green','#1e6b3a'],['ocean','#1769aa'],['royal','#6a2fb0'],['sunset','#d35400']];
 const L={
 app:['መቱ ገበያ','Metu Gebeya'],home:['ዋና','Home'],msgs:['መልእክት','Messages'],post:['ለጥፍ','Post'],acct:['መለያ','Account'],sets:['ቅንብር','Settings'],
@@ -403,7 +406,8 @@ function renderAcc(){const el=$('v-acc');
 
 /* ----- ዋና ገጽ ----- */
 function listenL(){if(unsubL)unsubL();unsubL=db.collection('listings').orderBy('created','desc').limit(lim).onSnapshot(s=>{items=s.docs.map(d=>({id:d.id,...d.data()}));moreAvail=s.docs.length>=lim;loadedL=true;listErr=false;if(view==='home')render()},e=>{loadedL=true;listErr=true;if(view==='home')render()})}listenL();
-function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card ${isFeat(i)?'featd':''}" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}${i.verified?'<span class="vf">✔</span>':''}</b><span class="price">${fmt(i.p)}</span><div class="tags">${tagHtml(i)}</div><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
+function displayPrice(i){if(i.c==='ባጃጅ ኩንትራት')return 'በስምምነት';if(i.c==='ምግብ ቤት'&&i.service&&i.service.menu&&i.service.menu.length)return 'ከ '+fmt(Math.min(...i.service.menu.map(x=>+x.price||0)));if(i.c==='ሆቴል')return fmt(i.service&&i.service.nightPrice!=null?i.service.nightPrice:i.p)+' / አዳር';if(i.c==='አልጋ ቤት')return fmt(i.service&&i.service.dayPrice!=null?i.service.dayPrice:i.p)+' / ቀን';return fmt(i.p)}
+function cards(l){l.forEach(i=>cache[i.id]=i);return l.length?l.map(i=>`<button class="card ${isFeat(i)?'featd':''}" data-i="${i.id}"><div class="thumb">${i.img&&i.img[0]?`<img src="${cl(i.img[0],420)}" alt="" loading="lazy">`:ICON[i.c]||'📦'}${heart(i.id)}</div><div class="t"><b>${esc(i.t)}${i.verified?'<span class="vf">✔</span>':''}</b><span class="price">${displayPrice(i)}</span><div class="tags">${tagHtml(i)}</div><div class="meta">${esc(yn(i.city))}${i.sold?' · '+t('sold'):''}${alive(i)?'':' · ⏰ '+t('expiredB')}</div></div></button>`).join(''):`<div class="empty">${t('noItems')}</div>`}
 function render(){const q=$('q').value.trim().toLowerCase(),city=$('city').value,act=q||fMin||fMax||fSort!=='new';
  if(act&&lim<100){lim=100;listenL()}
  const pass=i=>alive(i)&&(cat==='ሁሉም'||i.c===cat)&&(city==='ሁሉም ከተማ'||i.city===city)&&(!q||(i.t+i.d).toLowerCase().includes(q))&&(!fMin||+i.p>=fMin)&&(!fMax||+i.p<=fMax);let l=items.filter(pass);
@@ -415,10 +419,16 @@ $('cats').onclick=e=>{const b=e.target.closest('.ctile');if(b){cat=b.dataset.c;f
 $('city').onchange=render;$('q').oninput=render;
 document.addEventListener('click',e=>{const f=e.target.closest('.heart');if(f){e.preventDefault();toggleFav(f.dataset.f);return}const c=e.target.closest('.card');if(c&&cache[c.dataset.i])openItem(cache[c.dataset.i])});
 
+function serviceDetails(i){const v=i.service;if(!v)return '';const yes=x=>x?'አለ':'የለም';let rows=[];
+ if(i.c==='ሆቴል')rows=[['🥤 መጠጥ',yes(v.drink)],['🛏️ አልጋ',yes(v.bed)],['🚻 ሽንት ቤት',yes(v.toilet)],['🚿 ሻውር',({both:'ሙቅና ቀዝቃዛ ውሃ',hot:'ሙቅ ውሃ ብቻ',cold:'ቀዝቃዛ ውሃ ብቻ',none:'የለም'})[v.shower]||''],['📍 አድራሻ',v.address||'']];
+ if(i.c==='ምግብ ቤት')rows=[['🍟 ፋስት ፉድ',v.fastFood?'አለ':'የለም'],['📍 አድራሻ',v.address||'']];
+ if(i.c==='አልጋ ቤት')rows=[['🚿 ሻውር',({both:'ሙቅና ቀዝቃዛ ውሃ አለ',hot:'ሙቅ ውሃ ብቻ',cold:'ቀዝቃዛ ውሃ ብቻ',none:'የለም'})[v.shower]||''],['📍 አድራሻ',v.address||'']];
+ if(i.c==='ባጃጅ ኩንትራት')rows=[['👨‍✈️ የሹፌር ስም',v.driver||''],['🛺 ልዩ ስም',v.mark||'አልተጠቀሰም'],['📍 አድራሻ',v.address||''],['💰 ዋጋ','ከተሳፋሪው ጋር በስምምነት']];
+ return `<div class="box" style="margin:8px 0"><h3 style="margin-top:0">${esc(i.c)}</h3>${rows.map(([a,b])=>`<div style="padding:3px 0">${a}: <b>${esc(b)}</b></div>`).join('')}${i.c==='ምግብ ቤት'&&v.menu?`<h3>የምግብ ዝርዝር</h3>${v.menu.map(m=>`<div class="row" style="padding:4px 0"><span>${esc(m.name)}</span><b>${fmt(m.price)}</b></div>`).join('')}`:''}</div>`}
 function openItem(i){const own=me&&me.uid===i.uid,im=i.img||[];
  $('viewBody').innerHTML=`<div class="vtop"><button type="button" class="btn line vback" id="vBack">←</button><button type="button" class="favb ${favs.has(i.id)?'on':''}" id="vFav" data-f="${i.id}" aria-label="favorite">${HRT}</button></div>`+(im.length?`<div class="ph"><div class="slider" id="sl">${im.map(s=>`<div><img src="${cl(s,1000)}" alt=""></div>`).join('')}</div><button type="button" class="zoomBtn" id="zoomBtn" aria-label="full screen">⤢</button></div>${im.length>1?`<div class="dots" id="dots">${im.map((_,k)=>`<i class="${k?'':'on'}"></i>`).join('')}</div>`:''}`:`<div class="thumb" style="border-radius:10px">${ICON[i.c]||'📦'}</div>`)+
  `<button class="seller" id="goShop"><span id="sAvt">${av('',i.shop||'?',36)}</span><b>${esc(i.shop||'')}</b>${i.verified?'<span class="vf">✔</span> <small>'+t('verified')+'</small>':''} ›</button>
- <h2>${esc(i.t)}</h2><div class="price">${fmt(i.p)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><div class="tags">${tagHtml(i)}</div><p>${esc(i.d)}</p><div class="row">${shareBtns(i)}</div>
+ <h2>${esc(i.t)}</h2><div class="price">${displayPrice(i)}</div><div class="meta">${esc(cn(i.c))} · ${esc(yn(i.city))}</div><div class="tags">${tagHtml(i)}</div>${serviceDetails(i)}<p>${esc(i.d)}</p><div class="row">${shareBtns(i)}</div>
  <div class="row"><a class="btn alt" href="tel:${esc(i.ph)}">${t('call')} ${esc(i.ph)}</a>${i.tg?`<a class="btn line" href="https://t.me/${esc(i.tg.replace('@',''))}" target="_blank" rel="noopener">Telegram</a>`:''}</div>`+
  (own?`<div class="row"><button class="btn alt" id="vRenew">🔄 ${t('renew')}</button><button class="btn" id="vFeat">⭐ ${t('promote')}</button></div><div class="row"><button class="btn line" id="vSold">${t(i.sold?'unsold':'markSold')}</button><button class="btn red" id="vDel">${t('del')}</button></div>`:
  `<label>${t('msgSeller')}<textarea id="msg" placeholder="${t('msgPh')}"></textarea></label><label>${t('yourPhone')}<input id="msgPh" type="tel"></label><div class="row" style="align-items:center"><label class="btn line" for="msgImg" style="margin:0">📷 ${t('addPhoto')}</label><input id="msgImg" type="file" accept="image/*" hidden><span id="msgPrev"></span></div><div class="row"><button class="btn alt" id="vSend">${t('send')}</button><button class="btn red" id="vRep">${t('report')}</button></div>`)+
@@ -497,9 +507,34 @@ $('v-set').onclick=e=>{if(e.target.id==='appImg'&&appCfg.img)return openLB([appC
  if(b.dataset.th){theme=b.dataset.th;setStore('theme',theme);applyTheme();renderSet()}
  if(b.dataset.lg){lang=b.dataset.lg;setStore('lang',lang);applyLang()}if(b.id==='aboutBtn')openInfo();if(b.id==='appEdit')openAppEdit();if(b.id==='updEdit')openUpdEdit();if(b.id==='bnrEdit')openBnrEdit()};
 
+/* ----- አዲስ የአገልግሎት ምድቦች ----- */
+const SERVICE_CATS=['ሆቴል','ምግብ ቤት','አልጋ ቤት','ባጃጅ ኩንትራት'];
+let serviceMenuCount=1;
+function isServiceCat(c){return SERVICE_CATS.includes(c)}
+function serviceInput(id,label,placeholder='',type='text',required=true){return `<label>${label}<input id="${id}" type="${type}" ${placeholder?`placeholder="${placeholder}"`:''} ${required?'required':''}></label>`}
+function drawServiceFields(){const c=$('pCat').value,el=$('serviceFields'),wrap=$('pPriceWrap');
+ el.hidden=!isServiceCat(c);wrap.hidden=c==='ምግብ ቤት'||c==='ባጃጅ ኩንትራት';
+ $('pPrice').required=!wrap.hidden;
+ if(!isServiceCat(c)){el.innerHTML='';return}
+ if(c==='ሆቴል')el.innerHTML=`<h3>🏨 የሆቴል መረጃ</h3><div class="row"><label style="display:flex;flex-direction:row;align-items:center;gap:8px"><input id="hDrink" type="checkbox" style="width:20px">መጠጥ አለ</label><label style="display:flex;flex-direction:row;align-items:center;gap:8px"><input id="hBed" type="checkbox" style="width:20px">አልጋ አለ</label></div><label style="display:flex;flex-direction:row;align-items:center;gap:8px"><input id="hToilet" type="checkbox" style="width:20px">ሽንት ቤት አለ</label><label>ሻውር<select id="hShower"><option value="both">ንጹህ ሻውር፤ ሙቅና ቀዝቃዛ ውሃ</option><option value="hot">ሙቅ ውሃ ብቻ</option><option value="cold">ቀዝቃዛ ውሃ ብቻ</option><option value="none">ሻውር የለም</option></select></label>${serviceInput('sAddress','አድራሻ') }<p class="note">የአዳር ዋጋን ከላይ ባለው ዋጋ ቦታ ያስገቡ።</p>`;
+ else if(c==='ምግብ ቤት')el.innerHTML=`<h3>🍽️ የምግብ ቤት መረጃ</h3><div id="menuRows"></div><button type="button" class="btn line" id="addMenu">＋ ሌላ ምግብ ጨምር</button><label>ፋስት ፉድ አለ?<select id="rFast"><option value="yes">አዎ</option><option value="no">የለም</option></select></label>${serviceInput('sAddress','አድራሻ')}<p class="note">የምግብ ስሞችንና ዋጋዎቻቸውን ይጨምሩ።</p>`;
+ else if(c==='አልጋ ቤት')el.innerHTML=`<h3>🛏️ የአልጋ ኪራይ መረጃ</h3><p class="note">የአልጋ ኪራይ ዋጋ በቀን ከላይ ያስገቡ።</p><label>ሻውር<select id="bShower"><option value="both">ሙቅና ቀዝቃዛ ውሃ አለ</option><option value="hot">ሙቅ ውሃ ብቻ</option><option value="cold">ቀዝቃዛ ውሃ ብቻ</option><option value="none">የለም</option></select></label>${serviceInput('sAddress','አድራሻ')}`;
+ else el.innerHTML=`<h3>🛺 የባጃጅ ኩንትራት መረጃ</h3><p class="note">ለደህንነት ሲባል የታርጋ ቁጥር አያስፈልግም።</p>${serviceInput('bName','የሹፌር ስም')}${serviceInput('bMark','ከፊት ወይም ከኋላ የተጻፈ ልዩ ስም (ካለ)','አማራጭ','text',false)}${serviceInput('sAddress','አድራሻ')}<p class="note">ዋጋ፦ ከተሳፋሪው ጋር በመነጋገር በስምምነት። የባጃጅ ፎቶ ከታች ይለጥፉ።</p>`;
+ if(c==='ምግብ ቤት'){serviceMenuCount=1;drawMenuRows();$('addMenu').onclick=()=>{if(serviceMenuCount>=20)return toast('ከ20 በላይ የምግብ አይነት መጨመር አይቻልም');serviceMenuCount++;drawMenuRows()}}
+}
+function drawMenuRows(){const el=$('menuRows');if(!el)return;el.innerHTML=Array.from({length:serviceMenuCount},(_,i)=>`<div class="row"><label>የምግብ ስም<input class="menu-name" required maxlength="60" placeholder="ለምሳሌ ፍርፍር"></label><label>ዋጋ (ብር)<input class="menu-price" type="number" min="0" required></label></div>`).join('')}
+$('pCat').addEventListener('change',drawServiceFields);
+$('serviceBtn').onclick=()=>$('serviceChooser').showModal();$('serviceCancel').onclick=()=>$('serviceChooser').close();
+$('serviceChooser').onclick=e=>{const b=e.target.closest('[data-service]');if(!b)return;$('serviceChooser').close();postClick(b.dataset.service)};
+function collectService(){const c=$('pCat').value;if(!isServiceCat(c))return null;const v={type:c};if($('sAddress'))v.address=$('sAddress').value.trim();
+ if(c==='ሆቴል')Object.assign(v,{drink:$('hDrink').checked,bed:$('hBed').checked,toilet:$('hToilet').checked,shower:$('hShower').value,nightPrice:+$('pPrice').value});
+ if(c==='ምግብ ቤት'){v.fastFood=$('rFast').value==='yes';v.menu=[...document.querySelectorAll('.menu-name')].map((x,i)=>({name:x.value.trim(),price:+document.querySelectorAll('.menu-price')[i].value}));}
+ if(c==='አልጋ ቤት')Object.assign(v,{dayPrice:+$('pPrice').value,shower:$('bShower').value});
+ if(c==='ባጃጅ ኩንትራት')Object.assign(v,{driver:$('bName').value.trim(),mark:$('bMark').value.trim(),priceAgreement:true});return v}
+
 /* ----- ለጥፍ እና ክፍያ ----- */
-function postClick(){if(!me||me.isAnonymous){go('acc');return toast(t('needReg'))}if(prof&&prof.blocked)return toast(t('blockedMsg'));if(!paid())return $('pay').showModal();
- pics=[];$('preview').innerHTML='';$('postForm').reset();refreshPicks();note();$('post').showModal()}
+function postClick(serviceCategory){if(!me||me.isAnonymous){go('acc');return toast(t('needReg'))}if(prof&&prof.blocked)return toast(t('blockedMsg'));if(!paid())return $('pay').showModal();
+ pics=[];$('preview').innerHTML='';$('postForm').reset();refreshPicks();if(serviceCategory)$('pCat').value=serviceCategory;drawServiceFields();note();$('post').showModal()}
 $('cancelPost').onclick=()=>$('post').close();
 const note=()=>$('picNote').textContent=t('picNote').replace('{a}',used()+pics.length).replace('{b}',10);
 Q('.plan').forEach(p=>p.onclick=()=>{Q('.plan').forEach(x=>x.classList.remove('on'));p.classList.add('on');plan=+p.dataset.p});
@@ -515,7 +550,8 @@ $('pPics').onchange=async e=>{
 $('postForm').onsubmit=async e=>{e.preventDefault();if(!paid())return toast(t('payFirst'));
  const btn=e.submitter||$('postForm').querySelector('[type=submit]');busy(btn,true);toast(t('upl'));let urls;try{urls=await Promise.all(pics.map(async s=>upImg(await wm(s,(shop&&shop.name)||myEmail().split('@')[0]))))}catch(x){busy(btn,false);return toast(t('upErr')+': '+x.message)}
  const b=db.batch(),r=db.collection('listings').doc();
- b.set(r,{t:$('pTitle').value,p:+$('pPrice').value,c:$('pCat').value,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,cond:$('pCond').value,neg:$('pNeg').checked,deliv:$('pDel').checked,img:urls,uid:me.uid,shop:(shop&&shop.name)||myEmail().split('@')[0],sold:false,until:prof.paidUntil,verified:!!prof.verified,created:Date.now()});
+ const svc=collectService();const catNow=$('pCat').value;const listPrice=catNow==='ባጃጅ ኩንትራት'?0:catNow==='ምግብ ቤት'?Math.min(...(svc.menu||[]).map(x=>x.price)): +$('pPrice').value;
+ b.set(r,{t:$('pTitle').value,p:listPrice,c:catNow,city:$('pCity').value,d:$('pDesc').value,ph:$('pPhone').value,tg:$('pTg').value,cond:$('pCond').value,neg:$('pNeg').checked,deliv:$('pDel').checked,img:urls,service:svc,uid:me.uid,shop:(shop&&shop.name)||myEmail().split('@')[0],sold:false,until:prof.paidUntil,verified:!!prof.verified,created:Date.now()});
  b.update(db.collection('users').doc(me.uid),{photosDay:today(),photosCount:used()+pics.length});
  try{await b.commit();$('post').close();toast(t('posted'))}catch(x){toast(t('postFail'))}busy(btn,false)};
 
