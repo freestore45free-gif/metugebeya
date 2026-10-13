@@ -100,7 +100,7 @@ dialog#lb{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-he
 .cform{position:sticky;bottom:96px;display:flex;gap:8px;background:var(--bg);padding:8px 0}.cform input{flex:1;border-radius:99px;padding:11px 16px}
 .slider>div{aspect-ratio:1/1;background:var(--thumb)}
 .slider img{width:100%;height:100%;max-height:none;object-fit:cover;cursor:zoom-in}
-body{overflow-x:hidden}
+body{overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none}body::-webkit-scrollbar,*::-webkit-scrollbar{display:none;width:0;height:0}*{scrollbar-width:none;-ms-overflow-style:none}
 .ph{position:relative}
 .slider{max-width:100%}
 .slider>div{flex:0 0 100%;min-width:0;height:min(80vw,400px);aspect-ratio:auto;display:block;overflow:hidden}
@@ -184,7 +184,7 @@ dialog#upd[open]{display:flex;align-items:center;justify-content:center;text-ali
 <body>
 <header><div class="bar"><div class="logo"><i></i><span data-i="app"></span></div><input class="search" id="q" data-ph="search" aria-label="search"><button id="favBtn" class="hbtn" aria-label="favorites"><svg class="ic" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg><b class="bdg" id="fbd" hidden></b></button><button id="serviceListBtn" class="hbtn" aria-label="የኔ አገልግሎቶች" title="የኔ አገልግሎቶች">📪</button></div><div id="hist" hidden></div></header>
 <main>
- <section id="v-service" hidden><h2>📪 የኔ አገልግሎቶች</h2><p class="note">ሆቴል፣ ምግብ ቤት፣ አልጋ ቤት እና ባጃጅ ኩንትራት ማስታወቂያዎች ብቻ</p><div class="service-tabs" id="serviceTabs"></div><div class="grid" id="serviceGrid"></div><button type="button" class="btn line" id="serviceBack">← ወደ ዋና ገጽ</button></section>
+ <section id="v-service" hidden><button type="button" class="btn line" id="serviceBack">← ወደ ዋና ገጽ</button><h2>📪 የኔ አገልግሎቶች</h2><p class="note">ሆቴል፣ ምግብ ቤት፣ አልጋ ቤት እና ባጃጅ ኩንትራት ማስታወቂያዎች ብቻ</p><div class="service-tabs" id="serviceTabs"></div><div class="grid" id="serviceGrid"></div></section>
  <section id="v-home">
   <div class="hero"><h1 data-i="heroT"></h1><p data-i="heroP"></p></div>
   <div id="bnr" class="bnr" hidden></div>
